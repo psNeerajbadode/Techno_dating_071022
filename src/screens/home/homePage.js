@@ -9,7 +9,7 @@ import {
   useWindowDimensions,
   View,
 } from 'react-native';
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import Swiper from 'react-native-swiper';
 import TextFormatted from '../../components/TextFormatted';
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -24,6 +24,8 @@ import pulse from 'react-native-pulse';
 import Pulse from 'react-native-pulse';
 import LinearGradient from 'react-native-linear-gradient';
 import axios from 'axios';
+import ActivityLoader from '../../components/ActivityLoader';
+import Toast from 'react-native-toast-message';
 const HomePage = () => {
   const ThemeMode = useSelector(state => state.Theme);
   const Staps = useSelector(state => state.Stap);
@@ -39,7 +41,22 @@ const HomePage = () => {
   const [liky, setliky] = useState(true);
   const [indexV, setIndexV] = useState(0);
   const [plu_button, setplu_button] = useState(false);
-
+  const [Loading, setLoading] = useState(false);
+  const [Userall, setUserall] = useState();
+  const [Userpost, setUserpost] = useState();
+  const [Otherid, setOtherid] = useState();
+  console.log('Userpost=>', Userpost);
+  const Userimage = [
+    {
+      img: require('../../assets/images/unsplash_1.png'),
+    },
+    {
+      img: require('../../assets/images/unsplash_2.png'),
+    },
+    {
+      img: require('../../assets/images/unsplash_1.png'),
+    },
+  ];
   const data = [
     {
       username: 'Sofia Dickens',
@@ -131,9 +148,13 @@ const HomePage = () => {
   ];
 
   function UserScroll() {
-    if (data.length == indexV + 1) {
+    if (Userall.length == indexV + 1) {
       setplu_button(false);
-      ToastAndroid.show('User List End', ToastAndroid.SHORT);
+      Toast.show({
+        type: 'info',
+        text1: 'User List End',
+        position: 'top',
+      });
     } else {
       setplu_button(true);
       setTimeout(() => {
@@ -142,12 +163,34 @@ const HomePage = () => {
       }, 750);
     }
   }
-  // const LikeApi = () => {
-  //   try {
 
+  const getUserAll = () => {
+    setLoading(true);
+    axios({
+      method: 'get',
+      url:
+        'https://technorizen.com/Dating/webservice/get_all_user?user_id=' +
+        Staps.id,
+    }).then(response => {
+      setLoading(false);
+      setUserall(response.data.result);
+    });
+  };
+  const getUserPost = () => {
+    axios({
+      method: 'get',
+      url:
+        'https://technorizen.com/Dating/webservice/getallUserPostData?user_id=' +
+        Staps.id,
+    }).then(response => {
+      setUserpost(response.data.result);
+    });
+  };
+  // const likeApi = () => {
+  //   try {
   //     const body = new FormData();
   //     body.append('user_id', Staps.id);
-  //     body.append('password', password);
+  //     body.append('other_user_id', otherid);
   //     axios({
   //       url: 'https://technorizen.com/Dating/webservice/user_like',
   //       method: 'POST',
@@ -162,12 +205,17 @@ const HomePage = () => {
   //       })
   //       .catch(function (error) {
   //         console.log('catch', error);
-
   //       });
   //   } catch (error) {
   //     console.log(error);
   //   }
   // };
+
+  useEffect(() => {
+    getUserAll();
+    getUserPost();
+  }, []);
+
   return (
     <View
       style={{
@@ -181,162 +229,196 @@ const HomePage = () => {
         backgroundColor={'transparent'}
         barStyle="light-content"
       />
-      <View>
-        <FlatList
-          data={data}
-          initialScrollIndex={indexV}
-          onScroll={() => setplu_button(false)}
-          pagingEnabled={true}
-          ref={userRef}
-          renderItem={({item}) => (
-            <View style={{flex: 1, height: dimension.height}}>
-              <Swiper
-                loop={false}
-                showsButtons={true}
-                showsPagination={false}
-                buttonWrapperStyle={{paddingHorizontal: 0}}
-                nextButton={
-                  <Image
-                    source={
-                      ThemeMode.selectedTheme
-                        ? require('../../assets/icons/P_sidebar.png')
-                        : require('../../assets/icons/next_dark.png')
-                    }
-                    style={{height: 145, width: 25, resizeMode: 'contain'}}
-                  />
-                }
-                prevButton={
-                  <Image
-                    source={
-                      ThemeMode.selectedTheme
-                        ? require('../../assets/icons/N_sidebar.png')
-                        : require('../../assets/icons/prev_dark.png')
-                    }
-                    style={{height: 145, width: 25, resizeMode: 'contain'}}
-                  />
-                }>
-                {item.image?.map((it, i) => (
-                  <View
-                    style={{height: dimension.height, width: dimension.width}}>
+
+      {Loading ? (
+        <View
+          style={{
+            flex: 1,
+            backgroundColor: ThemeMode.selectedTheme
+              ? theme.colors.primary
+              : theme.colors.primaryBlack,
+            justifyContent: 'center',
+          }}>
+          <ActivityLoader />
+        </View>
+      ) : (
+        <View>
+          <FlatList
+            data={Userall}
+            initialScrollIndex={indexV}
+            onScroll={() => {
+              setplu_button(false);
+            }}
+            pagingEnabled={true}
+            ref={userRef}
+            renderItem={({item}) => (
+              <View style={{flex: 1, height: dimension.height}}>
+                <Swiper
+                  loop={false}
+                  showsButtons={true}
+                  showsPagination={false}
+                  buttonWrapperStyle={{paddingHorizontal: 0}}
+                  nextButton={
                     <Image
-                      source={it.img}
-                      resizeMode="cover"
-                      style={{height: dimension.height, width: dimension.width}}
+                      source={
+                        ThemeMode.selectedTheme
+                          ? require('../../assets/icons/P_sidebar.png')
+                          : require('../../assets/icons/next_dark.png')
+                      }
+                      style={{height: 145, width: 25, resizeMode: 'contain'}}
                     />
-                  </View>
-                ))}
-              </Swiper>
-              <View
-                style={{
-                  position: 'absolute',
-                  top: 44,
-                  marginHorizontal: 20,
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                }}>
-                <TouchableOpacity
-                  onPress={() => navigation.navigate('userProfile')}>
-                  <Image
-                    source={item.userprofile}
-                    style={{
-                      height: 56,
-                      width: 56,
-                      resizeMode: 'cover',
-                      borderRadius: 50,
-                      borderWidth: 3,
-                      borderColor: theme.colors.darkGrey,
-                    }}
-                  />
-                </TouchableOpacity>
-                <View style={{marginLeft: 8, flex: 1}}>
-                  <TextFormatted
-                    style={{fontSize: 16, fontWeight: '700', color: '#fff'}}>
-                    {item.username}
-                  </TextFormatted>
-                  <TextFormatted
-                    style={{fontSize: 12, fontWeight: '400', color: '#fff'}}>
-                    {item.timing}
-                  </TextFormatted>
-                </View>
-                <TouchableOpacity
+                  }
+                  prevButton={
+                    <Image
+                      source={
+                        ThemeMode.selectedTheme
+                          ? require('../../assets/icons/N_sidebar.png')
+                          : require('../../assets/icons/prev_dark.png')
+                      }
+                      style={{height: 145, width: 25, resizeMode: 'contain'}}
+                    />
+                  }>
+                  {Userimage?.map(
+                    (it, i) => (
+                      /*  it.user_id == item.user_id && ( */
+                      <View
+                        style={{
+                          height: dimension.height,
+                          width: dimension.width,
+                        }}>
+                        {/*      {it.type == 'Image' && ( */}
+                        <Image
+                          source={it.img}
+                          resizeMode="cover"
+                          style={{
+                            height: dimension.height,
+                            width: dimension.width,
+                          }}
+                        />
+                        {/*   )} */}
+                      </View>
+                    ),
+                    /*   ), */
+                  )}
+                </Swiper>
+                <View
                   style={{
-                    height: 40,
-                    width: 40,
-                    backgroundColor: ThemeMode.selectedTheme
-                      ? '#FFFFFF33'
-                      : '#1A1D254D',
+                    position: 'absolute',
+                    top: 44,
+                    marginHorizontal: 20,
+                    flexDirection: 'row',
                     alignItems: 'center',
-                    justifyContent: 'center',
-                    borderRadius: 10,
-                    marginRight: 10,
-                  }}
-                  onPress={() => refRBSheet1.current.open()}>
-                  <LinearGradient
-                    colors={
-                      ThemeMode.themecolr == 'Red'
-                        ? theme.colors.primaryOn
-                        : ThemeMode.themecolr == 'Blue'
-                        ? theme.colors.primaryBlue
-                        : ThemeMode.themecolr == 'Green'
-                        ? theme.colors.primaryGreen
-                        : ThemeMode.themecolr == 'Purple'
-                        ? theme.colors.primaryPurple
-                        : ThemeMode.themecolr == 'Yellow'
-                        ? theme.colors.primaryYellow
-                        : theme.colors.primaryOn
-                    }
-                    start={{x: 0, y: 0}}
-                    end={{x: 1, y: 1}}
-                    style={{
-                      height: 10,
-                      width: 10,
-                      borderRadius: 50,
-                      position: 'absolute',
-                      top: 5,
-                      right: 10,
-                      zIndex: 1,
-                    }}
-                  />
-                  <Image
-                    source={require('../../assets/icons/Notifyy.png')}
-                    style={{height: 25, width: 25, resizeMode: 'contain'}}
-                  />
-                </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={() => refRBSheet.current.open()}
-                  style={{
-                    height: 40,
-                    width: 40,
-                    backgroundColor: ThemeMode.selectedTheme
-                      ? '#FFFFFF33'
-                      : 'transparent',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    borderRadius: 10,
                   }}>
-                  {ThemeMode.selectedTheme ? (
-                    <Entypo
-                      name="dots-three-vertical"
-                      color={'#fff'}
-                      size={16}
-                    />
-                  ) : (
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate('userProfile')}>
                     <Image
-                      source={require('../../assets/icons/menù_dark.png')}
+                      source={
+                        item?.image
+                          ? {uri: item?.image}
+                          : require('../../assets/images/Icon_profile.png')
+                      }
                       style={{
-                        height: 40,
-                        width: 40,
-                        resizeMode: 'contain',
-                        marginRight: 10,
+                        height: 56,
+                        width: 56,
+                        resizeMode: 'cover',
+                        borderRadius: 50,
+                        borderWidth: 3,
+                        borderColor: theme.colors.darkGrey,
                       }}
                     />
-                  )}
-                </TouchableOpacity>
+                  </TouchableOpacity>
+                  <View style={{marginLeft: 8, flex: 1}}>
+                    <TextFormatted
+                      style={{fontSize: 16, fontWeight: '700', color: '#fff'}}>
+                      {item?.user_name + ' ' + item?.surname}
+                    </TextFormatted>
+                    <TextFormatted
+                      style={{fontSize: 12, fontWeight: '400', color: '#fff'}}>
+                      {new Date().getFullYear() - item.dob.slice(0, 4)} years
+                      old
+                    </TextFormatted>
+                  </View>
+                  <TouchableOpacity
+                    style={{
+                      height: 40,
+                      width: 40,
+                      backgroundColor: ThemeMode.selectedTheme
+                        ? '#FFFFFF33'
+                        : '#1A1D254D',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      borderRadius: 10,
+                      marginRight: 10,
+                    }}
+                    onPress={() => refRBSheet1.current.open()}>
+                    <LinearGradient
+                      colors={
+                        ThemeMode.themecolr == 'Red'
+                          ? theme.colors.primaryOn
+                          : ThemeMode.themecolr == 'Blue'
+                          ? theme.colors.primaryBlue
+                          : ThemeMode.themecolr == 'Green'
+                          ? theme.colors.primaryGreen
+                          : ThemeMode.themecolr == 'Purple'
+                          ? theme.colors.primaryPurple
+                          : ThemeMode.themecolr == 'Yellow'
+                          ? theme.colors.primaryYellow
+                          : theme.colors.primaryOn
+                      }
+                      start={{x: 0, y: 0}}
+                      end={{x: 1, y: 1}}
+                      style={{
+                        height: 10,
+                        width: 10,
+                        borderRadius: 50,
+                        position: 'absolute',
+                        top: 5,
+                        right: 10,
+                        zIndex: 1,
+                      }}
+                    />
+                    <Image
+                      source={require('../../assets/icons/Notifyy.png')}
+                      style={{height: 25, width: 25, resizeMode: 'contain'}}
+                    />
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() => refRBSheet.current.open()}
+                    style={{
+                      height: 40,
+                      width: 40,
+                      backgroundColor: ThemeMode.selectedTheme
+                        ? '#FFFFFF33'
+                        : 'transparent',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      borderRadius: 10,
+                    }}>
+                    {ThemeMode.selectedTheme ? (
+                      <Entypo
+                        name="dots-three-vertical"
+                        color={'#fff'}
+                        size={16}
+                      />
+                    ) : (
+                      <Image
+                        source={require('../../assets/icons/menù_dark.png')}
+                        style={{
+                          height: 40,
+                          width: 40,
+                          resizeMode: 'contain',
+                          marginRight: 10,
+                        }}
+                      />
+                    )}
+                  </TouchableOpacity>
+                </View>
               </View>
-            </View>
-          )}
-        />
-      </View>
+            )}
+          />
+        </View>
+      )}
+      <Toast />
       <ImageBackground
         resizeMode="contain"
         source={

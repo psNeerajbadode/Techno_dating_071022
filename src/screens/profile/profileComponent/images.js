@@ -64,7 +64,7 @@ const Images = () => {
   useEffect(() => {
     getUserData();
   }, []);
-  //console.log('User Img =>', User[0]);
+  console.log('User Img =>', User);
   return (
     <View>
       {Loading ? (
@@ -148,7 +148,7 @@ const Images = () => {
 
                 {User?.map((v, i) => (
                   <View>
-                    {i != 2 || (
+                    {i == 0 && (
                       <TouchableOpacity
                         style={{
                           marginTop: 20,
@@ -178,7 +178,7 @@ const Images = () => {
               <View style={{width: dimension.width / 2}}>
                 {User?.map(
                   (v, i) =>
-                    (i != 1 && i != 3) || (
+                    i == 1 && (
                       <TouchableOpacity
                         style={{marginTop: 20, marginHorizontal: 10}}
                         onPress={() =>
@@ -191,7 +191,31 @@ const Images = () => {
                           source={{uri: v.image}}
                           style={{
                             width: (dimension.width - 50) / 2,
-                            height: i == 1 ? 281 : 130,
+                            height: 281,
+                            resizeMode: 'cover',
+                            borderRadius: 20,
+                          }}
+                        />
+                      </TouchableOpacity>
+                    ),
+                )}
+
+                {User?.map(
+                  (v, i) =>
+                    i == 2 && (
+                      <TouchableOpacity
+                        style={{marginTop: 20, marginHorizontal: 10}}
+                        onPress={() =>
+                          navigation.navigate('viewSelfMedia', {
+                            imgIndex: i,
+                            User: User,
+                          })
+                        }>
+                        <Image
+                          source={{uri: v.image}}
+                          style={{
+                            width: (dimension.width - 50) / 2,
+                            height: 130,
                             resizeMode: 'cover',
                             borderRadius: 20,
                           }}
@@ -202,9 +226,9 @@ const Images = () => {
               </View>
             </View>
           </View>
-          {User?.map(
+          {/* {User?.map(
             (v, i) =>
-              (i != 4 && i != 5) || (
+              (i != 2 && i != 5) || (
                 <TouchableOpacity
                   onPress={() =>
                     navigation.navigate('viewSelfMedia', {
@@ -224,7 +248,7 @@ const Images = () => {
                   />
                 </TouchableOpacity>
               ),
-          )}
+          )} */}
         </View>
       )}
       <Option

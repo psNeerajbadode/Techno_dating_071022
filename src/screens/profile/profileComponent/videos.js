@@ -83,7 +83,7 @@ const Videos = () => {
   useEffect(() => {
     getUserData();
   }, []);
-  console.log('User =>', User);
+  console.log('User Video =>', User);
   return (
     <ScrollView>
       {/* {Loading ? (
