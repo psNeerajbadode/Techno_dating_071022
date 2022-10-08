@@ -17,7 +17,7 @@ import {launchImageLibrary, launchCamera} from 'react-native-image-picker';
 import BottomSheet from '../../../components/bottomSheet';
 import {createThumbnail} from 'react-native-create-thumbnail';
 import {Thumbnail} from 'react-native-thumbnail-video';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
 import axios from 'axios';
 import ActivityLoader from '../../../components/ActivityLoader';
@@ -27,14 +27,14 @@ const Videos = () => {
   const Staps = useSelector(state => state.Stap);
   const navigation = useNavigation();
   const dimension = useWindowDimensions();
-  const videoData = [
-    {vid: require('../../../assets/images/big_buck_bunny_720p_1mb.mp4')},
-  ];
   const [uri, setUri] = useState();
   const [thumb, setThumb] = useState();
   const [User, setUser] = useState();
   const [Loading, setLoading] = useState(false);
   const refRBSheet = useRef();
+  const videoData = [
+    {vid: require('../../../assets/images/big_buck_bunny_720p_1mb.mp4')},
+  ];
   const pickVideo = () => {
     launchImageLibrary({mediaType: 'video', videoQuality: 'high'}, response => {
       if (!response.didCancel) {
@@ -66,25 +66,24 @@ const Videos = () => {
     }
   }
 
-  // const getUserData = () => {
-  //   setLoading(true);
-  //   axios({
-  //     method: 'get',
-  //     url:
-  //       'https://technorizen.com/Dating/webservice/getUserPostData?user_id=' +
-  //       Staps.id +
-  //       '&&' +
-  //       'type=Video',
-  //   }).then(response => {
-  //     setLoading(false);
-
-  //     setUser(response.data.result);
-  //   });
-  // };
-  // useEffect(() => {
-  //   getUserData();
-  // }, []);
-  // console.log('User Video =>', User[0].video);
+  const getUserData = () => {
+    setLoading(true);
+    axios({
+      method: 'get',
+      url:
+        'https://technorizen.com/Dating/webservice/getUserPostData?user_id=' +
+        Staps.id +
+        '&&' +
+        'type=Video',
+    }).then(response => {
+      setLoading(false);
+      setUser(response.data.result);
+    });
+  };
+  useEffect(() => {
+    getUserData();
+  }, []);
+  console.log('User =>', User);
   return (
     <ScrollView>
       {/* {Loading ? (
@@ -159,25 +158,33 @@ const Videos = () => {
             </TextFormatted>
           </TouchableOpacity>
         </View>
-        <View style={{width: dimension.width / 2}}>
-          {/* {videoData.map((v, i) => (
-          <View>
-            <TouchableOpacity
-              style={{ marginTop: 20, marginHorizontal: 10, alignSelf: 'flex-end' }}
-              // onPress={() => navigation.navigate('viewSelfMedia', { imgIndex: i })}
-            >
-              <Video
-                source={v.vid}
-                style={{ width: (dimension.width - 50) / 2, height: 253, borderRadius: 20 }}
-                disableFocus
-                paused
-                controls
-                resizeMode="cover"
-                hideShutterView={true}
-              />
-            </TouchableOpacity>
-          </View>
-        ))} */}
+        {/* <View style={{width: dimension.width / 2}}>
+          {User.map((v, i) => (
+            <View>
+              <TouchableOpacity
+                style={{
+                  marginTop: 20,
+                  marginHorizontal: 10,
+                  alignSelf: 'flex-end',
+                }}
+                // onPress={() => navigation.navigate('viewSelfMedia', { imgIndex: i })}
+              >
+                <Video
+                  source={{uri: v.video}}
+                  style={{
+                    width: (dimension.width - 50) / 2,
+                    height: 253,
+                    borderRadius: 20,
+                  }}
+                  disableFocus
+                  paused
+                  controls
+                  resizeMode="cover"
+                  hideShutterView={true}
+                />
+              </TouchableOpacity>
+            </View>
+          ))}
 
           <TouchableOpacity
             style={{
@@ -207,7 +214,7 @@ const Videos = () => {
               />
             </ImageBackground>
           </TouchableOpacity>
-        </View>
+        </View> */}
       </View>
       {/*   )} */}
 

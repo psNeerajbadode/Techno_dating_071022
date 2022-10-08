@@ -50,22 +50,22 @@ const EditProfile = ({navigation}) => {
   const ThemeMode = useSelector(state => state.Theme);
   const Staps = useSelector(state => state.Stap);
   const dispatch = useDispatch();
-  const [name, setName] = useState(Staps.user.user_name);
-  const [surname, setSurname] = useState(Staps.user.surname);
-  const [gender, setGender] = useState(Staps.user.gender);
-  const [aboutMe, setAboutMe] = useState(Staps.user.about);
-  const [showMe, setShowMe] = useState(Staps.user.show_me);
-  const [selectedDate, setSelectedDate] = useState(Staps.user.dob);
+  const [name, setName] = useState(Staps.user_name);
+  const [surname, setSurname] = useState(Staps.surname);
+  const [gender, setGender] = useState(Staps.gender);
+  const [aboutMe, setAboutMe] = useState(Staps.about);
+  const [showMe, setShowMe] = useState(Staps.show_me);
+  const [selectedDate, setSelectedDate] = useState(Staps.dob);
   const [sexualOrientation, setSexualOrientation] = useState(
-    Staps.user.sexual_orientatio,
+    Staps.sexual_orientatio,
   );
-  const [lookingFor, setLookingFor] = useState(Staps.user.looking_for);
-  const [education, setEducation] = useState(Staps.user.education);
-  const [ethnicity, setEthnicity] = useState(Staps.user.ethnicity);
-  const [zodiac, setZodiac] = useState(Staps.user.zodiac);
-  const [toggle1, setToggle1] = useState(Staps.user.kids);
-  const [toggle2, setToggle2] = useState(Staps.user.drink);
-  const [toggle3, setToggle3] = useState(Staps.user.smoke);
+  const [lookingFor, setLookingFor] = useState(Staps.looking_for);
+  const [education, setEducation] = useState(Staps.education);
+  const [ethnicity, setEthnicity] = useState(Staps.ethnicity);
+  const [zodiac, setZodiac] = useState(Staps.zodiac);
+  const [toggle1, setToggle1] = useState(Staps.kids);
+  const [toggle2, setToggle2] = useState(Staps.drink);
+  const [toggle3, setToggle3] = useState(Staps.smoke);
   const [pic, setPic] = useState();
   const [Loading, setLoading] = useState(false);
   const refRBSheet = useRef();
@@ -208,9 +208,9 @@ const EditProfile = ({navigation}) => {
           }}>
           <Image
             source={
-              Staps.user.image == null
+              Staps.image == null
                 ? require('../../assets/images/image.png')
-                : {uri: Staps.user.image}
+                : {uri: Staps.image}
             }
             style={{
               height: 147,
@@ -365,10 +365,7 @@ const EditProfile = ({navigation}) => {
         </TextFormatted>
         <View
           style={{
-            height:
-              Staps.user.about?.length < 38 || Staps.user.about == null
-                ? 50
-                : 130,
+            height: Staps.about?.length < 38 || Staps.about == null ? 50 : 130,
             backgroundColor: ThemeMode.selectedTheme
               ? theme.colors.primary
               : theme.colors.primaryBlack,

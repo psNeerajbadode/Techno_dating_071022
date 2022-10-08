@@ -32,8 +32,8 @@ const Login = ({navigation}) => {
   const ThemeMode = useSelector(state => state.Theme);
   const Staps = useSelector(state => state.Stap);
   const dispatch = useDispatch();
-  const [email, setEmail] = useState('myapp@gmail.com');
-  const [password, setPassword] = useState('Mm123456');
+  const [email, setEmail] = useState('georgeg3g3g3@gmail.com');
+  const [password, setPassword] = useState('Gg123456');
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(false);
   const Loginapi = () => {
@@ -55,7 +55,9 @@ const Login = ({navigation}) => {
             setLoading(false);
             dispatch({type: STAP, payload: response.data.result});
             navigation.navigate(
-              response.data.result.step == 0 || response.data.result.step == 1
+              response.data.result.step == 0
+                ? 'step1'
+                : response.data.result.step == 1
                 ? 'step1'
                 : response.data.result.step == 2
                 ? 'step2'
@@ -66,8 +68,10 @@ const Login = ({navigation}) => {
                 : response.data.result.step == 5
                 ? 'step5'
                 : response.data.result.step == 6
-                ? 'step7'
-                : response.data.result.step == 8 && 'FingerPrint',
+                ? 'step5'
+                : response.data.result.step == 8
+                ? 'FingerPrint'
+                : 'step7',
             );
           } else {
             setLoading(false);

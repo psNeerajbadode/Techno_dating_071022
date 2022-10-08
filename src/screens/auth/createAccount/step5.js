@@ -50,7 +50,7 @@ const Step5 = ({navigation}) => {
           buttonPositive: 'OK',
         },
       );
-      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+      if (granted === 'granted') {
         console.log('You can use the Location');
         setToggle(true);
       } else {

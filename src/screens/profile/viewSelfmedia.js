@@ -1,29 +1,84 @@
-import {Image, StyleSheet, TouchableOpacity, View} from 'react-native';
-import React, {useRef} from 'react';
+import {
+  Image,
+  PermissionsAndroid,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import React, {useRef, useState} from 'react';
 import Swiper from 'react-native-swiper';
-import Header from '../../components/Header';
 import Feather from 'react-native-vector-icons/Feather';
 import {theme} from '../../utils/Constants';
 import {useNavigation, useRoute} from '@react-navigation/native';
-import TextFormatted from '../../components/TextFormatted';
-import LinearGradient from 'react-native-linear-gradient';
-import MoreOptions from '../home/moreOptions';
-import {useDispatch, useSelector} from 'react-redux';
+import {useSelector} from 'react-redux';
+import {Platform} from 'react-native';
+import RNFetchBlob from 'rn-fetch-blob';
 
 const ViewSelfMedia = () => {
   const navigation = useNavigation();
   const {params = {}} = useRoute();
   const ThemeMode = useSelector(state => state.Theme);
-  const photos = [
-    {img: require('../../assets/images/unsplash_1.png')},
-    {img: require('../../assets/images/unsplash_2.png')},
-    {img: require('../../assets/images/unsplash_3.png')},
-    {img: require('../../assets/images/unsplash_4.png')},
-    {img: require('../../assets/images/unsplash_5.png')},
-    {img: require('../../assets/images/unsplash_6.png')},
-  ];
-  console.log('User', params.imgIndex);
+  const [index, setIndex] = useState(params.imgIndex);
+  // const photos = [
+  //   {img: require('../../assets/images/unsplash_1.png')},
+  //   {img: require('../../assets/images/unsplash_2.png')},
+  //   {img: require('../../assets/images/unsplash_3.png')},
+  //   {img: require('../../assets/images/unsplash_4.png')},
+  //   {img: require('../../assets/images/unsplash_5.png')},
+  //   {img: require('../../assets/images/unsplash_6.png')},
+  // ];
+
   const refRBSheet = useRef();
+  const Storage_permission = async () => {
+    if (Platform.OS === 'ios') {
+      download_Img();
+    } else {
+      try {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+          {
+            title: 'Storage Permission Required',
+            message: 'App needs access to your Storage ',
+          },
+        );
+        if (granted === 'granted') {
+          console.log('granted Storage Permission');
+          download_Img();
+        } else {
+          console.log('Storage permission denied');
+        }
+      } catch (err) {
+        console.warn(err);
+      }
+    }
+  };
+
+  const download_Img = () => {
+    let date = new Date();
+    let ImageUrl = params.User[index].image;
+    // 'https://cdn.pixabay.com/photo/2022/10/02/05/34/city-7492749__340.jpg';
+    //let extension = ImageUrl.substring(fileName.lastIndexOf('.') + 1);
+    const {config, fs} = RNFetchBlob;
+    config({
+      addAndroidDownloads: {
+        useDownloadManager: true,
+        description: 'File downloaded by download manager.',
+        notification: true,
+        path:
+          fs.dirs.DCIMDir +
+          '/image_' +
+          Math.floor(date.getTime() + date.getSeconds() / 2),
+      },
+      fileCache: true,
+    })
+      .fetch('GET', ImageUrl, {
+        //some headers ..
+      })
+      .then(res => {
+        // the temp file path
+        console.log('The file saved to ', JSON.stringify(res));
+      });
+  };
 
   return (
     <View style={{flex: 1}}>
@@ -33,6 +88,7 @@ const ViewSelfMedia = () => {
         index={params.imgIndex}
         showsButtons={true}
         showsPagination={false}
+        onIndexChanged={index => setIndex(index)}
         buttonWrapperStyle={{paddingHorizontal: 0}}
         nextButton={
           <Image
@@ -86,13 +142,16 @@ const ViewSelfMedia = () => {
           {ThemeMode.selectedTheme ? (
             <Feather
               // onPress={() => refRBSheet.current.open()}
+              onPress={() => {
+                Storage_permission();
+              }}
               name="download"
               size={16}
               color={theme.colors.primary}
               style={{
                 height: 40,
                 width: 40,
-                backgroundColor: '#FFFFFF33',
+                // backgroundColor: '#FFFFFF33',
                 textAlign: 'center',
                 textAlignVertical: 'center',
                 borderRadius: 10,
@@ -100,7 +159,9 @@ const ViewSelfMedia = () => {
               }}
             />
           ) : (
-            <TouchableOpacity style={{alignSelf: 'flex-start'}}>
+            <TouchableOpacity
+              onPress={() => Storage_permission()}
+              style={{alignSelf: 'flex-start'}}>
               <Image
                 source={require('../../assets/icons/download_dark.png')}
                 style={{height: 40, width: 40, resizeMode: 'contain'}}

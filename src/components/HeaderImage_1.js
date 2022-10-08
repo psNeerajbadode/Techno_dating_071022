@@ -1,15 +1,27 @@
-import { ImageBackground, StyleSheet } from 'react-native';
+import {ImageBackground, StyleSheet} from 'react-native';
 import React from 'react';
 import Statusbar from './Statusbar';
-import { useSelector } from 'react-redux';
-import { BluelightImage, GreenlightImage, PurplelightImage, ReddarkImage, RedlightImage, YellowlightImage } from '../utils/CustomImages';
+import {useSelector} from 'react-redux';
+import {
+  BluelightImage,
+  GreenlightImage,
+  PurplelightImage,
+  ReddarkImage,
+  RedlightImage,
+  YellowlightImage,
+} from '../utils/CustomImages';
 
-const HeaderImage_1 = ({ children, height, marginBottom, source }) => {
+const HeaderImage_1 = ({children, height, marginBottom, source}) => {
   const ThemeMode = useSelector(state => state.Theme);
-  //console.log(ThemeMode.themecolr);
+
   return (
     <ImageBackground
-      style={{ height: height || 169, width: '100%', paddingTop: 30, marginBottom: marginBottom || 15 }}
+      style={{
+        height: height || 169,
+        width: '100%',
+        paddingTop: 30,
+        marginBottom: marginBottom || 15,
+      }}
       source={
         source || ThemeMode.themecolr == 'Red'
           ? ThemeMode.selectedTheme
@@ -35,9 +47,12 @@ const HeaderImage_1 = ({ children, height, marginBottom, source }) => {
           ? RedlightImage.Bg_Img1
           : ReddarkImage.Bg_Img1
       }
-      resizeMode="stretch"
-    >
-      <Statusbar backgroundColor={'transparent'} hidden={false} barStyle={'light-content'} />
+      resizeMode="stretch">
+      <Statusbar
+        backgroundColor={'transparent'}
+        hidden={false}
+        barStyle={'light-content'}
+      />
       {children}
     </ImageBackground>
   );
