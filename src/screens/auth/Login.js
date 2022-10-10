@@ -32,10 +32,8 @@ const Login = ({navigation}) => {
   const ThemeMode = useSelector(state => state.Theme);
   const Staps = useSelector(state => state.Stap);
   const dispatch = useDispatch();
-  // const [email, setEmail] = useState('georgeg3g3g3@gmail.com');
-  // const [password, setPassword] = useState('Gg123456');
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
+  const [email, setEmail] = useState('georgeg3g3g3@gmail.com');
+  const [password, setPassword] = useState('Gg123456');
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(false);
   const Loginapi = () => {

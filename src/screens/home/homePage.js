@@ -45,7 +45,7 @@ const HomePage = () => {
   const [Userall, setUserall] = useState();
   const [Userpost, setUserpost] = useState();
   const [Otherid, setOtherid] = useState();
-  console.log('Userpost=>', Userpost);
+  const [Uindex, setUindex] = useState();
   const Userimage = [
     {
       img: require('../../assets/images/unsplash_1.png'),
@@ -186,35 +186,41 @@ const HomePage = () => {
       setUserpost(response.data.result);
     });
   };
-  // const likeApi = () => {
-  //   try {
-  //     const body = new FormData();
-  //     body.append('user_id', Staps.id);
-  //     body.append('other_user_id', otherid);
-  //     axios({
-  //       url: 'https://technorizen.com/Dating/webservice/user_like',
-  //       method: 'POST',
-  //       data: body,
-  //       headers: {
-  //         'content-type': 'multipart/form-data',
-  //       },
-  //     })
-  //       .then(function (response) {
-  //         if (response.data.status == 1) {
-  //         }
-  //       })
-  //       .catch(function (error) {
-  //         console.log('catch', error);
-  //       });
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
+
+  const likeApi = () => {
+    try {
+      const body = new FormData();
+      body.append('user_id', Staps.id);
+      body.append('other_user_id', Uindex);
+      axios({
+        url: 'https://technorizen.com/Dating/webservice/user_like',
+        method: 'POST',
+        data: body,
+        headers: {
+          'content-type': 'multipart/form-data',
+        },
+      })
+        .then(function (response) {
+          if (response.data.status == 1) {
+          }
+        })
+        .catch(function (error) {
+          console.log('catch', error);
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
     getUserAll();
     getUserPost();
   }, []);
+  const onViewableItemsChanged = React.useRef(viewableItems => {
+    console.log(viewableItems?.viewableItems[0].key);
+    setUindex(viewableItems?.viewableItems[0].key);
+    // Use viewable items in state or as intended
+  }, []); // any dependencies that require the function to be "redeclared"
 
   return (
     <View
@@ -246,12 +252,13 @@ const HomePage = () => {
           <FlatList
             data={Userall}
             initialScrollIndex={indexV}
-            onScroll={() => {
+            onScroll={event => {
               setplu_button(false);
             }}
+            onViewableItemsChanged={onViewableItemsChanged.current}
             pagingEnabled={true}
             ref={userRef}
-            renderItem={({item}) => (
+            renderItem={({item, i}) => (
               <View style={{flex: 1, height: dimension.height}}>
                 <Swiper
                   loop={false}
@@ -446,6 +453,7 @@ const HomePage = () => {
           onPress={() => {
             UserScroll();
           }}
+          onLongPress={() => likeApi(Uindex)}
           Animatable={
             <View>
               {plu_button == true && (

@@ -122,7 +122,7 @@ const LanguageSelection = ({navigation}) => {
         marginTop={20}
         marginBottom={30}
         onPress={() => navigation.navigate('Login')}
-        // onPress={() => navigation.navigate('step5')}
+        // onPress={() => navigation.navigate('homePage')}
       />
     </View>
   );
