@@ -21,6 +21,7 @@ import {createThumbnail} from 'react-native-create-thumbnail';
 import {useDispatch, useSelector} from 'react-redux';
 import {STAP} from '../../../redux/actions/ActionType';
 import axios from 'axios';
+import {ShowToast} from '../../../utils/Baseurl';
 
 const Step4 = ({navigation}) => {
   const dispatch = useDispatch();
@@ -56,8 +57,8 @@ const Step4 = ({navigation}) => {
           ) {
             setMedia(media.concat(...response.assets));
           } else {
-            alert(
-              'Select a minimum of 2 media to proceed and a maximum of 5 pictures and 1 video',
+            ShowToast(
+              ' Upload at least 2 media to proceed and a maximum of 5 photo and 1 video',
             );
           }
         }
@@ -187,8 +188,8 @@ const Step4 = ({navigation}) => {
               marginLeft: 10,
               marginTop: 10,
             }}>
-            Select a minimum of 2 media to proceed and a maximum of 5 pictures
-            and 1 video
+            Upload at least 2 media to proceed and a maximum of 5 photo and 1
+            video
           </TextFormatted>
         </View>
         <View style={{flexDirection: 'row', marginTop: 20}}>
@@ -209,7 +210,7 @@ const Step4 = ({navigation}) => {
                 },
                 shadowOpacity: 0.25,
                 shadowRadius: 3.84,
-                elevation: 5,
+                elevation: 2,
                 alignItems: 'center',
                 justifyContent: 'center',
                 marginBottom: 10,

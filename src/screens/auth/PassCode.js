@@ -6,7 +6,7 @@ import {
   useWindowDimensions,
   View,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {theme} from '../../utils/Constants';
 import HeaderImageShadow from '../../components/HeaderImageShadow';
 import Header from '../../components/Header';
@@ -15,7 +15,7 @@ import Icon from 'react-native-vector-icons/Feather';
 import {PASSCODE} from '../../redux/actions/ActionType';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
-import Toast from 'react-native-toast-message';
+import {ShowToast} from '../../utils/Baseurl';
 
 const PassCode = () => {
   const ThemeMode = useSelector(state => state.Theme);
@@ -23,28 +23,20 @@ const PassCode = () => {
   const navigation = useNavigation();
   const dimension = useWindowDimensions();
   const dispatch = useDispatch();
-  const [ok, setOk] = useState(false);
-
   const [passcode, setPasscode] = useState([]);
-
   const Removeval = () => {
     const Val_array = [...passcode];
     Val_array.pop();
     setPasscode(Val_array);
   };
-  console.log('Staps', Staps.app_dashboard_pass == passcode.join(''));
-
   function App_passcode() {
     if (Staps.app_dashboard_pass == passcode.join('')) {
       navigation.replace('HomeNavigation');
     } else {
-      Toast.show({
-        type: 'error',
-        text1: 'Invalid Passcode',
-        position: 'top',
-      });
+      passcode.length == 4 && ShowToast('Invalid Passcode');
     }
   }
+  useEffect(() => {}, [App_passcode()]);
 
   return (
     <View
@@ -93,7 +85,6 @@ const PassCode = () => {
             Alexander
           </TextFormatted>
         </HeaderImageShadow>
-        <Toast />
         <View
           style={{
             backgroundColor: ThemeMode.selectedTheme
@@ -130,8 +121,6 @@ const PassCode = () => {
 
                   borderRadius: 20,
                   margin: 12.5,
-                  // justifyContent: 'center',
-                  // alignItems: 'center',
                 }}>
                 <TextFormatted
                   style={{
@@ -163,20 +152,10 @@ const PassCode = () => {
             .fill('')
             .map((_, i) => (
               <TouchableOpacity
-                disabled={passcode.length == 4 ? true : false}
-                onPress={() => {
-                  // if (i == 9) {
-                  //   Removeval();
-                  // } else {
-                  // pass.push(i == 9 ? null : i == 10 ? 0 : i + 1);
-                  // if (passcode.length == 4) {
-                  //   // navigation.replace('HomeNavigation');
-                  //   App_passcode();
-                  // }
-                  setPasscode(prevState => [...prevState, i == 10 ? 0 : i + 1]);
-                  // }
-                }}
-                // disabled={i == 9}
+                //disabled={passcode.length == 4 ? true : false}
+                onPress={() =>
+                  setPasscode(prevState => [...prevState, i == 10 ? 0 : i + 1])
+                }
                 style={{width: 40, marginHorizontal: 30, marginVertical: 10}}>
                 <TextFormatted
                   style={{
@@ -192,11 +171,7 @@ const PassCode = () => {
                       name="arrow-left"
                       size={30}
                       onPress={() => Removeval()}
-                      color={
-                        ThemeMode.selectedTheme
-                          ? theme.colors.primaryBlack
-                          : theme.colors.primary
-                      }
+                      color={'#8490AE'}
                     />
                   ) : i == 10 ? (
                     0
@@ -206,7 +181,7 @@ const PassCode = () => {
                 </TextFormatted>
               </TouchableOpacity>
             ))}
-          {passcode.length == 4 ? (
+          {/* {passcode.length == 4 ? (
             <Icon
               name="arrow-right"
               size={30}
@@ -223,35 +198,42 @@ const PassCode = () => {
                 flex: 1,
               }}
             />
-          ) : (
-            <TouchableOpacity
-              style={{marginLeft: 24}}
-              onPress={() => navigation.replace('FingerPrint')}>
-              <Image
-                source={require('../../assets/icons/fingerprint_1.png')}
-                style={{resizeMode: 'contain', height: 50, width: 50}}
-              />
-            </TouchableOpacity>
-          )}
+          ) : ( */}
+          <TouchableOpacity
+            style={{marginLeft: 24}}
+            onPress={() => navigation.replace('FingerPrint')}>
+            <Image
+              source={require('../../assets/icons/fingerprint_1.png')}
+              style={{
+                resizeMode: 'contain',
+                height: 50,
+                width: 50,
+                tintColor: '#8490AE',
+              }}
+            />
+          </TouchableOpacity>
+          {/* )} */}
         </View>
-        <TextFormatted
-          style={{
-            fontSize: 14,
-            fontWeight: '600',
-            color: ThemeMode.selectedTheme
-              ? theme.colors.Black
-              : theme.colors.primary,
-            alignSelf: 'center',
-            marginTop: 20,
-            padding: 5,
-          }}
-          onPress={() => {
-            navigation.replace('PasswordRecovery');
-            dispatch({type: PASSCODE, payload: {isPasscode: true}});
-          }}>
-          Forgot your passcode?
-        </TextFormatted>
       </ScrollView>
+      <TextFormatted
+        style={{
+          fontSize: 14,
+          fontWeight: '600',
+          color: ThemeMode.selectedTheme
+            ? theme.colors.Black
+            : theme.colors.primary,
+          alignSelf: 'center',
+          marginTop: 20,
+          padding: 5,
+          position: 'absolute',
+          bottom: 10,
+        }}
+        onPress={() => {
+          navigation.replace('PasswordRecovery');
+          dispatch({type: PASSCODE, payload: {isPasscode: true}});
+        }}>
+        Forgot your passcode?
+      </TextFormatted>
     </View>
   );
 };

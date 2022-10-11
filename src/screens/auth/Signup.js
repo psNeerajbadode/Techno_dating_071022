@@ -93,7 +93,9 @@ const Signup = ({navigation}) => {
         <View style={{height: 20}} />
         <Logo />
       </HeaderImage>
-      <ScrollView keyboardShouldPersistTaps="handled">
+      <ScrollView
+        keyboardShouldPersistTaps="handled"
+        contentContainerStyle={{paddingBottom: 40}}>
         <TextInputFormat
           label={'Email'}
           labelColor={
@@ -106,12 +108,12 @@ const Signup = ({navigation}) => {
           borderWidth={
             email == '' || (email != null && !validateEmail(email)) ? 1 : 0
           }
-          placeholder={'Insert your email'}
+          placeholder={'Insert your Email'}
           value={email}
           onChangeText={setEmail}
           containerStyle={{marginTop: 20}}
           keyboardType="email-address"
-          mess={'Not a valid email address'}
+          mess={'Not a valid Email Address'}
           showMess={
             email == '' || (email != null && !validateEmail(email))
               ? true
@@ -184,7 +186,7 @@ const Signup = ({navigation}) => {
               : false
           }
           mess={
-            'password is matching the expectation but its not the same as the above password'
+            'Repeat password is not matching the password, please enter the correct password'
           }
         />
         <View
@@ -353,18 +355,26 @@ const Signup = ({navigation}) => {
             />
           </TouchableOpacity>
         </View>
-        <TextFormatted
+
+        <View
           style={{
-            fontSize: 14,
-            fontWeight: '300',
-            color: ThemeMode.selectedTheme
-              ? theme.colors.primaryBlack
-              : theme.colors.primary,
+            flexDirection: 'row',
             alignSelf: 'center',
-            marginTop: 10,
-            paddingVertical: 10,
+            alignItems: 'center',
+            position: 'absolute',
+            bottom: 10,
           }}>
-          already have an account?
+          <TextFormatted
+            style={{
+              fontSize: 14,
+              fontWeight: '300',
+              color: ThemeMode.selectedTheme
+                ? theme.colors.primaryBlack
+                : theme.colors.primary,
+              marginRight: 5,
+            }}>
+            already have an account?
+          </TextFormatted>
           <TextFormatted
             style={{
               fontSize: 14,
@@ -374,10 +384,9 @@ const Signup = ({navigation}) => {
                 : theme.colors.primary,
             }}
             onPress={() => navigation.navigate('Login')}>
-            {' '}
             Login
           </TextFormatted>
-        </TextFormatted>
+        </View>
       </ScrollView>
     </View>
   );

@@ -168,6 +168,7 @@ const Step3 = () => {
               .toLowerCase()
               .includes(search.toLowerCase());
           })}
+          contentContainerStyle={{paddingBottom: 100}}
           ListHeaderComponent={
             <View
               style={{

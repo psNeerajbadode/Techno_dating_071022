@@ -15,8 +15,8 @@ import Button from '../../components/Button';
 import {useRoute} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
 import {Baseurl} from '../../utils/Baseurl';
-import Toast from 'react-native-toast-message';
 import {STAP} from '../../redux/actions/ActionType';
+import {ShowToast} from '../../utils/Baseurl';
 
 const EmailOtp = ({navigation}) => {
   const dispatch = useDispatch();
@@ -40,7 +40,6 @@ const EmailOtp = ({navigation}) => {
   const [Loading, setLoading] = useState(false);
   const [match, setMatch] = useState(false);
   const Otp = state.pin1 + state.pin2 + state.pin3 + state.pin4 + state.pin5;
-  //console.log(Staps.user.id);
   async function Email_Otp() {
     try {
       const url = Baseurl + 'get_verified_code';
@@ -59,17 +58,19 @@ const EmailOtp = ({navigation}) => {
         body: body,
       });
       const rslt = await res.json();
+      console.log(rslt.result);
       if (rslt.status == 1) {
         setLoading(false);
+
         dispatch({type: STAP, payload: rslt.result});
         navigation.navigate(
           params?.isSignup ? 'step1' : isPasscode ? ' ' : 'ChangePassword',
         );
-        console.log(rslt.message);
+        ShowToast('Valid OTP');
       } else {
         setLoading(false);
         // alert(rslt.result || rslt.message || 'Unknown error');
-        console.log(rslt.status);
+        ShowToast('Invalid OTP');
       }
     } catch (e) {
       alert('An error occured.');
@@ -80,9 +81,7 @@ const EmailOtp = ({navigation}) => {
     try {
       const url = Baseurl + 'resend_otp';
       const body = new FormData();
-      // body.append('otp_number', Otp);
       body.append('user_id', Staps.id);
-
       const res = await fetch(url, {
         method: 'Post',
         headers: {
@@ -90,24 +89,14 @@ const EmailOtp = ({navigation}) => {
         },
         body: body,
       });
-
       const rslt = await res.json();
-      //console.log('resend opt =>', rslt);
       if (rslt.status == 1) {
-        Toast.show({
-          type: 'success',
-          text1: 'OTP Successfull Send in Your Email',
-          position: 'bottom',
-        });
+        ShowToast('OTP Successfull Send in Your Email');
         setMatch(true);
         // navigation.navigate(params?.isSignup ? 'step1' : isPasscode ? 'RecoveryPassCode' : 'ChangePassword');
         console.log(rslt.status);
       } else {
-        Toast.show({
-          type: 'error',
-          text1: 'OTP Send Faild',
-          position: 'bottom',
-        });
+        ShowToast('OTP Send Faild');
         // alert(rslt.result || rslt.message || 'Unknown error');
         console.log(rslt.status);
       }
@@ -128,13 +117,11 @@ const EmailOtp = ({navigation}) => {
       <HeaderImage>
         <Header
           title={
-            params?.isSignup
+            /*    params?.isSignup
               ? 'Sign up'
-              : isPasscode
-              ? 'Passcode Recovery'
-              : 'Password Recovery'
+              :  */ isPasscode ? 'Passcode Recovery' : 'Password Recovery'
           }
-          left={params?.isSignup ? true : false}
+          // left={params?.isSignup ? true : false}
           marginTop={20}
         />
         <View style={{height: 20}} />
@@ -142,7 +129,10 @@ const EmailOtp = ({navigation}) => {
       </HeaderImage>
 
       <ScrollView
-        contentContainerStyle={{flexGrow: 1, justifyContent: 'space-between'}}>
+        contentContainerStyle={{
+          flexGrow: 1,
+          justifyContent: 'space-between',
+        }}>
         <View style={{marginVertical: 20}}>
           <TextFormatted
             style={{
@@ -192,6 +182,7 @@ const EmailOtp = ({navigation}) => {
               value={state.pin1}
               keyboardType="numeric"
               maxLength={1}
+              autoFocus={true}
               onChangeText={val => {
                 setState({...state, pin1: val});
                 if (val.length >= 1) textInputRef2.current.focus();
@@ -319,10 +310,12 @@ const EmailOtp = ({navigation}) => {
               : theme.colors.primary,
             textAlign: 'center',
             marginVertical: 20,
+            position: 'absolute',
+            bottom: 0,
+            alignSelf: 'center',
           }}>
           Resend email
         </TextFormatted>
-        <Toast />
       </ScrollView>
     </View>
   );
@@ -340,7 +333,8 @@ const styles = StyleSheet.create({
     fontSize: 26,
     marginHorizontal: 5,
     padding: 0,
-    shadowColor: '#000',
+    backgroundColor: '#FAFAFA',
+    /*   shadowColor: '#000',
     shadowOffset: {
       width: 0,
       height: 2,
@@ -348,6 +342,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
 
-    elevation: 5,
+    elevation: 5, */
   },
 });

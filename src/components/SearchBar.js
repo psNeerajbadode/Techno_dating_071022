@@ -1,18 +1,39 @@
-import { Image, StyleSheet, TextInput, useWindowDimensions, View } from 'react-native';
+import {
+  Image,
+  StyleSheet,
+  TextInput,
+  useWindowDimensions,
+  View,
+} from 'react-native';
 import React from 'react';
-import { Icon } from '@rneui/themed';
-import { theme } from '../utils/Constants';
-import { useDispatch, useSelector } from 'react-redux';
-import { BluelightImage, GreenlightImage, PurplelightImage, RedlightImage, YellowlightImage } from '../utils/CustomImages';
+import {Icon} from '@rneui/themed';
+import {theme} from '../utils/Constants';
+import {useDispatch, useSelector} from 'react-redux';
+import {
+  BluelightImage,
+  GreenlightImage,
+  PurplelightImage,
+  RedlightImage,
+  YellowlightImage,
+} from '../utils/CustomImages';
 
-const SearchBar = ({ value, onChangeText, onPress, borderRadius, placeholder, Cross }) => {
+const SearchBar = ({
+  value,
+  onChangeText,
+  onPress,
+  borderRadius,
+  placeholder,
+  Cross,
+}) => {
   const dispatch = useDispatch();
   const ThemeMode = useSelector(state => state.Theme);
   const dimension = useWindowDimensions();
   return (
     <View
       style={{
-        backgroundColor: ThemeMode.selectedTheme ? theme.colors.primary : theme.colors.primaryBlack,
+        backgroundColor: ThemeMode.selectedTheme
+          ? theme.colors.primary
+          : theme.colors.primaryBlack,
         height: 65,
         width: dimension.width - 40,
         alignSelf: 'center',
@@ -31,8 +52,7 @@ const SearchBar = ({ value, onChangeText, onPress, borderRadius, placeholder, Cr
         elevation: 3,
         position: 'absolute',
         bottom: 0,
-      }}
-    >
+      }}>
       <Image
         source={
           ThemeMode.themecolr == 'Red'
@@ -47,7 +67,7 @@ const SearchBar = ({ value, onChangeText, onPress, borderRadius, placeholder, Cr
             ? YellowlightImage.search_yellow
             : RedlightImage.search
         }
-        style={{ height: 38, width: 38, resizeMode: 'contain' }}
+        style={{height: 38, width: 38, resizeMode: 'contain'}}
       />
       <TextInput
         placeholder={placeholder}
@@ -58,12 +78,16 @@ const SearchBar = ({ value, onChangeText, onPress, borderRadius, placeholder, Cr
           marginLeft: 15,
           marginRight: 10,
           fontSize: 14,
-          color: ThemeMode.selectedTheme ? theme.colors.primaryBlack : theme.colors.primary,
+          color: ThemeMode.selectedTheme
+            ? theme.colors.primaryBlack
+            : theme.colors.primary,
           fontFamily: 'Rubik-Regular',
           flex: 1,
         }}
       />
-      {Cross || value?.length < 1 || <Icon name="close" size={20} color={'#000'} onPress={onPress} />}
+      {Cross || value?.length < 1 || (
+        <Icon name="close" size={20} color={'#000'} onPress={onPress} />
+      )}
     </View>
   );
 };

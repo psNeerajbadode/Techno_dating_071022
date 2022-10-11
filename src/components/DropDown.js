@@ -1,27 +1,45 @@
-import { StyleSheet, Text, useWindowDimensions, View } from 'react-native';
-import React, { useState } from 'react';
+import {StyleSheet, Text, useWindowDimensions, View} from 'react-native';
+import React, {useState} from 'react';
 import SelectDropdown from 'react-native-select-dropdown';
 import Icon from 'react-native-vector-icons/Ionicons';
 import TextFormatted from './TextFormatted';
-import { theme } from '../utils/Constants';
-import { useDispatch, useSelector } from 'react-redux';
+import {theme} from '../utils/Constants';
+import {useDispatch, useSelector} from 'react-redux';
 
-const DropDown = ({ label, labelColor, items, onSelect, placeholder, selected, width, marginLeft, top }) => {
+const DropDown = ({
+  label,
+  labelColor,
+  items,
+  onSelect,
+  placeholder,
+  selected,
+  width,
+  marginLeft,
+  top,
+}) => {
   const dispatch = useDispatch();
   const ThemeMode = useSelector(state => state.Theme);
   const dimensions = useWindowDimensions();
   const [select, setSelect] = useState('');
 
   return (
-    <View style={{ marginTop: 20, backgroundColor: ThemeMode.selectedTheme ? theme.colors.primary : theme.colors.primaryBlack }}>
+    <View
+      style={{
+        marginTop: 20,
+        backgroundColor: ThemeMode.selectedTheme
+          ? theme.colors.primary
+          : theme.colors.primaryBlack,
+      }}>
       <TextFormatted
         style={{
           fontSize: 14,
           fontWeight: '600',
-          color: labelColor || ThemeMode.selectedTheme ? theme.colors.primaryBlack : theme.colors.primary,
+          color:
+            labelColor || ThemeMode.selectedTheme
+              ? theme.colors.primaryBlack
+              : theme.colors.primary,
           marginLeft: marginLeft || 40,
-        }}
-      >
+        }}>
         {label}
       </TextFormatted>
       <SelectDropdown
@@ -45,29 +63,46 @@ const DropDown = ({ label, labelColor, items, onSelect, placeholder, selected, w
         buttonStyle={{
           ...styles.dropdown1BtnStyle,
           width: width || dimensions.width - 40,
-          backgroundColor: ThemeMode.selectedTheme ? theme.colors.primary : theme.colors.primaryBlack,
+          backgroundColor: ThemeMode.selectedTheme
+            ? theme.colors.primary
+            : theme.colors.primaryBlack,
         }}
         buttonTextStyle={{
-          color: selected ? (ThemeMode.selectedTheme ? theme.colors.primaryBlack : theme.colors.primary) : '#8490AE',
+          color: selected
+            ? ThemeMode.selectedTheme
+              ? theme.colors.primaryBlack
+              : theme.colors.primary
+            : '#8490AE',
           textAlign: 'left',
           fontFamily: 'Rubik-Regular',
           fontSize: 14,
         }}
         renderDropdownIcon={isOpened => {
-          return <Icon name={'chevron-down-sharp'} color={'#8490AE'} size={18} />;
+          return (
+            <Icon name={'chevron-down-sharp'} color={'#8490AE'} size={18} />
+          );
         }}
         dropdownIconPosition={'right'}
         dropdownStyle={{
-          backgroundColor: ThemeMode.selectedTheme ? theme.colors.primary : theme.colors.primaryBlack,
+          backgroundColor: ThemeMode.selectedTheme
+            ? theme.colors.primary
+            : theme.colors.primaryBlack,
           marginTop: top || -25,
           borderRadius: 20,
         }}
         rowStyle={{
           borderBottomColor: '#C5C5C5',
           borderBottomWidth: 0,
-          backgroundColor: ThemeMode.selectedTheme ? theme.colors.primary : theme.colors.primaryBlack,
+          backgroundColor: ThemeMode.selectedTheme
+            ? theme.colors.primary
+            : theme.colors.primaryBlack,
         }}
-        rowTextStyle={{ ...styles.dropdown1RowTxtStyle, color: ThemeMode.selectedTheme ? theme.colors.primaryBlack : theme.colors.primary }}
+        rowTextStyle={{
+          ...styles.dropdown1RowTxtStyle,
+          color: ThemeMode.selectedTheme
+            ? theme.colors.primaryBlack
+            : theme.colors.primary,
+        }}
       />
     </View>
   );
@@ -89,10 +124,15 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.22,
     shadowRadius: 2.22,
-    elevation: 3,
+    elevation: 1,
     marginVertical: 5,
     paddingHorizontal: 15,
   },
 
-  dropdown1RowTxtStyle: { textAlign: 'left', fontFamily: 'Rubik-Regular', fontSize: 14, marginLeft: 25 },
+  dropdown1RowTxtStyle: {
+    textAlign: 'left',
+    fontFamily: 'Rubik-Regular',
+    fontSize: 14,
+    marginLeft: 25,
+  },
 });

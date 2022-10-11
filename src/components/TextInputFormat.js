@@ -1,8 +1,8 @@
-import { Image, StyleSheet, Text, TextInput, View } from 'react-native';
+import {Image, StyleSheet, Text, TextInput, View} from 'react-native';
 import React from 'react';
 import TextFormatted from './TextFormatted';
-import { theme } from '../utils/Constants';
-import { useDispatch, useSelector } from 'react-redux';
+import {theme} from '../utils/Constants';
+import {useDispatch, useSelector} from 'react-redux';
 
 const TextInputFormat = ({
   right,
@@ -22,30 +22,45 @@ const TextInputFormat = ({
   leftlabel,
   ...props
 }) => {
-  const dispatch = useDispatch();
   const ThemeMode = useSelector(state => state.Theme);
   return (
     <View style={containerStyle}>
-      <View style={{ flexDirection: 'row', alignItems: 'center', marginRight: 20, marginLeft: leftlabel || 40 }}>
+      <View
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          marginRight: 20,
+          marginLeft: leftlabel || 40,
+        }}>
         <TextFormatted
           style={{
             fontSize: 14,
             fontWeight: '600',
             color: labelColor,
             flex: 1,
-          }}
-        >
+          }}>
           {label}
         </TextFormatted>
         {!showMess || (
-          <TextFormatted style={{ fontSize: 12, fontWeight: '300', color: '#EA4A5A', width: '70%', textAlign: 'right' }}>{mess}</TextFormatted>
+          <TextFormatted
+            style={{
+              fontSize: 12,
+              fontWeight: '300',
+              color: '#EA4A5A',
+              width: '70%',
+              textAlign: 'right',
+            }}>
+            {mess}
+          </TextFormatted>
         )}
       </View>
       <View
         style={{
           flexDirection: 'row',
           alignItems: 'center',
-          backgroundColor: ThemeMode.selectedTheme ? theme.colors.primary : theme.colors.primaryBlack,
+          backgroundColor: ThemeMode.selectedTheme
+            ? theme.colors.primary
+            : theme.colors.primaryBlack,
           marginHorizontal: marginHorizontal || 20,
           borderRadius: 20,
           paddingHorizontal: 20,
@@ -62,9 +77,8 @@ const TextInputFormat = ({
           shadowOpacity: 0.22,
           shadowRadius: 2.22,
 
-          elevation: 3,
-        }}
-      >
+          elevation: 1,
+        }}>
         <TextInput
           {...props}
           //   secureTextEntry
@@ -81,7 +95,9 @@ const TextInputFormat = ({
             {
               fontSize: 14,
               fontFamily: 'Rubik-Regular',
-              color: ThemeMode.selectedTheme ? theme.colors.primaryBlack : theme.colors.primary,
+              color: ThemeMode.selectedTheme
+                ? theme.colors.primaryBlack
+                : theme.colors.primary,
               flex: 1,
               padding: 0,
             },

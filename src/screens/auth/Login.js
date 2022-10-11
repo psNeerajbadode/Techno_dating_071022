@@ -100,7 +100,9 @@ const Login = ({navigation}) => {
         <View style={{height: 15}} />
         <Logo />
       </HeaderImage>
-      <ScrollView keyboardShouldPersistTaps="handled">
+      <ScrollView
+        keyboardShouldPersistTaps="handled"
+        contentContainerStyle={{paddingBottom: 40}}>
         <TextInputFormat
           label={'Email'}
           labelColor={
@@ -200,7 +202,7 @@ const Login = ({navigation}) => {
             flexDirection: 'row',
             alignItems: 'center',
             alignSelf: 'center',
-            marginTop: 30,
+            marginTop: 20,
           }}>
           <TouchableOpacity
             style={{
@@ -257,18 +259,25 @@ const Login = ({navigation}) => {
             />
           </TouchableOpacity>
         </View>
-        <TextFormatted
+        <View
           style={{
-            fontSize: 14,
-            fontWeight: '300',
-            color: ThemeMode.selectedTheme
-              ? theme.colors.primaryBlack
-              : theme.colors.primary,
+            flexDirection: 'row',
             alignSelf: 'center',
-            marginTop: 10,
-            paddingVertical: 10,
+            alignItems: 'center',
+            position: 'absolute',
+            bottom: 0,
           }}>
-          no account?
+          <TextFormatted
+            style={{
+              fontSize: 14,
+              fontWeight: '300',
+              color: ThemeMode.selectedTheme
+                ? theme.colors.primaryBlack
+                : theme.colors.primary,
+              marginRight: 5,
+            }}>
+            no account?
+          </TextFormatted>
           <TextFormatted
             style={{
               fontSize: 14,
@@ -280,7 +289,7 @@ const Login = ({navigation}) => {
             onPress={() => navigation.navigate('Signup')}>
             Sign up
           </TextFormatted>
-        </TextFormatted>
+        </View>
       </ScrollView>
     </View>
   );

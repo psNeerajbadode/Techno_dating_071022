@@ -43,6 +43,7 @@ import {
   RedlightImage,
   YellowlightImage,
 } from '../../../utils/CustomImages';
+
 const Step1 = ({navigation}) => {
   const dispatch = useDispatch();
   const dimension = useWindowDimensions();
@@ -72,16 +73,12 @@ const Step1 = ({navigation}) => {
   const [filterstate, setFilterstate] = useState(0);
   const [Loading, setLoading] = useState(false);
   const Gander_data = ['Male', 'Female', 'Other'];
-
-  console.log('Staps', Staps);
-  console.log('filerimg', filerimg);
   const pickImage = () => {
     launchImageLibrary({quality: 0.5}, response => {
       if (!response.didCancel) {
         setUri(response.assets[0]);
         setCropImg('');
         refRBSheet4.current.open();
-        // refRBSheet3.current.close();
       }
     });
   };
@@ -91,7 +88,6 @@ const Step1 = ({navigation}) => {
       if (!response.didCancel) {
         setUri(response.assets[0]);
         setCropImg('');
-        // refRBSheet3.current.close();
         refRBSheet4.current.open();
       }
     });
@@ -107,13 +103,11 @@ const Step1 = ({navigation}) => {
       setCropImg(image.path);
     });
   };
-
   const Snapshot = () => {
     Shotref.current?.capture().then(uri => {
       setFilerimg(uri);
     });
   };
-
   async function Signup_step1() {
     try {
       setLoading(true);
@@ -152,7 +146,6 @@ const Step1 = ({navigation}) => {
         console.log(rslt);
       } else {
         setLoading(false);
-        // alert(rslt.result || rslt.message || 'Unknown error');
         console.log(rslt.message);
       }
     } catch (e) {
@@ -176,104 +169,111 @@ const Step1 = ({navigation}) => {
             subTitle={'Personal detail'}
             position={1}
           />
-          {uri == '' ? (
-            <View
-              style={{
-                height: 135,
-                width: 135,
-                borderRadius: 40,
-                justifyContent: 'center',
-                alignItems: 'center',
-                alignSelf: 'center',
-                backgroundColor: '#fff',
-                marginTop: 20,
-              }}>
-              <TouchableOpacity onPress={() => refRBSheet3.current.open()}>
-                <Image
-                  source={
-                    ThemeMode.themecolr == 'Red'
-                      ? RedlightImage.addPic
-                      : ThemeMode.themecolr == 'Blue'
-                      ? BluelightImage.addPic_blue
-                      : ThemeMode.themecolr == 'Green'
-                      ? GreenlightImage.addPic_green
-                      : ThemeMode.themecolr == 'Purple'
-                      ? PurplelightImage.addPic_purple
-                      : ThemeMode.themecolr == 'Yellow'
-                      ? YellowlightImage.addPic_yellow
-                      : RedlightImage.addPic
-                  }
-                  style={{
-                    height: 65,
-                    width: 65,
-                    resizeMode: 'contain',
-                    marginLeft: 10,
-                  }}
-                />
-              </TouchableOpacity>
-              <TextFormatted
+
+          <View
+            style={{
+              position: 'absolute',
+              bottom: '10%',
+              alignSelf: 'center',
+            }}>
+            {uri == '' ? (
+              <View
                 style={{
-                  fontSize: 12,
-                  fontWeight: '600',
-                  color: theme.colors.primaryBlack,
-                  textAlign: 'center',
-                  marginHorizontal: 20,
-                  marginTop: 9,
+                  height: 135,
+                  width: 135,
+                  borderRadius: 40,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  alignSelf: 'center',
+                  backgroundColor: '#fff',
+                  marginTop: 20,
                 }}>
-                Add profile picture
-              </TextFormatted>
-            </View>
-          ) : (
-            <View
-              style={{
-                height: 147,
-                width: 147,
-                alignSelf: 'center',
-                marginTop: 20,
-              }}>
-              <Image
-                resizeMode="contain"
-                source={filerimg == '' ? {uri: uri.uri} : {uri: filerimg}}
+                <TouchableOpacity onPress={() => refRBSheet3.current.open()}>
+                  <Image
+                    source={
+                      ThemeMode.themecolr == 'Red'
+                        ? RedlightImage.addPic
+                        : ThemeMode.themecolr == 'Blue'
+                        ? BluelightImage.addPic_blue
+                        : ThemeMode.themecolr == 'Green'
+                        ? GreenlightImage.addPic_green
+                        : ThemeMode.themecolr == 'Purple'
+                        ? PurplelightImage.addPic_purple
+                        : ThemeMode.themecolr == 'Yellow'
+                        ? YellowlightImage.addPic_yellow
+                        : RedlightImage.addPic
+                    }
+                    style={{
+                      height: 65,
+                      width: 65,
+                      resizeMode: 'contain',
+                      marginLeft: 10,
+                    }}
+                  />
+                </TouchableOpacity>
+                <TextFormatted
+                  style={{
+                    fontSize: 12,
+                    fontWeight: '600',
+                    color: theme.colors.primaryBlack,
+                    textAlign: 'center',
+                    marginHorizontal: 20,
+                    marginTop: 9,
+                  }}>
+                  Add profile picture
+                </TextFormatted>
+              </View>
+            ) : (
+              <View
                 style={{
                   height: 147,
                   width: 147,
                   alignSelf: 'center',
-                  borderRadius: 40,
-                }}
-              />
-
-              <TouchableOpacity
-                style={{
-                  position: 'absolute',
-                  right: 10,
-                  bottom: 5,
-                  height: 30,
-                  width: 30,
-                  borderRadius: 10,
-                  alignItems: 'center',
-                  backgroundColor:
-                    ThemeMode.themecolr == 'Red'
-                      ? theme.colors.red
-                      : ThemeMode.themecolr == 'Blue'
-                      ? theme.colors.Blue
-                      : ThemeMode.themecolr == 'Green'
-                      ? theme.colors.Green
-                      : ThemeMode.themecolr == 'Purple'
-                      ? theme.colors.Purple
-                      : ThemeMode.themecolr == 'Yellow'
-                      ? theme.colors.Yellow
-                      : theme.colors.red,
-                  paddingVertical: 5,
-                }}
-                onPress={() => refRBSheet3.current.open()}>
+                  marginTop: 20,
+                }}>
                 <Image
-                  source={require('../../../assets/icons/edit_pen.png')}
-                  style={{height: 20, width: 20, resizeMode: 'contain'}}
+                  resizeMode="cover"
+                  source={filerimg == '' ? {uri: uri.uri} : {uri: filerimg}}
+                  style={{
+                    height: 147,
+                    width: 147,
+                    alignSelf: 'center',
+                    borderRadius: 40,
+                  }}
                 />
-              </TouchableOpacity>
-            </View>
-          )}
 
+                <TouchableOpacity
+                  style={{
+                    position: 'absolute',
+                    right: 0,
+                    bottom: -5,
+                    height: 32,
+                    width: 32,
+                    borderRadius: 10,
+                    alignItems: 'center',
+                    backgroundColor:
+                      ThemeMode.themecolr == 'Red'
+                        ? theme.colors.red
+                        : ThemeMode.themecolr == 'Blue'
+                        ? theme.colors.Blue
+                        : ThemeMode.themecolr == 'Green'
+                        ? theme.colors.Green
+                        : ThemeMode.themecolr == 'Purple'
+                        ? theme.colors.Purple
+                        : ThemeMode.themecolr == 'Yellow'
+                        ? theme.colors.Yellow
+                        : theme.colors.red,
+                    paddingVertical: 5,
+                  }}
+                  onPress={() => refRBSheet3.current.open()}>
+                  <Image
+                    source={require('../../../assets/icons/edit_pen.png')}
+                    style={{height: 20, width: 20, resizeMode: 'contain'}}
+                  />
+                </TouchableOpacity>
+              </View>
+            )}
+          </View>
           <BottomSheet
             //onClose={() => Snapshot()}
             closeOnPressBack={false}
@@ -284,13 +284,14 @@ const Step1 = ({navigation}) => {
             {filterstate === 0 && (
               <ViewShot
                 ref={Shotref}
-                style={{height: 240, width: 240, alignSelf: 'center'}}
+                style={{
+                  /* height: 240, width: 240, */ alignSelf: 'center',
+                  marginTop: 30,
+                }}
                 options={{
                   fileName: 'UserProfile',
                   format: 'jpg',
                   quality: 0.9,
-                  height: 240,
-                  width: 240,
                 }}>
                 <Brightness amount={bight}>
                   <Contrast amount={contra}>
@@ -303,7 +304,6 @@ const Step1 = ({navigation}) => {
                           width: 240,
                           alignSelf: 'center',
                           borderRadius: 40,
-                          marginTop: 30,
                         }}
                       />
                     </Saturate>
@@ -710,7 +710,7 @@ const Step1 = ({navigation}) => {
             },
             shadowOpacity: 0.22,
             shadowRadius: 2.22,
-            elevation: 3,
+            elevation: 1,
           }}>
           <TextFormatted
             style={{
@@ -779,7 +779,7 @@ const Step1 = ({navigation}) => {
             },
             shadowOpacity: 0.22,
             shadowRadius: 2.22,
-            elevation: 3,
+            elevation: 1,
             marginHorizontal: 20,
             marginBottom: 20,
           }}>
@@ -933,38 +933,18 @@ const Bottom = ({refRBSheet, selectedDate, setSelectedDate}) => {
       }, 10);
     }
   }, [refresh]);
-  const months = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December',
-  ];
-  const years = [
-    '1993',
-    '1994',
-    '1995',
-    '1996',
-    '1997',
-    '1998',
-    '1999',
-    '2000',
-    '2001',
-    '2002',
-    '2003',
-    '2004',
-    '2005',
-    '2006',
-    '2007',
-    '2008',
-  ];
+  const months = moment.months(new Date());
+
+  function getyears() {
+    var currentYear = new Date().getFullYear() - 18,
+      years = [];
+    let startYear = new Date().getFullYear() - 70;
+    while (startYear <= currentYear) {
+      years.push(startYear++);
+    }
+    return years;
+  }
+
   return (
     <RBSheet
       ref={refRBSheet}
@@ -1015,7 +995,6 @@ const Bottom = ({refRBSheet, selectedDate, setSelectedDate}) => {
             label={'Month'}
             marginLeft={20}
             placeholder={months[moment(selectedDate).month()]}
-            // selected={moment(selectedDate)}
             onSelect={(selectedItem, index) => {
               setSelectedDate(v =>
                 moment(v).set('month', index).format('yyyy-MM-DD'),
@@ -1030,8 +1009,7 @@ const Bottom = ({refRBSheet, selectedDate, setSelectedDate}) => {
             width={dimension.width / 2 - 30}
             label={'Year'}
             marginLeft={20}
-            // placeholder={sele}
-            placeholder={moment(selectedDate).get('year') + ''}
+            placeholder={new Date().getFullYear() - 18}
             top={1}
             onSelect={(selectedItem, index) => {
               setSelectedDate(v =>
@@ -1041,7 +1019,7 @@ const Bottom = ({refRBSheet, selectedDate, setSelectedDate}) => {
               );
               setRefresh(false);
             }}
-            items={years}
+            items={getyears()}
           />
         </View>
 
