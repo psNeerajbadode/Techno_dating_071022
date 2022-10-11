@@ -1,4 +1,4 @@
-import {StyleSheet} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {NavigationContainer} from '@react-navigation/native';
@@ -7,6 +7,8 @@ import store, {persistor} from './src/redux/Store';
 import {PersistGate} from 'redux-persist/integration/react';
 import AppNavigation from './src/navigation/appNavigation';
 import {MenuProvider} from 'react-native-popup-menu';
+import Toast from 'react-native-toast-message';
+import TextFormatted from './src/components/TextFormatted';
 
 const Stack = createNativeStackNavigator();
 const App = () => {
@@ -19,6 +21,38 @@ const App = () => {
               <Stack.Screen component={AppNavigation} name="AppNavigation" />
             </Stack.Navigator>
           </NavigationContainer>
+          <Toast
+            visibilityTime={1500}
+            autoHide={true}
+            config={{
+              success: props => (
+                <View
+                  style={{
+                    ...styles.toastContainer,
+                  }}>
+                  <TextFormatted
+                    style={{
+                      ...styles.toasttext,
+                    }}>
+                    {props.text1}
+                  </TextFormatted>
+                </View>
+              ),
+              error: props => (
+                <View
+                  style={{
+                    ...styles.toastContainer,
+                  }}>
+                  <TextFormatted
+                    style={{
+                      ...styles.toasttext,
+                    }}>
+                    {props.text1}
+                  </TextFormatted>
+                </View>
+              ),
+            }}
+          />
         </MenuProvider>
       </PersistGate>
     </Provider>
@@ -27,4 +61,18 @@ const App = () => {
 
 export default App;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  toastContainer: {
+    backgroundColor: '#fff',
+    width: '90%',
+    marginHorizontal: 10,
+    alignItems: 'center',
+    borderRadius: 10,
+  },
+  toasttext: {
+    fontSize: 14,
+    fontWeight: '600',
+    paddingVertical: 12,
+    textTransform: 'capitalize',
+  },
+});

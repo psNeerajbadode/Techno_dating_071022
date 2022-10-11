@@ -5,7 +5,6 @@ import {
   StatusBar,
   StyleSheet,
   TouchableOpacity,
-  ToastAndroid,
   useWindowDimensions,
   View,
 } from 'react-native';
@@ -25,7 +24,8 @@ import Pulse from 'react-native-pulse';
 import LinearGradient from 'react-native-linear-gradient';
 import axios from 'axios';
 import ActivityLoader from '../../components/ActivityLoader';
-import Toast from 'react-native-toast-message';
+import FastImage from 'react-native-fast-image';
+import {ShowToast} from '../../utils/Baseurl';
 const HomePage = () => {
   const ThemeMode = useSelector(state => state.Theme);
   const Staps = useSelector(state => state.Stap);
@@ -150,11 +150,7 @@ const HomePage = () => {
   function UserScroll() {
     if (Userall.length == indexV + 1) {
       setplu_button(false);
-      Toast.show({
-        type: 'info',
-        text1: 'User List End',
-        position: 'top',
-      });
+      ShowToast('User List End');
     } else {
       setplu_button(true);
       setTimeout(() => {
@@ -163,19 +159,22 @@ const HomePage = () => {
       }, 750);
     }
   }
-
-  const getUserAll = () => {
-    setLoading(true);
-    axios({
-      method: 'get',
-      url:
-        'https://technorizen.com/Dating/webservice/get_all_user?user_id=' +
-        Staps.id,
-    }).then(response => {
-      setLoading(false);
-      setUserall(response.data.result);
-    });
-  };
+  const onViewableItemsChanged = React.useRef(viewableItems => {
+    console.log(viewableItems?.viewableItems[0].key);
+    setUindex(viewableItems?.viewableItems[0].key);
+  }, []);
+  // const getUserAll = () => {
+  //   setLoading(true);
+  //   axios({
+  //     method: 'get',
+  //     url:
+  //       'https://technorizen.com/Dating/webservice/get_all_user?user_id' +
+  //       Staps.id,
+  //   }).then(response => {
+  //     setLoading(false);
+  //     setUserall(response.data.result);
+  //   });
+  // };
   const getUserPost = () => {
     axios({
       method: 'get',
@@ -189,19 +188,18 @@ const HomePage = () => {
 
   const likeApi = () => {
     try {
-      const body = new FormData();
-      body.append('user_id', Staps.id);
-      body.append('other_user_id', Uindex);
       axios({
-        url: 'https://technorizen.com/Dating/webservice/user_like',
+        url:
+          'https://technorizen.com/Dating/webservice/user_like?user_id=' +
+          Staps.id +
+          '&&' +
+          'other_user_id=' +
+          Uindex,
         method: 'POST',
-        data: body,
-        headers: {
-          'content-type': 'multipart/form-data',
-        },
       })
         .then(function (response) {
           if (response.data.status == 1) {
+            ShowToast(response.data.result + ' ' + 'successfully');
           }
         })
         .catch(function (error) {
@@ -213,14 +211,9 @@ const HomePage = () => {
   };
 
   useEffect(() => {
-    getUserAll();
+    /* getUserAll(); */
     getUserPost();
   }, []);
-  const onViewableItemsChanged = React.useRef(viewableItems => {
-    console.log(viewableItems?.viewableItems[0].key);
-    setUindex(viewableItems?.viewableItems[0].key);
-    // Use viewable items in state or as intended
-  }, []); // any dependencies that require the function to be "redeclared"
 
   return (
     <View
@@ -250,7 +243,7 @@ const HomePage = () => {
       ) : (
         <View>
           <FlatList
-            data={Userall}
+            data={Userpost}
             initialScrollIndex={indexV}
             onScroll={event => {
               setplu_button(false);
@@ -285,27 +278,26 @@ const HomePage = () => {
                       style={{height: 145, width: 25, resizeMode: 'contain'}}
                     />
                   }>
-                  {Userimage?.map(
-                    (it, i) => (
-                      /*  it.user_id == item.user_id && ( */
-                      <View
-                        style={{
-                          height: dimension.height,
-                          width: dimension.width,
-                        }}>
-                        {/*      {it.type == 'Image' && ( */}
-                        <Image
-                          source={it.img}
-                          resizeMode="cover"
+                  {item.details?.map(
+                    (v, i) =>
+                      v.type == 'Image' && (
+                        <View
                           style={{
                             height: dimension.height,
                             width: dimension.width,
-                          }}
-                        />
-                        {/*   )} */}
-                      </View>
-                    ),
-                    /*   ), */
+                          }}>
+                          <Image
+                            source={{
+                              uri: v?.image,
+                            }}
+                            resizeMode="cover"
+                            style={{
+                              height: dimension.height,
+                              width: dimension.width,
+                            }}
+                          />
+                        </View>
+                      ),
                   )}
                 </Swiper>
                 <View
@@ -317,19 +309,18 @@ const HomePage = () => {
                     alignItems: 'center',
                   }}>
                   <TouchableOpacity
-                    onPress={() => navigation.navigate('userProfile')}>
+                    onPress={() => navigation.navigate('userProfile', item.id)}>
                     <Image
-                      source={
-                        item?.image
-                          ? {uri: item?.image}
-                          : require('../../assets/images/Icon_profile.png')
-                      }
+                      source={{
+                        uri: item?.image,
+                      }}
                       style={{
                         height: 56,
                         width: 56,
                         resizeMode: 'cover',
                         borderRadius: 50,
                         borderWidth: 3,
+                        // backgroundColor: '#ff0',
                         borderColor: theme.colors.darkGrey,
                       }}
                     />
@@ -425,7 +416,7 @@ const HomePage = () => {
           />
         </View>
       )}
-      <Toast />
+
       <ImageBackground
         resizeMode="contain"
         source={
@@ -450,9 +441,9 @@ const HomePage = () => {
         />
         <Tab source={require('../../assets/home_icons/focus.png')} />
         <Tab
-          onPress={() => {
+          /*   onPress={() => {
             UserScroll();
-          }}
+          }} */
           onLongPress={() => likeApi(Uindex)}
           Animatable={
             <View>
