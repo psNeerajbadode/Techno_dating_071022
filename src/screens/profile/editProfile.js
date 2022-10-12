@@ -306,14 +306,14 @@ const EditProfile = ({navigation}) => {
             marginTop: 5,
             elevation: 2,
             height: 50,
-            shadowColor: '#000',
+            shadowColor: '#8490ae85',
             shadowOffset: {
               width: 0,
               height: 1,
             },
             shadowOpacity: 0.22,
             shadowRadius: 2.22,
-            elevation: 3,
+            elevation: 10,
           }}>
           <TextFormatted
             style={{
@@ -372,14 +372,14 @@ const EditProfile = ({navigation}) => {
             borderRadius: 20,
             paddingHorizontal: 20,
             marginTop: 5,
-            shadowColor: '#000',
+            shadowColor: '#8490ae85',
             shadowOffset: {
               width: 0,
               height: 1,
             },
             shadowOpacity: 0.22,
             shadowRadius: 2.22,
-            elevation: 3,
+            elevation: 10,
             marginHorizontal: 20,
           }}>
           <TextInput
@@ -591,38 +591,18 @@ const Bottom = ({refRBSheet, selectedDate, setSelectedDate}) => {
       }, 10);
     }
   }, [refresh]);
-  const months = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December',
-  ];
-  const years = [
-    '1993',
-    '1994',
-    '1995',
-    '1996',
-    '1997',
-    '1998',
-    '1999',
-    '2000',
-    '2001',
-    '2002',
-    '2003',
-    '2004',
-    '2005',
-    '2006',
-    '2007',
-    '2008',
-  ];
+
+  const months = moment.months(new Date());
+
+  function getyears() {
+    var currentYear = new Date().getFullYear() - 18,
+      years = [];
+    let startYear = new Date().getFullYear() - 70;
+    while (startYear <= currentYear) {
+      years.push(startYear++);
+    }
+    return years;
+  }
   return (
     <RBSheet
       ref={refRBSheet}
@@ -690,7 +670,7 @@ const Bottom = ({refRBSheet, selectedDate, setSelectedDate}) => {
             label={'Year'}
             marginLeft={20}
             // placeholder={sele}
-            placeholder={moment(selectedDate).get('year') + ''}
+            placeholder={new Date().getFullYear() - 18}
             top={1}
             onSelect={(selectedItem, index) => {
               setSelectedDate(v =>
@@ -700,7 +680,7 @@ const Bottom = ({refRBSheet, selectedDate, setSelectedDate}) => {
               );
               setRefresh(false);
             }}
-            items={years}
+            items={getyears()}
           />
         </View>
 

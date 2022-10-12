@@ -1,14 +1,20 @@
-import { ScrollView, StyleSheet, TouchableOpacity, useWindowDimensions, View } from 'react-native';
-import React, { useState } from 'react';
-import { theme } from '../../utils/Constants';
+import {
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+  useWindowDimensions,
+  View,
+} from 'react-native';
+import React, {useState} from 'react';
+import {theme} from '../../utils/Constants';
 import HeaderImage from '../../components/HeaderImage';
 import Header from '../../components/Header';
 import Logo from '../../components/Logo';
 import TextFormatted from '../../components/TextFormatted';
 import Button from '../../components/Button';
-import { useDispatch, useSelector } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 
-const RecoveryPassCode = ({ navigation }) => {
+const RecoveryPassCode = ({navigation}) => {
   const dimension = useWindowDimensions();
   const [passcode, setPasscode] = useState([]);
   const pass = [];
@@ -20,13 +26,16 @@ const RecoveryPassCode = ({ navigation }) => {
     <View
       style={{
         flex: 1,
-        backgroundColor: ThemeMode.selectedTheme ? theme.colors.primary : ThemeMode.selectedTheme ? theme.colors.primaryBlack : theme.colors.primary,
-      }}
-    >
-      <View style={{ paddingBottom: 18 }}>
+        backgroundColor: ThemeMode.selectedTheme
+          ? theme.colors.primary
+          : ThemeMode.selectedTheme
+          ? theme.colors.primaryBlack
+          : theme.colors.primary,
+      }}>
+      <View style={{paddingBottom: 18}}>
         <HeaderImage height={330}>
           <Header title={'Passcode Recovery'} />
-          <View style={{ height: 20 }} />
+          <View style={{height: 20}} />
           <Logo />
         </HeaderImage>
         <View
@@ -49,8 +58,7 @@ const RecoveryPassCode = ({ navigation }) => {
             flexDirection: 'row',
             justifyContent: 'center',
             alignItems: 'center',
-          }}
-        >
+          }}>
           {Array(4)
             .fill('')
             .map((_, i) => (
@@ -63,11 +71,15 @@ const RecoveryPassCode = ({ navigation }) => {
                   margin: 12.5,
                   justifyContent: 'center',
                   alignItems: 'center',
-                }}
-              >
+                }}>
                 <TextFormatted
-                  style={{ fontSize: 26, fontWeight: '600', color: ThemeMode.selectedTheme ? theme.colors.primaryBlack : theme.colors.primary }}
-                >
+                  style={{
+                    fontSize: 26,
+                    fontWeight: '600',
+                    color: ThemeMode.selectedTheme
+                      ? theme.colors.primaryBlack
+                      : theme.colors.primary,
+                  }}>
                   {passcode[i]}
                 </TextFormatted>
               </View>
@@ -75,7 +87,14 @@ const RecoveryPassCode = ({ navigation }) => {
         </View>
       </View>
       <ScrollView>
-        <View style={{ flexDirection: 'row', width: 300, flexWrap: 'wrap', alignSelf: 'center', marginTop: 10 }}>
+        <View
+          style={{
+            flexDirection: 'row',
+            width: 300,
+            flexWrap: 'wrap',
+            alignSelf: 'center',
+            marginTop: 10,
+          }}>
           {Array(11)
             .fill('')
             .map((_, i) => (
@@ -84,17 +103,17 @@ const RecoveryPassCode = ({ navigation }) => {
                   setPasscode(prevState => [...prevState, i == 10 ? 0 : i + 1]);
                 }}
                 disabled={i == 9}
-                style={{ width: 50, marginHorizontal: 25, marginVertical: 2 }}
-              >
+                style={{width: 50, marginHorizontal: 25, marginVertical: 2}}>
                 <TextFormatted
                   style={{
                     textAlign: 'center',
-                    color: ThemeMode.selectedTheme ? theme.colors.primaryBlack : theme.colors.primary,
+                    color: ThemeMode.selectedTheme
+                      ? theme.colors.primaryBlack
+                      : theme.colors.primary,
                     fontSize: 26,
                     fontWeight: '400',
                     padding: 8,
-                  }}
-                >
+                  }}>
                   {i == 9 ? '  ' : i == 10 ? 0 : i + 1}
                 </TextFormatted>
               </TouchableOpacity>
@@ -112,12 +131,13 @@ const RecoveryPassCode = ({ navigation }) => {
           style={{
             fontSize: 14,
             fontWeight: '400',
-            color: ThemeMode.selectedTheme ? theme.colors.primaryBlack : theme.colors.primary,
+            color: ThemeMode.selectedTheme
+              ? theme.colors.primaryBlack
+              : theme.colors.primary,
             alignSelf: 'center',
             marginTop: 20,
             padding: 5,
-          }}
-        >
+          }}>
           Cancel
         </TextFormatted>
       </ScrollView>

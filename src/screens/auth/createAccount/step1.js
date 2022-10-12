@@ -701,16 +701,16 @@ const Step1 = ({navigation}) => {
             paddingHorizontal: 20,
             borderColor: '#EA4A5A',
             marginTop: 5,
-            elevation: 2,
+
             height: 50,
-            shadowColor: '#000',
+            shadowColor: '#8490ae85',
             shadowOffset: {
               width: 0,
               height: 1,
             },
             shadowOpacity: 0.22,
             shadowRadius: 2.22,
-            elevation: 1,
+            elevation: 10,
           }}>
           <TextFormatted
             style={{
@@ -772,14 +772,14 @@ const Step1 = ({navigation}) => {
             borderRadius: 20,
             paddingHorizontal: 20,
             marginTop: 5,
-            shadowColor: '#000',
+            shadowColor: '#8490ae85',
             shadowOffset: {
               width: 0,
               height: 1,
             },
             shadowOpacity: 0.22,
             shadowRadius: 2.22,
-            elevation: 1,
+            elevation: 10,
             marginHorizontal: 20,
             marginBottom: 20,
           }}>

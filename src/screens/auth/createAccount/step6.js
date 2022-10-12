@@ -291,11 +291,12 @@ const Theme = ({
               alignItems: 'center',
               justifyContent: 'space-between',
               alignSelf: 'center',
+              width: '74%',
             },
           ]}>
           <Color_theme
             onPress={() => setthemecolr('Red')}
-            marginTop={-55}
+            marginTop={-30}
             source={
               themecolr == 'Red'
                 ? require('../../../assets/icons/Red_active.png')
@@ -304,7 +305,7 @@ const Theme = ({
           />
           <Color_theme
             onPress={() => setthemecolr('Blue')}
-            marginTop={10}
+            marginTop={25}
             source={
               themecolr == 'Blue'
                 ? require('../../../assets/icons/Blue_active.png')
@@ -321,7 +322,7 @@ const Theme = ({
           />
           <Color_theme
             onPress={() => setthemecolr('Green')}
-            marginTop={10}
+            marginTop={25}
             source={
               themecolr == 'Green'
                 ? require('../../../assets/icons/Green_active.png')
@@ -330,7 +331,7 @@ const Theme = ({
           />
           <Color_theme
             onPress={() => setthemecolr('Yellow')}
-            marginTop={-55}
+            marginTop={-30}
             source={
               themecolr == 'Yellow'
                 ? require('../../../assets/icons/Yellow_active.png')

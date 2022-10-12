@@ -32,8 +32,8 @@ const Login = ({navigation}) => {
   const ThemeMode = useSelector(state => state.Theme);
   const Staps = useSelector(state => state.Stap);
   const dispatch = useDispatch();
-  const [email, setEmail] = useState('georgeg3g3g3@gmail.com');
-  const [password, setPassword] = useState('Gg123456');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(false);
   const Loginapi = () => {
@@ -51,8 +51,10 @@ const Login = ({navigation}) => {
         },
       })
         .then(function (response) {
+          console.log('response', JSON.stringify(response));
           if (response.data.status == 1) {
             setLoading(false);
+
             dispatch({type: STAP, payload: response.data.result});
             navigation.navigate(
               response.data.result.step == 0
@@ -70,7 +72,9 @@ const Login = ({navigation}) => {
                 : response.data.result.step == 6
                 ? 'step5'
                 : response.data.result.step == 8
-                ? 'FingerPrint'
+                ? Staps.fingerPrint
+                  ? 'FingerPrint'
+                  : 'PassCode'
                 : 'step7',
             );
           } else {
@@ -85,7 +89,7 @@ const Login = ({navigation}) => {
       console.log(error);
     }
   };
-  console.log(Staps);
+
   return (
     <View
       style={{
@@ -302,12 +306,13 @@ const styles = StyleSheet.create({
     borderRadius: 40,
     justifyContent: 'center',
     alignItems: 'center',
+    shadowColor: '#8490ae85',
     shadowOffset: {
       width: 0,
-      height: 1,
+      height: 2,
     },
-    shadowOpacity: 0.22,
-    shadowRadius: 2.22,
-    elevation: 3,
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 10,
   },
 });

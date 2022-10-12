@@ -67,9 +67,8 @@ const TextInputFormat = ({
           borderWidth: borderWidth,
           borderColor: '#EA4A5A',
           marginTop: 5,
-          elevation: 2,
           height: height || 50,
-          shadowColor: '#000',
+          shadowColor: '#8490ae85',
           shadowOffset: {
             width: 0,
             height: 1,
@@ -77,7 +76,7 @@ const TextInputFormat = ({
           shadowOpacity: 0.22,
           shadowRadius: 2.22,
 
-          elevation: 1,
+          elevation: 10,
         }}>
         <TextInput
           {...props}

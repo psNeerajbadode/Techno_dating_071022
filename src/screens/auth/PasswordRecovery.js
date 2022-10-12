@@ -36,7 +36,7 @@ const PasswordRecovery = ({navigation}) => {
         .then(function (response) {
           if (response.data.status == 1) {
             setLoading(false);
-            navigation.navigate('EmailOtp', {isSignup: true});
+            navigation.navigate('EmailOtp', {isSignup: false});
           } else {
             setLoading(false);
             ShowToast(response.data.result);

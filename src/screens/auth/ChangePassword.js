@@ -30,7 +30,7 @@ const ChangePassword = ({navigation}) => {
     try {
       setLoading(true);
       const body = new FormData();
-      body.append('user_id', Staps.user.id);
+      body.append('user_id', Staps.id);
       body.append('password', newPassword);
       axios({
         url: 'https://technorizen.com/Dating/webservice/change_password',

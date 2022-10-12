@@ -22,7 +22,7 @@ const EmailOtp = ({navigation}) => {
   const dispatch = useDispatch();
   const ThemeMode = useSelector(state => state.Theme);
   const Staps = useSelector(state => state.Stap);
-  const isPasscode = useSelector(state => state.isPasscode.isPasscode);
+  const isPasscode = useSelector(state => state.isPasscode);
   const {params} = useRoute();
   const dimensions = useWindowDimensions();
   const [state, setState] = useState({
@@ -64,7 +64,11 @@ const EmailOtp = ({navigation}) => {
 
         dispatch({type: STAP, payload: rslt.result});
         navigation.navigate(
-          params?.isSignup ? 'step1' : isPasscode ? ' ' : 'ChangePassword',
+          params?.Step1
+            ? 'step1'
+            : params?.isSignup
+            ? 'RecoveryPassCode'
+            : 'ChangePassword',
         );
         ShowToast('Valid OTP');
       } else {
@@ -105,7 +109,7 @@ const EmailOtp = ({navigation}) => {
       console.log(e);
     }
   }
-  console.log(Staps.id);
+
   return (
     <View
       style={{
@@ -117,9 +121,12 @@ const EmailOtp = ({navigation}) => {
       <HeaderImage>
         <Header
           title={
-            /*    params?.isSignup
+            params?.Step1
               ? 'Sign up'
-              :  */ isPasscode ? 'Passcode Recovery' : 'Password Recovery'
+              : params?.isSignup
+              ? /* ? isPasscode.isPasscode */
+                'Passcode Recovery'
+              : 'Password Recovery'
           }
           // left={params?.isSignup ? true : false}
           marginTop={20}
@@ -334,7 +341,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 5,
     padding: 0,
     backgroundColor: '#FAFAFA',
-    /*   shadowColor: '#000',
+    shadowColor: '#8490ae85',
     shadowOffset: {
       width: 0,
       height: 2,
@@ -342,6 +349,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
 
-    elevation: 5, */
+    elevation: 10,
   },
 });

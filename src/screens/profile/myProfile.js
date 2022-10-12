@@ -126,7 +126,8 @@ const MyProfile = () => {
               textAlign: 'center',
               marginTop: 3,
             }}>
-            {new Date().getFullYear() - Staps.dob.slice(0, 4)} years old
+            {/* {new Date().getFullYear() - Staps.dob.slice(0, 4)} */} 28 years
+            old
           </TextFormatted>
         </HeaderImage>
         <View

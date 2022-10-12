@@ -67,7 +67,7 @@ const Signup = ({navigation}) => {
       if (rslt.status == 1) {
         dispatch({type: STAP, payload: rslt.result});
         setLoading(false);
-        navigation.navigate('EmailOtp', {isSignup: true});
+        navigation.navigate('EmailOtp', {Step1: true});
         console.log(rslt.status);
       } else {
         setLoading(false);
@@ -79,7 +79,6 @@ const Signup = ({navigation}) => {
       console.log(e);
     }
   }
-
   return (
     <View
       style={{
@@ -181,7 +180,8 @@ const Signup = ({navigation}) => {
           }
           secureTextEntry={showr ? false : true}
           showMess={
-            rePassword == '' || (rePassword != null && !validPass(rePassword))
+            rePassword == '' ||
+            (rePassword != null && !(password == rePassword))
               ? true
               : false
           }

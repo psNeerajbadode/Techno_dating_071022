@@ -52,10 +52,8 @@ const Step5 = ({navigation}) => {
       );
       if (granted === 'granted') {
         console.log('You can use the Location');
-        setToggle(true);
       } else {
         console.log('Location permission denied');
-        setToggle(false);
       }
     } catch (err) {
       console.warn(err);
@@ -69,8 +67,10 @@ const Step5 = ({navigation}) => {
           setLetu(position.coords.latitude);
           setLong(position.coords.longitude);
           addGeo(position.coords.latitude, position.coords.longitude);
+          setToggle(true);
         },
         error => {
+          setToggle(false);
           console.log(error.code, error.message);
         },
         {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},

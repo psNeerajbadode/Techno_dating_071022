@@ -117,14 +117,14 @@ const styles = StyleSheet.create({
 
     borderRadius: 20,
     alignSelf: 'center',
-    shadowColor: '#000',
+    shadowColor: '#8490ae85',
     shadowOffset: {
       width: 0,
       height: 1,
     },
     shadowOpacity: 0.22,
     shadowRadius: 2.22,
-    elevation: 1,
+    elevation: 10,
     marginVertical: 5,
     paddingHorizontal: 15,
   },

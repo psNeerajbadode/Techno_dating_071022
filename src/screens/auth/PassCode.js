@@ -208,7 +208,7 @@ const PassCode = () => {
                 resizeMode: 'contain',
                 height: 50,
                 width: 50,
-                tintColor: '#8490AE',
+                tintColor: '#000',
               }}
             />
           </TouchableOpacity>
@@ -228,10 +228,11 @@ const PassCode = () => {
           position: 'absolute',
           bottom: 10,
         }}
-        onPress={() => {
-          navigation.replace('PasswordRecovery');
+        /*   onPress={() => {
+          navigation.replace('RecoveryPassCode');
           dispatch({type: PASSCODE, payload: {isPasscode: true}});
-        }}>
+        }} */
+      >
         Forgot your passcode?
       </TextFormatted>
     </View>

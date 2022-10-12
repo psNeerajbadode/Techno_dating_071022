@@ -114,14 +114,15 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     borderRadius: 20,
     paddingHorizontal: 15,
-    shadowColor: '#000',
+    shadowColor: '#8490ae85',
     shadowOffset: {
       width: 0,
       height: 1,
     },
     shadowOpacity: 0.22,
     shadowRadius: 2.22,
-    elevation: 3,
+
+    elevation: 10,
   },
   placeholderStyle: {
     fontSize: 14,

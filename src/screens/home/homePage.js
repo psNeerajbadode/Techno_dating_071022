@@ -332,8 +332,8 @@ const HomePage = () => {
                     </TextFormatted>
                     <TextFormatted
                       style={{fontSize: 12, fontWeight: '400', color: '#fff'}}>
-                      {new Date().getFullYear() - item.dob.slice(0, 4)} years
-                      old
+                      {/* {new Date().getFullYear() - item.dob.slice(0, 4)} */}{' '}
+                      28 years old
                     </TextFormatted>
                   </View>
                   <TouchableOpacity
