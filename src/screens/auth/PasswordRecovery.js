@@ -16,11 +16,11 @@ const validateEmail = email => {
     .match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/);
 };
 const PasswordRecovery = ({navigation}) => {
-  const [email, setEmail] = useState('georgeg3g3g3@gmail.com');
+  const [email, setEmail] = useState();
   const ThemeMode = useSelector(state => state.Theme);
   const isPasscode = useSelector(state => state.isPasscode.isPasscode);
   const [Loading, setLoading] = useState(false);
-  const ForgetApi = () => {
+  const ForgetpasswordApi = () => {
     try {
       setLoading(true);
       const body = new FormData();
@@ -37,6 +37,38 @@ const PasswordRecovery = ({navigation}) => {
           if (response.data.status == 1) {
             setLoading(false);
             navigation.navigate('EmailOtp', {isSignup: false});
+          } else {
+            setLoading(false);
+            ShowToast(response.data.result);
+            console.log('log else');
+          }
+        })
+        .catch(function (error) {
+          console.log('catch', error);
+          setLoading(false);
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const ForgetpasscodeApi = () => {
+    try {
+      setLoading(true);
+      const body = new FormData();
+      body.append('email', email);
+      axios({
+        url: 'https://technorizen.com/Dating/webservice/forgot_passcode',
+        method: 'POST',
+        data: body,
+        headers: {
+          'content-type': 'multipart/form-data',
+        },
+      })
+        .then(function (response) {
+          if (response.data.status == 1) {
+            setLoading(false);
+            navigation.navigate('EmailOtp', {passcode: true});
           } else {
             setLoading(false);
             ShowToast(response.data.result);
@@ -110,7 +142,7 @@ const PasswordRecovery = ({navigation}) => {
         <Button
           opacity={validateEmail(email) ? 1 : 0.5}
           onPress={() => {
-            ForgetApi();
+            isPasscode ? ForgetpasscodeApi() : ForgetpasswordApi();
           }}
           buttonName={'Recover'}
           Loading={Loading}

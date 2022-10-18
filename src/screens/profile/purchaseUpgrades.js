@@ -2,7 +2,6 @@ import {
   Image,
   StatusBar,
   StyleSheet,
-  Text,
   TouchableOpacity,
   useWindowDimensions,
   View,
@@ -10,12 +9,11 @@ import {
 import React, {useState} from 'react';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import LinearGradient from 'react-native-linear-gradient';
-import Fontisto from 'react-native-vector-icons/Fontisto';
 import Carousel from 'react-native-snap-carousel';
 import TextFormatted from '../../components/TextFormatted';
-import Button from '../../components/Button';
 import {theme} from '../../utils/Constants';
-import {useDispatch, useSelector} from 'react-redux';
+import {useSelector} from 'react-redux';
+import Sheetbutton from '../../components/Sheetbutton';
 
 const PurchaseUpgrades = ({refRBSheet, refRBSheet2}) => {
   const ThemeMode = useSelector(state => state.Theme);
@@ -25,8 +23,8 @@ const PurchaseUpgrades = ({refRBSheet, refRBSheet2}) => {
   const upgradeData = [
     {
       img: ThemeMode.selectedTheme
-        ? require('../../assets/icons/prop_llik.png')
-        : require('../../assets/icons/like_dark2.png'),
+        ? require('../../assets/icons/plan_flower1.png')
+        : require('../../assets/icons/plan_flower2.png'),
       flowers: [
         {qut: '10 Flowers', price: '0,25€'},
         {qut: '50 Flowers', price: '0,99€', offer: 'Savings of 25%'},
@@ -35,8 +33,8 @@ const PurchaseUpgrades = ({refRBSheet, refRBSheet2}) => {
     },
     {
       img: ThemeMode.selectedTheme
-        ? require('../../assets/icons/prop_llik.png')
-        : require('../../assets/icons/like_dark2.png'),
+        ? require('../../assets/icons/plan_flower1.png')
+        : require('../../assets/icons/plan_flower2.png'),
       flowers: [
         {qut: '1 Boost', price: '0,99€'},
         {qut: '5 Boost', price: '0,99€', offer: 'Savings of 25%'},
@@ -96,21 +94,28 @@ const PurchaseUpgrades = ({refRBSheet, refRBSheet2}) => {
             alignSelf: 'center',
           }}
         />
-        <Fontisto
-          name="close-a"
-          size={14}
-          color="#fff"
-          style={{
-            alignSelf: 'flex-end',
-            marginRight: 30,
-            marginTop: 0,
-            padding: 10,
-          }}
+
+        <TouchableOpacity
           onPress={() => {
             refRBSheet.current.close();
             setSelect('');
           }}
-        />
+          style={{alignSelf: 'flex-end'}}>
+          <Image
+            source={require('../../assets/icons/close_immg.png')}
+            style={{
+              height: 15,
+              width: 15,
+              resizeMode: 'contain',
+              alignSelf: 'flex-end',
+              marginRight: 30,
+              marginTop: 10,
+              padding: 10,
+              tintColor: theme.colors.primary,
+            }}
+          />
+        </TouchableOpacity>
+
         <Carousel
           data={upgradeData}
           sliderWidth={dimension.width}
@@ -122,10 +127,11 @@ const PurchaseUpgrades = ({refRBSheet, refRBSheet2}) => {
                   justifyContent: 'center',
                   alignItems: 'center',
                   alignSelf: 'center',
+                  marginBottom: 10,
                 }}>
                 <Image
                   source={item.img}
-                  style={{height: 110, width: 110, resizeMode: 'contain'}}
+                  style={{height: 112, width: 112, resizeMode: 'contain'}}
                 />
               </View>
               <View style={{height: 10}} />
@@ -224,18 +230,16 @@ const PurchaseUpgrades = ({refRBSheet, refRBSheet2}) => {
               />
             ))}
         </View>
-        <Button
-          opacity={select != '' ? 1 : 0.5}
+
+        <Sheetbutton
+          disabled={select != '' ? false : true}
           marginBottom={20}
           marginTop={1}
-          buttonName={'Buy now'}
-          color={theme.colors.primary}
-          disabled={select != '' ? false : true}
           onPress={() => {
             refRBSheet2.current.open();
             refRBSheet.current.close();
           }}
-          // buttonColor={['#fff', '#fff']}
+          ButtonName={'Buy now'}
         />
       </LinearGradient>
     </RBSheet>

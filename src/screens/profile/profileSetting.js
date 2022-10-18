@@ -113,7 +113,8 @@ const ProfileSetting = () => {
       </ScrollView>
       <ButtonRow
         title={'Close account'}
-        color={theme.colors.darkGrey}
+        coloricon
+        color
         onPress={() => refRBSheet.current.open()}
       />
       <CloseAccount refRBSheet={refRBSheet} />
@@ -122,7 +123,7 @@ const ProfileSetting = () => {
   );
 };
 
-const ButtonRow = ({title, onPress, color}) => {
+const ButtonRow = ({title, onPress, color, coloricon}) => {
   const ThemeMode = useSelector(state => state.Theme);
   return (
     <TouchableOpacity
@@ -150,7 +151,7 @@ const ButtonRow = ({title, onPress, color}) => {
         name="chevron-small-right"
         size={20}
         color={
-          color || ThemeMode.selectedTheme
+          coloricon || ThemeMode.selectedTheme
             ? theme.colors.primaryBlack
             : theme.colors.primary
         }

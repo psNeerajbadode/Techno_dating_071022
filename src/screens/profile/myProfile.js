@@ -140,16 +140,16 @@ const MyProfile = () => {
             alignItems: 'center',
             alignSelf: 'center',
             position: 'absolute',
-            bottom: 0,
-            shadowColor: '#000',
+            bottom: 15,
+            shadowColor: '#8490ae85',
             shadowOffset: {
               width: 0,
               height: 1,
             },
-            shadowOpacity: 0.2,
-            shadowRadius: 1.41,
+            shadowOpacity: 0.22,
+            shadowRadius: 2.22,
 
-            elevation: 2,
+            elevation: 10,
           }}>
           <Image
             source={

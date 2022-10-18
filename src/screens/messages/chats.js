@@ -1,6 +1,14 @@
-import { Image, StyleSheet, TouchableOpacity, View, TextInput, ScrollView, useWindowDimensions } from 'react-native';
-import React, { useRef, useState } from 'react';
-import { theme } from '../../utils/Constants';
+import {
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+  TextInput,
+  ScrollView,
+  useWindowDimensions,
+} from 'react-native';
+import React, {useRef, useState} from 'react';
+import {theme} from '../../utils/Constants';
 import HeaderImage_1 from '../../components/HeaderImage_1';
 import Header from '../../components/Header';
 import Icon from 'react-native-vector-icons/Entypo';
@@ -9,16 +17,16 @@ import Feather from 'react-native-vector-icons/Feather';
 import TextFormatted from '../../components/TextFormatted';
 import LinearGradient from 'react-native-linear-gradient';
 import MoreOptions from '../home/moreOptions';
-import { useDispatch, useSelector } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import DocumentPicker from 'react-native-document-picker';
-import { useRoute } from '@react-navigation/native';
+import {useRoute} from '@react-navigation/native';
 
 const Chats = () => {
   const [multipleFile, setMultipleFile] = useState([]);
   const dispatch = useDispatch();
   const ThemeMode = useSelector(state => state.Theme);
   const refRBSheet = useRef();
-  const { params } = useRoute();
+  const {params} = useRoute();
   const [mess, setMess] = useState('');
   const [show, setShow] = useState(false);
   console.log(params);
@@ -96,7 +104,13 @@ const Chats = () => {
     },
   ];
   return (
-    <View style={{ flex: 1, backgroundColor: ThemeMode.selectedTheme ? theme.colors.primary : theme.colors.primaryBlack }}>
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: ThemeMode.selectedTheme
+          ? theme.colors.primary
+          : theme.colors.primaryBlack,
+      }}>
       <HeaderImage_1 height={150} marginBottom={1}>
         <Header
           marginTop={18}
@@ -107,20 +121,21 @@ const Chats = () => {
               style={{
                 height: 40,
                 width: 40,
-                backgroundColor: ThemeMode.selectedTheme ? '#FFFFFF33' : '#1A1D2533',
+                backgroundColor: ThemeMode.selectedTheme
+                  ? '#FFFFFF33'
+                  : '#1A1D2533',
                 alignItems: 'center',
                 justifyContent: 'center',
                 borderRadius: 10,
                 position: 'absolute',
                 right: 0,
-              }}
-            >
+              }}>
               <Icon name="dots-three-vertical" color={'#fff'} size={16} />
             </TouchableOpacity>
           }
         />
       </HeaderImage_1>
-      <ScrollView style={{ flex: 1 }}>
+      <ScrollView style={{flex: 1}}>
         <LinearGradient
           colors={
             ThemeMode.themecolr == 'Red'
@@ -143,84 +158,141 @@ const Chats = () => {
             // marginLeft: 50,
             marginTop: 20,
             marginRight: 20,
+            marginBottom: 15,
             alignSelf: 'flex-end',
             flex: 1,
-          }}
-        >
-          <TextFormatted style={{ fontSize: 14, fontWeight: '400', color: theme.colors.primary }}>
+          }}>
+          <TextFormatted
+            style={{
+              fontSize: 14,
+              fontWeight: '400',
+              color: theme.colors.primary,
+            }}>
             Hi, these are the date types I prefer
-            <TextFormatted style={{ fontSize: 12, fontWeight: '300', color: theme.colors.primary }}>12:56</TextFormatted>
+            <TextFormatted
+              style={{
+                fontSize: 12,
+                fontWeight: '300',
+                color: theme.colors.primary,
+              }}>
+              12:56
+            </TextFormatted>
           </TextFormatted>
         </LinearGradient>
         {params.params != null && (
-          <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+          <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
             {data.map(
               (v, i) =>
                 params.params[i] == v.title && (
-                  <View style={{ width: dimension.width / 3, alignItems: 'center', alignSelf: 'center', marginBottom: 10 }}>
-                    <Image source={v.img} resizeMode="contain" style={{ width: 80, height: 100 }} />
-                    <TextFormatted style={{ fontSize: 16, fontWeight: '700', color: theme.colors.darkGrey }}>{v.title}</TextFormatted>
+                  <View
+                    style={{
+                      width: dimension.width / 3,
+                      alignItems: 'center',
+                      alignSelf: 'center',
+                      marginBottom: 15,
+                    }}>
+                    <Image
+                      source={v.img}
+                      resizeMode="contain"
+                      style={{width: 50, height: 50}}
+                    />
+                    <TextFormatted
+                      style={{
+                        fontSize: 16,
+                        fontWeight: '700',
+                        color: theme.colors.darkGrey,
+                        marginTop: 12,
+                      }}>
+                      {v.title}
+                    </TextFormatted>
                   </View>
                 ),
             )}
           </View>
         )}
 
-        <View style={{ flexDirection: 'row', marginLeft: 20, marginTop: 20, marginRight: 50 }}>
-          <Image source={require('../../assets/images/unsplash_1.png')} style={{ height: 64, width: 64, resizeMode: 'cover', borderRadius: 50 }} />
+        <View
+          style={{
+            flexDirection: 'row',
+            marginLeft: 20,
+            marginTop: 20,
+            marginRight: 50,
+            alignItems: 'center',
+          }}>
+          <Image
+            source={require('../../assets/images/unsplash_1.png')}
+            style={{
+              height: 64,
+              width: 64,
+              resizeMode: 'cover',
+              borderRadius: 50,
+            }}
+          />
           <View
             style={{
               padding: 15,
-              backgroundColor: ThemeMode.selectedTheme ? theme.colors.primary : theme.colors.primaryBlack,
+              backgroundColor: '#FAFAFA',
               marginLeft: 10,
               flexDirection: 'row',
               borderTopRightRadius: 50,
               borderBottomRightRadius: 50,
               borderBottomLeftRadius: 50,
-              flex: 1,
               alignItems: 'flex-start',
               justifyContent: 'flex-start',
-            }}
-          >
-            <TextFormatted
-              style={{ fontSize: 14, fontWeight: '400', color: ThemeMode.selectedTheme ? theme.colors.primaryBlack : theme.colors.primary }}
-            >
-              ....
-            </TextFormatted>
+            }}>
+            <Image
+              style={{
+                width: 27,
+                height: 9,
+                tintColor: ThemeMode.selectedTheme
+                  ? theme.colors.darkGrey
+                  : theme.colors.primary,
+              }}
+              resizeMode="contain"
+              source={require('../../assets/icons/chat_dots.png')}
+            />
             <TextFormatted
               style={{
                 fontSize: 12,
                 fontWeight: '300',
-                color: ThemeMode.selectedTheme ? theme.colors.primaryBlack : theme.colors.primary,
+                color: ThemeMode.selectedTheme
+                  ? theme.colors.primaryBlack
+                  : theme.colors.primary,
                 marginLeft: 15,
-              }}
-            >
+              }}>
               12:55
             </TextFormatted>
           </View>
         </View>
       </ScrollView>
 
-      <View style={{ marginHorizontal: 20, marginVertical: 15, flexDirection: 'row', alignItems: 'center' }}>
+      <View
+        style={{
+          marginHorizontal: 20,
+          marginVertical: 15,
+          flexDirection: 'row',
+          alignItems: 'center',
+        }}>
         <View
           style={{
             flexDirection: 'row',
             alignItems: 'center',
-            backgroundColor: ThemeMode.selectedTheme ? theme.colors.primary : theme.colors.primaryBlack,
+            backgroundColor: ThemeMode.selectedTheme
+              ? theme.colors.primary
+              : theme.colors.primaryBlack,
             padding: 0,
             borderRadius: 50,
             paddingHorizontal: 10,
-            shadowColor: '#000',
+            shadowColor: '#8490ae85',
             shadowOffset: {
               width: 0,
               height: 1,
             },
             shadowOpacity: 0.22,
             shadowRadius: 2.22,
-            elevation: 3,
+            elevation: 10,
             flex: 1,
-          }}
-        >
+          }}>
           <TextInput
             placeholder="Type your message"
             value={mess}
@@ -230,19 +302,34 @@ const Chats = () => {
               padding: 10,
               fontFamily: 'Rubik-Regular',
               fontSize: 14,
-              color: ThemeMode.selectedTheme ? theme.colors.primaryBlack : theme.colors.primary,
+              color: ThemeMode.selectedTheme
+                ? theme.colors.primaryBlack
+                : theme.colors.primary,
             }}
             placeholderTextColor={'#8490AE'}
           />
-          <MaterialIcons
-            name="attach-file"
-            onPress={selectMultipleFile}
-            color={ThemeMode.selectedTheme ? theme.colors.primaryBlack : theme.colors.primary}
-            size={22}
-            style={{ padding: 7 }}
-          />
+
+          <TouchableOpacity
+            style={{
+              alignSelf: 'center',
+              width: 22,
+              height: 22,
+            }}
+            onPress={selectMultipleFile}>
+            <Image
+              style={{
+                width: 22,
+                height: 22,
+                tintColor: ThemeMode.selectedTheme
+                  ? theme.colors.Black
+                  : theme.colors.primary,
+              }}
+              resizeMode="contain"
+              source={require('../../assets/icons/pin_chat.png')}
+            />
+          </TouchableOpacity>
         </View>
-        <TouchableOpacity style={{ marginLeft: 15 }} onPress={() => setMess('')}>
+        <TouchableOpacity style={{marginLeft: 15}} onPress={() => setMess('')}>
           <LinearGradient
             colors={
               mess == ''
@@ -259,9 +346,22 @@ const Chats = () => {
                 ? theme.colors.primaryYellow
                 : theme.colors.primaryOn
             }
-            style={{ height: 38, width: 38, borderRadius: 40, justifyContent: 'center', alignItems: 'center' }}
-          >
-            <Feather name="send" color={'#fff'} size={20} />
+            style={{
+              height: 38,
+              width: 38,
+              borderRadius: 40,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <Image
+              style={{
+                width: 19,
+                height: 19,
+                tintColor: '#fff',
+              }}
+              resizeMode="contain"
+              source={require('../../assets/icons/send_arrow.png')}
+            />
           </LinearGradient>
         </TouchableOpacity>
       </View>

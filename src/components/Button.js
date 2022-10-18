@@ -1,10 +1,10 @@
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import React from 'react';
 import TextFormatted from './TextFormatted';
 import LinearGradient from 'react-native-linear-gradient';
-import { ActivityIndicator } from 'react-native';
-import { theme } from '../utils/Constants';
-import { useSelector } from 'react-redux';
+import {ActivityIndicator} from 'react-native';
+import {theme} from '../utils/Constants';
+import {useSelector} from 'react-redux';
 
 const Button = ({
   buttonName,
@@ -24,7 +24,14 @@ const Button = ({
 }) => {
   const ThemeMode = useSelector(state => state.Theme);
   return (
-    <TouchableOpacity disabled={disabled} onPress={onPress} style={{ alignSelf: 'center', marginTop: marginTop || 30, marginBottom: marginBottom }}>
+    <TouchableOpacity
+      disabled={disabled}
+      onPress={onPress}
+      style={{
+        alignSelf: 'center',
+        marginTop: marginTop || 30,
+        marginBottom: marginBottom,
+      }}>
       <LinearGradient
         colors={
           buttonColor || ThemeMode.themecolr == 'Red'
@@ -39,8 +46,8 @@ const Button = ({
             ? theme.colors.primaryYellow
             : theme.colors.primaryOn
         }
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 1 }}
+        start={{x: 0, y: 0}}
+        end={{x: 1, y: 1}}
         style={{
           opacity: opacity,
           paddingVertical: 12,
@@ -50,14 +57,19 @@ const Button = ({
           flexDirection: flexDirection,
           width: width || 200,
           height: height || 50,
-        }}
-      >
+        }}>
         {Loading ? (
           <ActivityIndicator size={'large'} color={theme.colors.primary} />
         ) : (
           <View>
             {Icon}
-            <TextFormatted style={{ fontSize: 18 || fontSize, fontWeight: '700', color: color || theme.colors.primary, zIndex: 30 }}>
+            <TextFormatted
+              style={{
+                fontSize: 18 || fontSize,
+                fontWeight: '700',
+                color: color || theme.colors.primary,
+                zIndex: 30,
+              }}>
               {buttonName}
             </TextFormatted>
           </View>

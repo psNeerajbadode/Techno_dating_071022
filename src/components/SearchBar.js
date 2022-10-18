@@ -42,14 +42,14 @@ const SearchBar = ({
         flexDirection: 'row',
         paddingLeft: 22,
         paddingRight: 26,
-        shadowColor: '#000',
+        shadowColor: '#8490ae85',
         shadowOffset: {
           width: 0,
           height: 1,
         },
         shadowOpacity: 0.22,
         shadowRadius: 2.22,
-        elevation: 3,
+        elevation: 10,
         position: 'absolute',
         bottom: 0,
       }}>

@@ -64,7 +64,7 @@ const Information = () => {
       {load ? (
         <ActivityLoader />
       ) : (
-        <View>
+        <View style={{marginBottom: 60}}>
           <FlatList
             data={User?.category}
             horizontal
@@ -82,7 +82,7 @@ const Information = () => {
                     ? theme.colors.primary
                     : theme.colors.primaryBlack,
                   borderRadius: 20,
-                  shadowColor: '#000',
+                  shadowColor: '#8490ae85',
                   shadowOffset: {
                     width: 0,
                     height: 1,
@@ -90,9 +90,9 @@ const Information = () => {
                   shadowOpacity: 0.22,
                   shadowRadius: 2.22,
 
-                  elevation: 3,
+                  elevation: 10,
                   marginVertical: 5,
-                  marginLeft: 5,
+                  marginRight: 16,
                 }}>
                 <LinearGradient
                   style={{

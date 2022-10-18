@@ -13,6 +13,8 @@ import Logo from '../../components/Logo';
 import TextFormatted from '../../components/TextFormatted';
 import Button from '../../components/Button';
 import {useDispatch, useSelector} from 'react-redux';
+import Icon from 'react-native-vector-icons/Feather';
+import {Baseurl, ShowToast} from '../../utils/Baseurl';
 
 const RecoveryPassCode = ({navigation}) => {
   const dimension = useWindowDimensions();
@@ -21,7 +23,43 @@ const RecoveryPassCode = ({navigation}) => {
   const dispatch = useDispatch();
   const ThemeMode = useSelector(state => state.Theme);
   const Staps = useSelector(state => state.Stap);
-  console.log(pass);
+  const [loading, setLoading] = useState(false);
+  const Removeval = () => {
+    const Val_array = [...passcode];
+    Val_array.pop();
+    setPasscode(Val_array);
+  };
+
+  async function change_passcode() {
+    try {
+      const url = Baseurl + 'change_passcode';
+      const body = new FormData();
+      body.append('app_dashboard_pass', passcode.join(''));
+      body.append('user_id', Staps.id);
+      setLoading(true);
+      const res = await fetch(url, {
+        method: 'Post',
+        headers: {
+          'content-type': 'multipart/form-data',
+        },
+        body: body,
+      });
+      const rslt = await res.json();
+      if (rslt.status == 1) {
+        setLoading(false);
+        // dispatch({type: STAP, payload: rslt.result});
+        navigation.navigate('PassCode');
+        ShowToast('Valid OTP');
+      } else {
+        setLoading(false);
+        // alert(rslt.result || rslt.message || 'Unknown error');
+        ShowToast('Invalid OTP');
+      }
+    } catch (e) {
+      alert('An error occured.');
+      console.log(e);
+    }
+  }
   return (
     <View
       style={{
@@ -33,28 +71,29 @@ const RecoveryPassCode = ({navigation}) => {
           : theme.colors.primary,
       }}>
       <View style={{paddingBottom: 18}}>
-        <HeaderImage height={330}>
+        <HeaderImage height={310}>
           <Header title={'Passcode Recovery'} />
-          <View style={{height: 20}} />
-          <Logo />
+          <Logo bottom={50} />
         </HeaderImage>
         <View
           style={{
-            backgroundColor: '#fff',
+            backgroundColor: ThemeMode.selectedTheme
+              ? theme.colors.primary
+              : theme.colors.primaryBlack,
             height: 60,
             position: 'absolute',
-            bottom: 0,
+            bottom: -8,
             width: dimension.width - 40,
             alignSelf: 'center',
             borderRadius: 20,
-            shadowColor: '#000',
+            shadowColor: '#8490ae85',
             shadowOffset: {
               width: 0,
-              height: 1,
+              height: 2,
             },
-            shadowOpacity: 0.2,
-            shadowRadius: 1.41,
-            elevation: 2,
+            shadowOpacity: 0.25,
+            shadowRadius: 3.84,
+            elevation: 10,
             flexDirection: 'row',
             justifyContent: 'center',
             alignItems: 'center',
@@ -66,7 +105,9 @@ const RecoveryPassCode = ({navigation}) => {
                 style={{
                   height: 24,
                   width: 24,
-                  backgroundColor: '#FAFAFA',
+                  backgroundColor: ThemeMode.selectedTheme
+                    ? 'FAFAFA'
+                    : theme.colors.darkGrey,
                   borderRadius: 20,
                   margin: 12.5,
                   justifyContent: 'center',
@@ -93,16 +134,16 @@ const RecoveryPassCode = ({navigation}) => {
             width: 300,
             flexWrap: 'wrap',
             alignSelf: 'center',
-            marginTop: 10,
+            marginTop: 40,
           }}>
           {Array(11)
             .fill('')
             .map((_, i) => (
               <TouchableOpacity
-                onPress={() => {
-                  setPasscode(prevState => [...prevState, i == 10 ? 0 : i + 1]);
-                }}
-                disabled={i == 9}
+                disabled={passcode.length == 4 ? true : false}
+                onPress={() =>
+                  setPasscode(prevState => [...prevState, i == 10 ? 0 : i + 1])
+                }
                 style={{width: 50, marginHorizontal: 25, marginVertical: 2}}>
                 <TextFormatted
                   style={{
@@ -114,20 +155,34 @@ const RecoveryPassCode = ({navigation}) => {
                     fontWeight: '400',
                     padding: 8,
                   }}>
-                  {i == 9 ? '  ' : i == 10 ? 0 : i + 1}
+                  {i == 9 ? (
+                    <Icon
+                      name="arrow-left"
+                      size={30}
+                      onPress={() => Removeval()}
+                      color={'#8490AE'}
+                    />
+                  ) : i == 10 ? (
+                    0
+                  ) : (
+                    i + 1
+                  )}
                 </TextFormatted>
               </TouchableOpacity>
             ))}
         </View>
         <Button
+          opacity={passcode.length == 4 ? 1 : 0.5}
           buttonName={'Save passcode'}
+          Loading={loading}
           onPress={() => {
-            navigation.replace('SuccessPassword');
+            change_passcode();
           }}
-          disabled={passcode.length > 3 ? false : true}
-          marginTop={10}
+          disabled={passcode.length == 4 ? false : true}
+          marginTop={25}
         />
         <TextFormatted
+          onPress={() => navigation.replace('PassCode')}
           style={{
             fontSize: 14,
             fontWeight: '400',

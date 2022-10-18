@@ -1,18 +1,35 @@
-import { FlatList, Image, ImageBackground, ScrollView, StatusBar, StyleSheet, useWindowDimensions, View, TouchableOpacity } from 'react-native';
-import React, { useRef, useState } from 'react';
+import {
+  FlatList,
+  Image,
+  ImageBackground,
+  ScrollView,
+  StatusBar,
+  StyleSheet,
+  useWindowDimensions,
+  View,
+  TouchableOpacity,
+} from 'react-native';
+import React, {useRef, useState} from 'react';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import TextFormatted from '../../../components/TextFormatted';
 import LinearGradient from 'react-native-linear-gradient';
-import { theme } from '../../../utils/Constants';
+import {theme} from '../../../utils/Constants';
 import Button from '../../../components/Button';
 import Icon from 'react-native-vector-icons/Fontisto';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import BottomSheet from '../../../components/bottomSheet';
 import SearchBar from '../../../components/SearchBar';
-import { useSelector } from 'react-redux';
-import { BluelightImage, GreenlightImage, PurplelightImage, RedlightImage, YellowlightImage } from '../../../utils/CustomImages';
+import {useSelector} from 'react-redux';
+import {
+  BluelightImage,
+  GreenlightImage,
+  PurplelightImage,
+  RedlightImage,
+  YellowlightImage,
+} from '../../../utils/CustomImages';
+import Sheetbutton from '../../../components/Sheetbutton';
 
-const UserLikeBottomSheet = ({ refRBSheet, setLike }) => {
+const UserLikeBottomSheet = ({refRBSheet, setLike}) => {
   const ThemeMode = useSelector(state => state.Theme);
   const dimension = useWindowDimensions();
   const navigation = useNavigation();
@@ -105,14 +122,13 @@ const UserLikeBottomSheet = ({ refRBSheet, setLike }) => {
         closeOnDragDown={true}
         closeOnPressBack={true}
         customStyles={{
-          draggableIcon: { height: 0 },
-          container: { borderTopLeftRadius: 40, borderTopRightRadius: 40 },
-        }}
-      >
+          draggableIcon: {height: 0},
+          container: {borderTopLeftRadius: 40, borderTopRightRadius: 40},
+        }}>
         <StatusBar backgroundColor={'#00000077'} />
         <LinearGradient
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 1 }}
+          start={{x: 0, y: 0}}
+          end={{x: 1, y: 1}}
           colors={
             ThemeMode.themecolr == 'Red'
               ? theme.colors.primaryOn
@@ -126,14 +142,27 @@ const UserLikeBottomSheet = ({ refRBSheet, setLike }) => {
               ? theme.colors.primaryYellow
               : theme.colors.primaryOn
           }
-          style={{ flex: 1, marginTop: -20 }}
-        >
-          <View style={{ height: 4, width: 36, backgroundColor: '#fff', borderRadius: 10, alignSelf: 'center', marginTop: 10 }} />
+          style={{flex: 1, marginTop: -20}}>
+          <View
+            style={{
+              height: 4,
+              width: 36,
+              backgroundColor: '#fff',
+              borderRadius: 10,
+              alignSelf: 'center',
+              marginTop: 10,
+            }}
+          />
           <Icon
             name="close-a"
             size={16}
             color="#fff"
-            style={{ alignSelf: 'flex-end', marginRight: 30, marginTop: 10, padding: 7 }}
+            style={{
+              alignSelf: 'flex-end',
+              marginRight: 30,
+              marginTop: 10,
+              padding: 7,
+            }}
             onPress={() => refRBSheet.current.close()}
           />
           <ScrollView>
@@ -147,11 +176,16 @@ const UserLikeBottomSheet = ({ refRBSheet, setLike }) => {
                 marginTop: 20,
                 justifyContent: 'center',
                 alignItems: 'center',
-              }}
-            >
+              }}>
               <Image
                 source={userprofile}
-                style={{ height: dimension.width / 2.5, width: dimension.width / 2.5, borderRadius: 100, borderWidth: 4, borderColor: '#fff' }}
+                style={{
+                  height: dimension.width / 2.5,
+                  width: dimension.width / 2.5,
+                  borderRadius: 100,
+                  borderWidth: 4,
+                  borderColor: '#fff',
+                }}
               />
               <TouchableOpacity onPress={() => navigation.navigate('message')}>
                 <LinearGradient
@@ -165,8 +199,8 @@ const UserLikeBottomSheet = ({ refRBSheet, setLike }) => {
                     alignItems: 'center',
                     justifyContent: 'center',
                   }}
-                  start={{ x: 0, y: 0 }}
-                  end={{ x: 1, y: 1 }}
+                  start={{x: 0, y: 0}}
+                  end={{x: 1, y: 1}}
                   colors={
                     ThemeMode.themecolr == 'Red'
                       ? theme.colors.primaryOn
@@ -179,23 +213,47 @@ const UserLikeBottomSheet = ({ refRBSheet, setLike }) => {
                       : ThemeMode.themecolr == 'Yellow'
                       ? theme.colors.primaryYellow
                       : theme.colors.primaryOn
-                  }
-                >
-                  <Image resizeMode="contain" source={require('../../../assets/icons/like_match.png')} style={{ height: 30, width: 30 }} />
+                  }>
+                  <Image
+                    resizeMode="contain"
+                    source={require('../../../assets/icons/like_match.png')}
+                    style={{height: 30, width: 30}}
+                  />
                 </LinearGradient>
               </TouchableOpacity>
             </ImageBackground>
-            <TextFormatted style={{ fontSize: 26, fontWeight: '700', color: theme.colors.primary, textAlign: 'center', marginTop: 17 }}>
+            <TextFormatted
+              style={{
+                fontSize: 26,
+                fontWeight: '700',
+                color: theme.colors.primary,
+                textAlign: 'center',
+                marginTop: 17,
+              }}>
               Emma Hatchan
             </TextFormatted>
-            <TextFormatted style={{ fontSize: 18, fontWeight: '400', color: theme.colors.primary, textAlign: 'center' }}>22 years old</TextFormatted>
-            <TextFormatted style={{ fontSize: 16, fontWeight: '300', color: theme.colors.primary, textAlign: 'center', marginTop: 20 }}>
+            <TextFormatted
+              style={{
+                fontSize: 18,
+                fontWeight: '400',
+                color: theme.colors.primary,
+                textAlign: 'center',
+              }}>
+              22 years old
+            </TextFormatted>
+            <TextFormatted
+              style={{
+                fontSize: 16,
+                fontWeight: '300',
+                color: theme.colors.primary,
+                textAlign: 'center',
+                marginTop: 20,
+              }}>
               You have 3 Passions in common!
             </TextFormatted>
-            <Button
-              //buttonColor={theme.colors.primaryOff}
-              buttonName="Send message"
-              //color={'#EA4A5A'}
+
+            <Sheetbutton
+              ButtonName={'Send message'}
               onPress={() => {
                 refRBSheet.current.close();
                 DatatypeRef.current.open();
@@ -204,12 +262,18 @@ const UserLikeBottomSheet = ({ refRBSheet, setLike }) => {
               }}
             />
             <TextFormatted
-              style={{ fontSize: 14, fontWeight: '400', color: theme.colors.primary, alignSelf: 'center', marginVertical: 12, padding: 5 }}
+              style={{
+                fontSize: 14,
+                fontWeight: '400',
+                color: theme.colors.primary,
+                alignSelf: 'center',
+                marginVertical: 12,
+                padding: 5,
+              }}
               onPress={() => {
                 refRBSheet.current.close();
                 setLike(true);
-              }}
-            >
+              }}>
               View profile
             </TextFormatted>
           </ScrollView>
@@ -219,9 +283,14 @@ const UserLikeBottomSheet = ({ refRBSheet, setLike }) => {
         refRBSheet={DatatypeRef}
         height={600}
         children={
-          <View style={{ marginHorizontal: 20, marginTop: 90 }}>
-            <View style={{ alignSelf: 'center' }}>
-              <SearchBar onPress={() => setSearch('')} placeholder={'Search date type'} onChangeText={setSearch} value={search} />
+          <View style={{marginHorizontal: 20, marginTop: 90}}>
+            <View style={{alignSelf: 'center'}}>
+              <SearchBar
+                onPress={() => setSearch('')}
+                placeholder={'Search date type'}
+                onChangeText={setSearch}
+                value={search}
+              />
             </View>
             <LinearGradient
               colors={
@@ -237,8 +306,8 @@ const UserLikeBottomSheet = ({ refRBSheet, setLike }) => {
                   ? theme.colors.primaryYellow
                   : theme.colors.primaryOn
               }
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 1 }}
+              start={{x: 0, y: 0}}
+              end={{x: 1, y: 1}}
               style={{
                 alignSelf: 'center',
                 marginVertical: 20,
@@ -247,33 +316,32 @@ const UserLikeBottomSheet = ({ refRBSheet, setLike }) => {
                 flexDirection: 'row',
                 paddingHorizontal: 40,
                 paddingVertical: 15,
-                borderRadius: 10,
-              }}
-            >
+                borderRadius: 15,
+                width: '98%',
+              }}>
               <Image
                 resizeMode="contain"
                 source={
                   ThemeMode.themecolr == 'Red'
-                    ? RedlightImage.chat_Red
+                    ? RedlightImage.chat_Red1
                     : ThemeMode.themecolr == 'Blue'
-                    ? BluelightImage.chat_blue
+                    ? BluelightImage.chat_blue1
                     : ThemeMode.themecolr == 'Green'
-                    ? GreenlightImage.chat_green
+                    ? GreenlightImage.chat_green1
                     : ThemeMode.themecolr == 'Purple'
-                    ? PurplelightImage.chat_purple
+                    ? PurplelightImage.chat_purple1
                     : ThemeMode.themecolr == 'Yellow'
-                    ? YellowlightImage.chat_yellow
-                    : RedlightImage.chat_Red
+                    ? YellowlightImage.chat_yellow1
+                    : RedlightImage.chat_Red1
                 }
-                style={{ width: 40, height: 40, marginRight: 10 }}
+                style={{width: 45, height: 45, marginRight: 10}}
               />
               <TextFormatted
                 style={{
                   fontSize: 16,
                   fontWeight: '700',
                   color: theme.colors.primary,
-                }}
-              >
+                }}>
                 Open to prepositions
               </TextFormatted>
             </LinearGradient>
@@ -282,33 +350,63 @@ const UserLikeBottomSheet = ({ refRBSheet, setLike }) => {
               data={data.filter(item => {
                 return item.title.toLowerCase().includes(search.toLowerCase());
               })}
-              style={{ height: 260, marginVertical: 15 }}
-              renderItem={({ item, index }) => (
+              style={{height: 260, paddingVertical: 15}}
+              renderItem={({item, index}) => (
                 <TouchableOpacity
                   onPress={() =>
-                    setAdditem(pre => (pre.find((v, i) => v == item.title) ? pre.filter((v, i) => v != item.title) : [...pre, item.title]))
+                    setAdditem(pre =>
+                      pre.find((v, i) => v == item.title)
+                        ? pre.filter((v, i) => v != item.title)
+                        : [...pre, item.title],
+                    )
                   }
                   style={{
                     flexDirection: 'row',
                     alignItems: 'center',
-                    paddingHorizontal: 10,
-                    paddingVertical: 8,
+                    padding: 15,
                     marginVertical: 8,
                     justifyContent: 'space-between',
-                  }}
-                >
-                  <View style={{ flexDirection: 'row', overflow: 'hidden', flex: 1, marginRight: 20 }}>
-                    <Image source={item.img} style={{ height: 40, width: 40, resizeMode: 'contain', opacity: 1, marginRight: 10 }} />
+                    shadowColor: '#8490ae85',
+                    shadowOffset: {
+                      width: 0,
+                      height: 1,
+                    },
+                    shadowOpacity: 0.22,
+                    shadowRadius: 2.22,
+                    elevation: 10,
+                    backgroundColor: ThemeMode.selectedTheme
+                      ? theme.colors.primary
+                      : theme.colors.primaryBlack,
+                    borderRadius: 15,
+                  }}>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      overflow: 'hidden',
+                      flex: 1,
+                      marginRight: 20,
+                    }}>
+                    <Image
+                      source={item.img}
+                      style={{
+                        height: 40,
+                        width: 40,
+                        resizeMode: 'contain',
+                        opacity: 1,
+                        marginRight: 10,
+                      }}
+                    />
                     <View>
                       <TextFormatted
                         style={{
                           fontSize: 18,
                           fontWeight: '700',
-                          color: ThemeMode.selectedTheme ? theme.colors.primaryBlack : theme.colors.primary,
+                          color: ThemeMode.selectedTheme
+                            ? theme.colors.primaryBlack
+                            : theme.colors.primary,
                           flex: 1,
                           marginLeft: 10,
-                        }}
-                      >
+                        }}>
                         {item.title}
                       </TextFormatted>
                       <TextFormatted
@@ -318,8 +416,7 @@ const UserLikeBottomSheet = ({ refRBSheet, setLike }) => {
                           color: theme.colors.darkGrey,
                           flex: 1,
                           marginLeft: 10,
-                        }}
-                      >
+                        }}>
                         {item.subtitle}
                       </TextFormatted>
                     </View>
@@ -340,7 +437,7 @@ const UserLikeBottomSheet = ({ refRBSheet, setLike }) => {
                           : RedlightImage.check_red
                         : require('../../../assets/icons/check.png')
                     }
-                    style={{ height: 29, width: 29, resizeMode: 'contain' }}
+                    style={{height: 29, width: 29, resizeMode: 'contain'}}
                   />
                 </TouchableOpacity>
               )}
@@ -352,7 +449,9 @@ const UserLikeBottomSheet = ({ refRBSheet, setLike }) => {
                 alignItems: 'center',
                 height: 90,
                 width: dimension.width,
-                backgroundColor: ThemeMode.selectedTheme ? theme.colors.primary : theme.colors.primaryBlack,
+                backgroundColor: ThemeMode.selectedTheme
+                  ? theme.colors.primary
+                  : theme.colors.primaryBlack,
                 shadowColor: '#000',
                 shadowOffset: {
                   width: 0,
@@ -361,21 +460,27 @@ const UserLikeBottomSheet = ({ refRBSheet, setLike }) => {
                 shadowOpacity: 0.25,
                 shadowRadius: 3.84,
                 elevation: 5,
-              }}
-            >
+              }}>
               <TextFormatted
-                style={{ fontSize: 18, fontWeight: '700', color: '#8490AE', width: dimension.width / 2 - 10, textAlign: 'center' }}
-                onPress={() => DatatypeRef.current.close()}
-              >
+                style={{
+                  fontSize: 18,
+                  fontWeight: '700',
+                  color: '#8490AE',
+                  width: dimension.width / 2 - 10,
+                  textAlign: 'center',
+                }}
+                onPress={() => DatatypeRef.current.close()}>
                 Cancel
               </TextFormatted>
               <Button
-                buttonName={'Select'}
+                opacity={additem.length >= 1 ? 1 : 0.5}
+                disabled={additem.length >= 1 ? false : true}
+                buttonName={'Save'}
                 color={'#fff'}
                 marginTop={1}
                 width={dimension.width / 2 - 10}
                 onPress={() => {
-                  navigation.navigate('chats', { params: additem });
+                  navigation.navigate('chats', {params: additem});
                 }}
               />
             </View>

@@ -22,7 +22,7 @@ const EmailOtp = ({navigation}) => {
   const dispatch = useDispatch();
   const ThemeMode = useSelector(state => state.Theme);
   const Staps = useSelector(state => state.Stap);
-  const isPasscode = useSelector(state => state.isPasscode);
+  const isPasscode = useSelector(state => state.isPasscode.isPasscode);
   const {params} = useRoute();
   const dimensions = useWindowDimensions();
   const [state, setState] = useState({
@@ -40,13 +40,14 @@ const EmailOtp = ({navigation}) => {
   const [Loading, setLoading] = useState(false);
   const [match, setMatch] = useState(false);
   const Otp = state.pin1 + state.pin2 + state.pin3 + state.pin4 + state.pin5;
+
   async function Email_Otp() {
     try {
       const url = Baseurl + 'get_verified_code';
       const body = new FormData();
       body.append('otp_number', Otp);
       body.append('user_id', Staps.id);
-      if (params?.isSignup) {
+      if (params?.Step1 == false) {
         body.append('check_otp', 'other');
       }
       setLoading(true);
@@ -61,15 +62,40 @@ const EmailOtp = ({navigation}) => {
       console.log(rslt.result);
       if (rslt.status == 1) {
         setLoading(false);
-
         dispatch({type: STAP, payload: rslt.result});
-        navigation.navigate(
-          params?.Step1
-            ? 'step1'
-            : params?.isSignup
-            ? 'RecoveryPassCode'
-            : 'ChangePassword',
-        );
+        navigation.navigate('step1');
+        ShowToast('Valid OTP');
+      } else {
+        setLoading(false);
+        // alert(rslt.result || rslt.message || 'Unknown error');
+        ShowToast('Invalid OTP');
+      }
+    } catch (e) {
+      alert('An error occured.');
+      console.log(e);
+    }
+  }
+  async function password_Otp() {
+    try {
+      const url = Baseurl + 'get_verified_code_for_pass';
+      const body = new FormData();
+      body.append('otp_number', Otp);
+      body.append('user_id', Staps.id);
+      setLoading(true);
+      const res = await fetch(url, {
+        method: 'Post',
+        headers: {
+          'content-type': 'multipart/form-data',
+        },
+        body: body,
+      });
+      const rslt = await res.json();
+      console.log(rslt.result);
+      if (rslt.status == 1) {
+        setLoading(false);
+
+        //dispatch({type: STAP, payload: rslt.result});
+        navigation.navigate('ChangePassword');
         ShowToast('Valid OTP');
       } else {
         setLoading(false);
@@ -110,6 +136,36 @@ const EmailOtp = ({navigation}) => {
     }
   }
 
+  async function passcode_Otp() {
+    try {
+      const url = Baseurl + 'check_passcode_otp';
+      const body = new FormData();
+      body.append('passcode_otp', Otp);
+      body.append('user_id', Staps.id);
+      setLoading(true);
+      const res = await fetch(url, {
+        method: 'Post',
+        headers: {
+          'content-type': 'multipart/form-data',
+        },
+        body: body,
+      });
+      const rslt = await res.json();
+      if (rslt.status == 1) {
+        setLoading(false);
+        // dispatch({type: STAP, payload: rslt.result});
+        navigation.navigate('RecoveryPassCode');
+        ShowToast('Valid OTP');
+      } else {
+        setLoading(false);
+        // alert(rslt.result || rslt.message || 'Unknown error');
+        ShowToast('Invalid OTP');
+      }
+    } catch (e) {
+      alert('An error occured.');
+      console.log(e);
+    }
+  }
   return (
     <View
       style={{
@@ -123,9 +179,8 @@ const EmailOtp = ({navigation}) => {
           title={
             params?.Step1
               ? 'Sign up'
-              : params?.isSignup
-              ? /* ? isPasscode.isPasscode */
-                'Passcode Recovery'
+              : isPasscode
+              ? 'Passcode Recovery'
               : 'Password Recovery'
           }
           // left={params?.isSignup ? true : false}
@@ -294,7 +349,13 @@ const EmailOtp = ({navigation}) => {
                 ? 1
                 : 0.5
             }
-            onPress={() => Email_Otp()}
+            onPress={() => {
+              params?.Step1
+                ? Email_Otp()
+                : isPasscode == true
+                ? passcode_Otp()
+                : password_Otp();
+            }}
             Loading={Loading}
             buttonName={'Verify'}
             color={theme.colors.primary}

@@ -1,16 +1,16 @@
-import { StyleSheet, Text, View } from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import TextFormatted from './TextFormatted';
-import { theme } from '../utils/Constants';
-import { useSelector } from 'react-redux';
+import {theme} from '../utils/Constants';
+import {useSelector} from 'react-redux';
 
-const Logo = () => {
+const Logo = ({bottom}) => {
   const ThemeMode = useSelector(state => state.Theme);
   return (
     <View
       style={{
         position: 'absolute',
-        bottom: 30,
+        bottom: bottom || 30,
         height: 158,
         width: 158,
         borderRadius: 80,
@@ -18,8 +18,7 @@ const Logo = () => {
         justifyContent: 'center',
         alignItems: 'center',
         alignSelf: 'center',
-      }}
-    >
+      }}>
       <TextFormatted
         style={{
           fontSize: 22,
@@ -36,8 +35,7 @@ const Logo = () => {
               : ThemeMode.themecolr == 'Yellow'
               ? theme.colors.Yellow
               : theme.colors.red,
-        }}
-      >
+        }}>
         LOGO
       </TextFormatted>
     </View>

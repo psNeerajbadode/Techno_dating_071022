@@ -29,6 +29,7 @@ import {
   RedlightImage,
   YellowlightImage,
 } from '../../utils/CustomImages';
+import Sheetbutton from '../../components/Sheetbutton';
 
 const Settings = () => {
   const ThemeMode = useSelector(state => state.Theme);
@@ -51,7 +52,7 @@ const Settings = () => {
     {
       id: 1,
       title: 'Basic',
-      price: '0,25€',
+      price: 'Free',
       data: [
         {img: require('../../assets/icons/like.png'), no: 300},
         {img: require('../../assets/icons/flower.png'), no: 30},
@@ -161,14 +162,14 @@ const Settings = () => {
                   ? theme.colors.primary
                   : theme.colors.primaryBlack,
                 borderRadius: 20,
-                shadowColor: '#000',
+                shadowColor: '#8490ae85',
                 shadowOffset: {
                   width: 0,
                   height: 1,
                 },
                 shadowOpacity: 0.22,
                 shadowRadius: 2.22,
-                elevation: 3,
+                elevation: 10,
                 marginTop: 20,
                 marginBottom: 15,
               }}>
@@ -493,10 +494,11 @@ const Settings = () => {
               free.
             </TextFormatted>
           </ScrollView>
-          <Button
+
+          <Sheetbutton
+            marginTop={0}
             marginBottom={20}
-            buttonName={'Copy referal link'}
-            color={theme.colors.primary}
+            ButtonName={'Copy referal link'}
             onPress={() => refRBSheet.current.close()}
           />
         </LinearGradient>

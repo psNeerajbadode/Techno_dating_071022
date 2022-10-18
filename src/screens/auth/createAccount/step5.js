@@ -42,12 +42,12 @@ const Step5 = ({navigation}) => {
       const granted = await PermissionsAndroid.request(
         PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
         {
-          title:
-            'Allow “...” to olso access your location even when you are not using the app?',
+          /* title:
+          'Allow “...” to olso access your location even when you are not using the app?',
           message: 'Location will be used always.',
           buttonNeutral: 'Ask Me Later',
           buttonNegative: 'Cancel',
-          buttonPositive: 'OK',
+          buttonPositive: 'OK', */
         },
       );
       if (granted === 'granted') {
@@ -64,10 +64,10 @@ const Step5 = ({navigation}) => {
     if (hasLocationPermission) {
       Geolocation.getCurrentPosition(
         position => {
+          setToggle(true);
           setLetu(position.coords.latitude);
           setLong(position.coords.longitude);
           addGeo(position.coords.latitude, position.coords.longitude);
-          setToggle(true);
         },
         error => {
           setToggle(false);

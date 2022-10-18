@@ -12,7 +12,8 @@ export const RedlightImage = {
   On_switchs: require('../assets/icons/F_switchs.png'),
   Off_switchs: require('../assets/icons/F_switchs_off.png'),
   check_red: require('../assets/icons/check_red.png'),
-  chat_Red: require('../assets/icons/m_chat1.png'),
+  chat_Red: require('../assets/icons/m_chats.png'),
+  chat_Red1: require('../assets/icons/Chat_popuv.png'),
 };
 export const ReddarkImage = {
   Bg_Img1: require('../assets/images/Bg_dark1.png'),
@@ -34,6 +35,7 @@ export const BluelightImage = {
   Off_switchs_blue: require('../assets/colorimages/blue/off_switchs_blue.png'),
   check_blue: require('../assets/colorimages/blue/check_blue.png'),
   chat_blue: require('../assets/colorimages/blue/chat_blue.png'),
+  chat_blue1: require('../assets/colorimages/blue/chat_blue1.png'),
 };
 export const GreenlightImage = {
   Bg_Img1: require('../assets/colorimages/green/Bg1_green.png'),
@@ -50,6 +52,7 @@ export const GreenlightImage = {
   Off_switchs_green: require('../assets/colorimages/green/off_switchs_green.png'),
   check_green: require('../assets/colorimages/green/check_green.png'),
   chat_green: require('../assets/colorimages/green/chat_green.png'),
+  chat_green1: require('../assets/colorimages/green/chat_green1.png'),
 };
 export const PurplelightImage = {
   Bg_Img1: require('../assets/colorimages/purplle/Bg1_purple.png'),
@@ -66,6 +69,7 @@ export const PurplelightImage = {
   Off_switchs_purplle: require('../assets/colorimages/purplle/off_switchs_purple.png'),
   check_purple: require('../assets/colorimages/purplle/check_purple.png'),
   chat_purple: require('../assets/colorimages/purplle/chat_purple.png'),
+  chat_purple1: require('../assets/colorimages/purplle/chat_purple1.png'),
 };
 export const YellowlightImage = {
   Bg_Img1: require('../assets/colorimages/yellow/Bg1_yellow.png'),
@@ -82,4 +86,5 @@ export const YellowlightImage = {
   Off_switchs_yellow: require('../assets/colorimages/yellow/off_switchs_yellow.png'),
   check_yellow: require('../assets/colorimages/yellow/check_yellow.png'),
   chat_yellow: require('../assets/colorimages/yellow/chat_yellow.png'),
+  chat_yellow1: require('../assets/colorimages/yellow/chat_yellow1.png'),
 };

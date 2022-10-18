@@ -163,7 +163,7 @@ const Step7 = ({navigation}) => {
               shadowOpacity: 0.25,
               shadowRadius: 3.84,
               elevation: 5,
-              marginTop: 50,
+              marginTop: 10,
             }}>
             <TextFormatted
               style={{
@@ -191,7 +191,7 @@ const Step7 = ({navigation}) => {
               width: 300,
               flexWrap: 'wrap',
               alignSelf: 'center',
-              marginTop: 40,
+              marginTop: 20,
             }}>
             {Array(11)
               .fill('')

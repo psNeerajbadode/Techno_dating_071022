@@ -33,7 +33,9 @@ const PassCode = () => {
     if (Staps.app_dashboard_pass == passcode.join('')) {
       navigation.replace('HomeNavigation');
     } else {
-      passcode.length == 4 && ShowToast('Invalid Passcode');
+      if (passcode.length == 4) {
+        ShowToast('Invalid Passcode');
+      }
     }
   }
   useEffect(() => {}, [App_passcode()]);
@@ -116,9 +118,8 @@ const PassCode = () => {
                   height: 25,
                   width: 25,
                   backgroundColor: ThemeMode.selectedTheme
-                    ? theme.colors.primary
+                    ? 'FAFAFA'
                     : theme.colors.darkGrey,
-
                   borderRadius: 20,
                   margin: 12.5,
                 }}>
@@ -152,7 +153,7 @@ const PassCode = () => {
             .fill('')
             .map((_, i) => (
               <TouchableOpacity
-                //disabled={passcode.length == 4 ? true : false}
+                disabled={passcode.length == 4 ? true : false}
                 onPress={() =>
                   setPasscode(prevState => [...prevState, i == 10 ? 0 : i + 1])
                 }
@@ -228,11 +229,10 @@ const PassCode = () => {
           position: 'absolute',
           bottom: 10,
         }}
-        /*   onPress={() => {
-          navigation.replace('RecoveryPassCode');
+        onPress={() => {
+          navigation.replace('PasswordRecovery');
           dispatch({type: PASSCODE, payload: {isPasscode: true}});
-        }} */
-      >
+        }}>
         Forgot your passcode?
       </TextFormatted>
     </View>
