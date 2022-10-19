@@ -99,7 +99,7 @@ const FollowUs = ({refRBSheet}) => {
   return (
     <RBSheet
       ref={refRBSheet}
-      height={450}
+      height={390}
       closeOnDragDown={true}
       closeOnPressBack={true}
       customStyles={{

@@ -1,15 +1,27 @@
-import { StyleSheet, useWindowDimensions, View, ImageBackground } from 'react-native';
+import {
+  StyleSheet,
+  useWindowDimensions,
+  View,
+  ImageBackground,
+} from 'react-native';
 import React from 'react';
 import TextFormatted from '../../components/TextFormatted';
-import { theme } from '../../utils/Constants';
-import { AnimatedCircularProgress } from 'react-native-circular-progress';
-import { Circle } from 'react-native-svg';
+import {theme} from '../../utils/Constants';
+import {AnimatedCircularProgress} from 'react-native-circular-progress';
+import {Circle} from 'react-native-svg';
 import Statusbar from '../../components/Statusbar';
-const Splash = ({ navigation }) => {
+const Splash = ({navigation}) => {
   const dimension = useWindowDimensions();
   return (
-    <ImageBackground resizeMode="stretch" source={require('../../assets/images/Splesh_new.png')} style={{ flex: 1, justifyContent: 'center' }}>
-      <Statusbar backgroundColor={'transparent'} hidden={false} barStyle={'light-content'} />
+    <ImageBackground
+      resizeMode="stretch"
+      source={require('../../assets/images/Splesh_new.png')}
+      style={{flex: 1, justifyContent: 'center'}}>
+      <Statusbar
+        backgroundColor={'transparent'}
+        hidden={false}
+        barStyle={'light-content'}
+      />
       <TextFormatted
         style={{
           alignSelf: 'center',
@@ -19,12 +31,11 @@ const Splash = ({ navigation }) => {
           letterSpacing: 4,
           position: 'absolute',
           top: '14.5%',
-        }}
-      >
+        }}>
         WELCOME
       </TextFormatted>
       <AnimatedCircularProgress
-        style={{ alignSelf: 'center', marginTop: dimension.width - 480 }}
+        style={{alignSelf: 'center', marginTop: dimension.width - 480}}
         size={160}
         duration={3000}
         width={10}
@@ -39,11 +50,25 @@ const Splash = ({ navigation }) => {
           // navigation.replace('step4');
           // navigation.replace('HomePage');
         }}
-        renderCap={({ center }) => <Circle cx={center.x} cy={center.y} r="5" fill="#fff" />}
-      >
-        {fill => <TextFormatted style={{ color: '#fff', fontWeight: '700', fontSize: 26 }}>{parseInt(fill) + '%'}</TextFormatted>}
+        renderCap={({center}) => (
+          <Circle cx={center.x} cy={center.y} r="5" fill="#fff" />
+        )}>
+        {fill => (
+          <TextFormatted
+            style={{color: '#fff', fontWeight: '700', fontSize: 26}}>
+            {parseInt(fill) + '%'}
+          </TextFormatted>
+        )}
       </AnimatedCircularProgress>
-      <TextFormatted style={{ alignSelf: 'center', color: theme.colors.primary, fontSize: 16, fontWeight: '400' }}>Loading...</TextFormatted>
+      <TextFormatted
+        style={{
+          alignSelf: 'center',
+          color: theme.colors.primary,
+          fontSize: 16,
+          fontWeight: '400',
+        }}>
+        Loading...
+      </TextFormatted>
       <View
         style={{
           position: 'absolute',
@@ -55,9 +80,15 @@ const Splash = ({ navigation }) => {
           justifyContent: 'center',
           alignItems: 'center',
           alignSelf: 'center',
-        }}
-      >
-        <TextFormatted style={{ fontSize: 22, fontWeight: '700', color: theme.colors.red_light }}>LOGO</TextFormatted>
+        }}>
+        <TextFormatted
+          style={{
+            fontSize: 22,
+            fontWeight: '700',
+            color: theme.colors.red_light,
+          }}>
+          LOGO
+        </TextFormatted>
       </View>
     </ImageBackground>
   );
