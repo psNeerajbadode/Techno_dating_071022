@@ -1,9 +1,16 @@
-import { Image, ScrollView, StatusBar, StyleSheet, TouchableOpacity, View } from 'react-native';
-import React, { useRef } from 'react';
+import {
+  Image,
+  ScrollView,
+  StatusBar,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import React, {useRef} from 'react';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import TextFormatted from '../../../components/TextFormatted';
-import { theme } from '../../../utils/Constants';
+import {theme} from '../../../utils/Constants';
 import Icon from 'react-native-vector-icons/Entypo';
 import NeedBreack from './needBreack';
 import SubmitFeedback from './submitFeedback';
@@ -12,9 +19,9 @@ import MetSomeone from './metSomeone';
 import FreshStart from './freshStart';
 import Other from './other';
 import LinearGradient from 'react-native-linear-gradient';
-import { useSelector } from 'react-redux';
+import {useSelector} from 'react-redux';
 
-const CloseAccount = ({ refRBSheet }) => {
+const CloseAccount = ({refRBSheet}) => {
   const ThemeMode = useSelector(state => state.Theme);
   const refRBSheet1 = useRef();
   const refRBSheet2 = useRef();
@@ -30,23 +37,37 @@ const CloseAccount = ({ refRBSheet }) => {
       closeOnPressBack={true}
       customStyles={{
         wrapper: {},
-        draggableIcon: { backgroundColor: '#8490AE' },
-        container: { borderTopLeftRadius: 40, borderTopRightRadius: 40 },
-      }}
-    >
+        draggableIcon: {backgroundColor: '#8490AE'},
+        container: {borderTopLeftRadius: 40, borderTopRightRadius: 40},
+      }}>
       <StatusBar backgroundColor={'#00000077'} />
-      <Fontisto
-        name="close-a"
-        size={14}
-        color={theme.colors.primaryBlack}
-        style={{ alignSelf: 'flex-end', marginRight: 20, marginTop: 5, padding: 10 }}
-        onPress={() => refRBSheet.current.close()}
-      />
 
+      <TouchableOpacity
+        onPress={() => refRBSheet.current.close()}
+        style={{
+          alignSelf: 'flex-end',
+          marginRight: 30,
+          marginTop: 5,
+        }}>
+        <Image
+          source={require('../../../assets/icons/close_immg.png')}
+          style={{
+            height: 5,
+            width: 5,
+            resizeMode: 'contain',
+            alignSelf: 'flex-end',
+            padding: 8,
+            tintColor:
+              /* ThemeMode.selectedTheme
+              ?  */ theme.colors.primaryBlack,
+            /*   : theme.colors.primary, */
+          }}
+        />
+      </TouchableOpacity>
       <LinearGradient
         colors={['#EEF4FF', '#CFE7FD']}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 1 }}
+        start={{x: 0, y: 0}}
+        end={{x: 1, y: 1}}
         style={{
           height: 144,
           width: 144,
@@ -55,8 +76,7 @@ const CloseAccount = ({ refRBSheet }) => {
           alignItems: 'center',
           alignSelf: 'center',
           marginVertical: 20,
-        }}
-      >
+        }}>
         <LinearGradient
           colors={
             ThemeMode.themecolr == 'Red'
@@ -71,26 +91,46 @@ const CloseAccount = ({ refRBSheet }) => {
               ? theme.colors.primaryYellow
               : theme.colors.primaryOn
           }
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 1 }}
-          style={{ height: 124, width: 124, borderRadius: 20, justifyContent: 'center', alignItems: 'center' }}
-        >
-          <Image source={require('../../../assets/icons/delete_icon.png')} style={{ height: 63, width: 63, resizeMode: 'contain' }} />
+          start={{x: 0, y: 0}}
+          end={{x: 1, y: 1}}
+          style={{
+            height: 124,
+            width: 124,
+            borderRadius: 20,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          <Image
+            source={require('../../../assets/icons/delete_icon.png')}
+            style={{height: 63, width: 63, resizeMode: 'contain'}}
+          />
         </LinearGradient>
       </LinearGradient>
 
       <ScrollView>
         <TextFormatted
-          style={{ fontSize: 18, fontWeight: '600', color: theme.colors.primaryBlack, textAlign: 'center', marginHorizontal: 34, marginTop: 20 }}
-        >
+          style={{
+            fontSize: 18,
+            fontWeight: '600',
+            color: theme.colors.primaryBlack,
+            textAlign: 'center',
+            marginHorizontal: 34,
+            marginTop: 20,
+          }}>
           Are you sure you want to delete your account?
         </TextFormatted>
         <TextFormatted
-          style={{ fontSize: 14, fontWeight: '400', color: theme.colors.primaryBlack, textAlign: 'center', marginHorizontal: 30, marginTop: 20 }}
-        >
+          style={{
+            fontSize: 14,
+            fontWeight: '400',
+            color: theme.colors.primaryBlack,
+            textAlign: 'center',
+            marginHorizontal: 30,
+            marginTop: 20,
+          }}>
           Please let us know the reason you are leaving.
         </TextFormatted>
-        <View style={{ height: 20 }} />
+        <View style={{height: 20}} />
         <ButtonRow
           title={'I need a break from ...'}
           onPress={() => {
@@ -137,14 +177,31 @@ const CloseAccount = ({ refRBSheet }) => {
     </RBSheet>
   );
 };
-const ButtonRow = ({ title, onPress }) => {
+const ButtonRow = ({title, onPress}) => {
   return (
     <TouchableOpacity
       onPress={onPress}
-      style={{ flexDirection: 'row', alignItems: 'center', marginHorizontal: 22, paddingVertical: 5, marginVertical: 5 }}
-    >
-      <TextFormatted style={{ fontSize: 14, fontWeight: '600', color: theme.colors.primaryBlack, flex: 1 }}>{title}</TextFormatted>
-      <Icon name="chevron-small-right" size={20} color={theme.colors.primaryBlack} />
+      style={{
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginHorizontal: 22,
+        paddingVertical: 5,
+        marginVertical: 5,
+      }}>
+      <TextFormatted
+        style={{
+          fontSize: 14,
+          fontWeight: '600',
+          color: theme.colors.primaryBlack,
+          flex: 1,
+        }}>
+        {title}
+      </TextFormatted>
+      <Icon
+        name="chevron-small-right"
+        size={20}
+        color={theme.colors.primaryBlack}
+      />
     </TouchableOpacity>
   );
 };

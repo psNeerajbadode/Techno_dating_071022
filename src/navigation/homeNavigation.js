@@ -27,7 +27,9 @@ import TermCondition from '../screens/auth/termCondition';
 const Stack = createNativeStackNavigator();
 const HomeNavigation = () => {
   return (
-    <Stack.Navigator screenOptions={{headerShown: false}}>
+    <Stack.Navigator
+      initialRouteName="HomePage"
+      screenOptions={{headerShown: false}}>
       <Stack.Screen name="homePage" component={HomePage} />
       <Stack.Screen name="userProfile" component={UserProfile} />
       <Stack.Screen name="viewImage" component={ViewImage} />

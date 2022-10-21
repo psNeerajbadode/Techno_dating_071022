@@ -1,13 +1,29 @@
-import { Image, ScrollView, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import React, { useState } from 'react';
+import {
+  Image,
+  ScrollView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import React, {useState} from 'react';
 import RBSheet from 'react-native-raw-bottom-sheet';
-import AntDesign from 'react-native-vector-icons/AntDesign';
-import { theme } from '../../../utils/Constants';
+import {theme} from '../../../utils/Constants';
 import TextFormatted from '../../../components/TextFormatted';
 import Button from '../../../components/Button';
-import Icon from 'react-native-vector-icons/Entypo';
+import {
+  BluelightImage,
+  GreenlightImage,
+  PurplelightImage,
+  RedlightImage,
+  YellowlightImage,
+} from '../../../utils/CustomImages';
+import {useSelector} from 'react-redux';
 
-const SomethingBroken = ({ refRBSheet }) => {
+const SomethingBroken = ({refRBSheet}) => {
+  const ThemeMode = useSelector(state => state.Theme);
   const [select, setSelect] = useState();
   const data = [
     'App crashes too much',
@@ -24,51 +40,103 @@ const SomethingBroken = ({ refRBSheet }) => {
       closeOnPressBack={true}
       customStyles={{
         wrapper: {},
-        draggableIcon: { backgroundColor: '#8490AE' },
-        container: { borderTopLeftRadius: 40, borderTopRightRadius: 40 },
-      }}
-    >
+        draggableIcon: {backgroundColor: '#8490AE'},
+        container: {borderTopLeftRadius: 40, borderTopRightRadius: 40},
+      }}>
       <StatusBar backgroundColor={'#00000077'} />
-      <AntDesign
+
+      <TouchableOpacity
         onPress={() => {
           refRBSheet.current.close();
         }}
-        name="arrowleft"
-        size={20}
-        color={theme.colors.primaryBlack}
         style={{
-          height: 40,
-          width: 40,
-          backgroundColor: '#FFFFFF33',
-          textAlign: 'center',
-          textAlignVertical: 'center',
-          borderRadius: 12,
-          marginLeft: 20,
-        }}
-      />
+          alignSelf: 'flex-start',
+          marginLeft: 30,
+          marginTop: 5,
+        }}>
+        <Image
+          source={require('../../../assets/icons/sheet_arrow.png')}
+          style={{
+            height: 5,
+            width: 5,
+            resizeMode: 'contain',
+            alignSelf: 'flex-end',
+            padding: 8,
+            tintColor: theme.colors.primaryBlack,
+          }}
+        />
+      </TouchableOpacity>
       <ScrollView>
         <TextFormatted
-          style={{ fontSize: 18, fontWeight: '600', color: theme.colors.primaryBlack, textAlign: 'center', marginHorizontal: 34, marginTop: 20 }}
-        >
+          style={{
+            fontSize: 18,
+            fontWeight: '600',
+            color: theme.colors.primaryBlack,
+            textAlign: 'center',
+            marginHorizontal: 34,
+            marginTop: 20,
+          }}>
           Submit Feedback
         </TextFormatted>
         <TextFormatted
-          style={{ fontSize: 14, fontWeight: '400', color: theme.colors.darkGrey, textAlign: 'center', marginHorizontal: 30, marginTop: 20 }}
-        >
-          We want understandhow to improve your experience. Why are you deleting your account?
+          style={{
+            fontSize: 14,
+            fontWeight: '400',
+            color: theme.colors.darkGrey,
+            textAlign: 'center',
+            marginHorizontal: 30,
+            marginVertical: 20,
+          }}>
+          We want understandhow to improve your experience. Why are you deleting
+          your account?
         </TextFormatted>
         {data.map((v, i) => (
-          <View style={{ flexDirection: 'row', alignItems: 'center', marginHorizontal: 22, marginVertical: 5 }}>
-            <TextFormatted style={{ fontSize: 14, fontWeight: '600', color: theme.colors.primaryBlack, flex: 1 }}>{v}</TextFormatted>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              marginHorizontal: 22,
+              marginVertical: 5,
+            }}>
+            <TextFormatted
+              style={{
+                fontSize: 14,
+                fontWeight: '600',
+                color: theme.colors.primaryBlack,
+                flex: 1,
+              }}>
+              {v}
+            </TextFormatted>
             <TouchableOpacity onPress={() => setSelect(select == i ? null : i)}>
               <Image
-                source={select == i ? require('../../../assets/icons/check_red.png') : require('../../../assets/icons/check.png')}
-                style={{ height: 29, width: 29, resizeMode: 'contain' }}
+                source={
+                  select == i
+                    ? ThemeMode.themecolr == 'Red'
+                      ? RedlightImage.check_red
+                      : ThemeMode.themecolr == 'Blue'
+                      ? BluelightImage.check_blue
+                      : ThemeMode.themecolr == 'Green'
+                      ? GreenlightImage.check_green
+                      : ThemeMode.themecolr == 'Purple'
+                      ? PurplelightImage.check_purple
+                      : ThemeMode.themecolr == 'Yellow'
+                      ? YellowlightImage.check_yellow
+                      : RedlightImage.check_red
+                    : require('../../../assets/icons/check.png')
+                }
+                style={{height: 29, width: 29, resizeMode: 'contain'}}
               />
             </TouchableOpacity>
           </View>
         ))}
-        <TextFormatted style={{ fontSize: 14, fontWeight: '600', color: theme.colors.primaryBlack, marginLeft: 40, marginTop: 15 }}>
+        <TextFormatted
+          style={{
+            fontSize: 14,
+            fontWeight: '600',
+            color: theme.colors.primaryBlack,
+            marginLeft: 20,
+            marginTop: 15,
+          }}>
           Tell us more
         </TextFormatted>
         <TextInput

@@ -1,15 +1,22 @@
-import { Image, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import React, { useRef, useState } from 'react';
+import {
+  Image,
+  StatusBar,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import React, {useRef, useState} from 'react';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import TextFormatted from '../../components/TextFormatted';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { theme } from '../../utils/Constants';
+import {theme} from '../../utils/Constants';
 import LinearGradient from 'react-native-linear-gradient';
 import Button from '../../components/Button';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import { useDispatch, useSelector } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 
-const MoreOptions = ({ refRBSheet }) => {
+const MoreOptions = ({refRBSheet}) => {
   const refRBSheet2 = useRef();
   const [isReport, setIsReport] = useState(0);
   const ThemeMode = useSelector(state => state.Theme);
@@ -33,44 +40,77 @@ const MoreOptions = ({ refRBSheet }) => {
       closeOnPressBack={true}
       customStyles={{
         wrapper: {},
-        draggableIcon: { backgroundColor: '#8490AE' },
+        draggableIcon: {backgroundColor: '#8490AE'},
         container: {
           borderTopLeftRadius: 40,
           borderTopRightRadius: 40,
-          backgroundColor: ThemeMode.selectedTheme ? theme.colors.primary : theme.colors.primaryBlack,
+          backgroundColor: ThemeMode.selectedTheme
+            ? theme.colors.primary
+            : theme.colors.primaryBlack,
         },
-      }}
-    >
+      }}>
       <StatusBar backgroundColor={'#00000077'} />
       <TouchableOpacity
-        style={{ flexDirection: 'row', marginLeft: 20, marginRight: 30, paddingVertical: 2, marginTop: 20 }}
+        style={{
+          flexDirection: 'row',
+          marginLeft: 20,
+          marginRight: 30,
+          paddingVertical: 2,
+          marginTop: 20,
+        }}
         onPress={() => {
           setIsReport(1);
           refRBSheet2.current.open();
-        }}
-      >
-        <TextFormatted style={{ fontSize: 14, fontWeight: '600', color: colormode, flex: 1 }}>Report...</TextFormatted>
+        }}>
+        <TextFormatted
+          style={{fontSize: 14, fontWeight: '600', color: colormode, flex: 1}}>
+          Report...
+        </TextFormatted>
         <Icon name="navigate-next" size={20} color={colormode} />
       </TouchableOpacity>
       <TouchableOpacity
-        style={{ flexDirection: 'row', marginLeft: 20, marginRight: 30, paddingVertical: 2, marginTop: 10 }}
+        style={{
+          flexDirection: 'row',
+          marginLeft: 20,
+          marginRight: 30,
+          paddingVertical: 2,
+          marginTop: 10,
+        }}
         onPress={() => {
           setIsReport(0);
           refRBSheet2.current.open();
-        }}
-      >
+        }}>
         <TextFormatted
-          style={{ fontSize: 14, fontWeight: '600', color: ThemeMode.selectedTheme ? theme.colors.primaryBlack : theme.colors.primary, flex: 1 }}
-        >
+          style={{
+            fontSize: 14,
+            fontWeight: '600',
+            color: ThemeMode.selectedTheme
+              ? theme.colors.primaryBlack
+              : theme.colors.primary,
+            flex: 1,
+          }}>
           Block account
         </TextFormatted>
-        <Icon name="navigate-next" size={20} color={ThemeMode.selectedTheme ? theme.colors.primaryBlack : theme.colors.primary} />
+        <Icon
+          name="navigate-next"
+          size={20}
+          color={
+            ThemeMode.selectedTheme
+              ? theme.colors.primaryBlack
+              : theme.colors.primary
+          }
+        />
       </TouchableOpacity>
-      <BlockReport refRBSheet={refRBSheet} refRBSheet2={refRBSheet2} isReport={isReport} setIsReport={setIsReport} />
+      <BlockReport
+        refRBSheet={refRBSheet}
+        refRBSheet2={refRBSheet2}
+        isReport={isReport}
+        setIsReport={setIsReport}
+      />
     </RBSheet>
   );
 };
-const BlockReport = ({ refRBSheet2, refRBSheet, isReport, setIsReport }) => {
+const BlockReport = ({refRBSheet2, refRBSheet, isReport, setIsReport}) => {
   const ThemeMode = useSelector(state => state.Theme);
   return (
     <RBSheet
@@ -79,15 +119,16 @@ const BlockReport = ({ refRBSheet2, refRBSheet, isReport, setIsReport }) => {
       closeOnDragDown={true}
       closeOnPressBack={true}
       customStyles={{
-        draggableIcon: { backgroundColor: '#8490AE' },
+        draggableIcon: {backgroundColor: '#8490AE'},
         container: {
           borderTopLeftRadius: 40,
           borderTopRightRadius: 40,
           overflow: 'visible',
-          backgroundColor: ThemeMode.selectedTheme ? theme.colors.primary : theme.colors.primaryBlack,
+          backgroundColor: ThemeMode.selectedTheme
+            ? theme.colors.primary
+            : theme.colors.primaryBlack,
         },
-      }}
-    >
+      }}>
       <StatusBar backgroundColor={'#00000077'} translucent />
 
       <AntDesign
@@ -97,23 +138,59 @@ const BlockReport = ({ refRBSheet2, refRBSheet, isReport, setIsReport }) => {
         }}
         name="arrowleft"
         size={20}
-        color={ThemeMode.selectedTheme ? theme.colors.primaryBlack : theme.colors.primary}
+        color={
+          ThemeMode.selectedTheme
+            ? theme.colors.primaryBlack
+            : theme.colors.primary
+        }
         style={{
           height: 40,
           width: 40,
-          backgroundColor: ThemeMode.selectedTheme ? '#FFFFFF33' : 'transparent',
+          backgroundColor: ThemeMode.selectedTheme
+            ? '#FFFFFF33'
+            : 'transparent',
           textAlign: 'center',
           textAlignVertical: 'center',
           borderRadius: 12,
           marginLeft: 20,
         }}
       />
+      {/*  <TouchableOpacity
+        onPress={() => {
+          refRBSheet.current.open();
+          refRBSheet2.current.close();
+        }}
+        style={{
+          alignSelf: 'flex-start',
+          marginLeft: 30,
+          marginTop: 5,
+        }}>
+        <Image
+          source={require('../../../assets/icons/sheet_arrow.png')}
+          style={{
+            height: 5,
+            width: 5,
+            resizeMode: 'contain',
+            alignSelf: 'flex-end',
+            padding: 8,
+            tintColor: ThemeMode.selectedTheme ? theme.colors.primaryBlack : theme.colors.primary,
+          }}
+        />
+      </TouchableOpacity> */}
+
       <LinearGradient
         colors={['#EEF4FF', '#CFE7FD']}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 1 }}
-        style={{ height: 144, width: 144, borderRadius: 20, justifyContent: 'center', alignItems: 'center', alignSelf: 'center', marginTop: 25 }}
-      >
+        start={{x: 0, y: 0}}
+        end={{x: 1, y: 1}}
+        style={{
+          height: 144,
+          width: 144,
+          borderRadius: 20,
+          justifyContent: 'center',
+          alignItems: 'center',
+          alignSelf: 'center',
+          marginTop: 25,
+        }}>
         <LinearGradient
           colors={
             ThemeMode.themecolr == 'Red'
@@ -128,13 +205,22 @@ const BlockReport = ({ refRBSheet2, refRBSheet, isReport, setIsReport }) => {
               ? theme.colors.primaryYellow
               : theme.colors.primaryOn
           }
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 1 }}
-          style={{ height: 124, width: 124, borderRadius: 20, justifyContent: 'center', alignItems: 'center' }}
-        >
+          start={{x: 0, y: 0}}
+          end={{x: 1, y: 1}}
+          style={{
+            height: 124,
+            width: 124,
+            borderRadius: 20,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
           <Image
-            source={isReport == 1 ? require('../../assets/icons/alert.png') : require('../../assets/icons/akar.png')}
-            style={{ height: 63, width: 63, resizeMode: 'contain' }}
+            source={
+              isReport == 1
+                ? require('../../assets/icons/alert.png')
+                : require('../../assets/icons/akar.png')
+            }
+            style={{height: 63, width: 63, resizeMode: 'contain'}}
           />
         </LinearGradient>
       </LinearGradient>
@@ -142,35 +228,87 @@ const BlockReport = ({ refRBSheet2, refRBSheet, isReport, setIsReport }) => {
         style={{
           fontSize: 18,
           fontWeight: '600',
-          color: ThemeMode.selectedTheme ? theme.colors.primaryBlack : theme.colors.primary,
+          color: ThemeMode.selectedTheme
+            ? theme.colors.primaryBlack
+            : theme.colors.primary,
           marginHorizontal: 20,
           marginTop: 40,
-        }}
-      >
-        {isReport == 1 ? 'Why are you reporting this account?' : 'Are you sure you want to block this account?'}
+        }}>
+        {isReport == 1
+          ? 'Why are you reporting this account?'
+          : 'Are you sure you want to block this account?'}
       </TextFormatted>
-      <TextFormatted style={{ fontSize: 14, fontWeight: '400', color: '#8490AE', marginHorizontal: 20, marginTop: 14 }}>
+      <TextFormatted
+        style={{
+          fontSize: 14,
+          fontWeight: '400',
+          color: '#8490AE',
+          marginHorizontal: 20,
+          marginTop: 14,
+        }}>
         {isReport == 1
           ? 'Your reports are always anonymous'
           : 'By blocking this profile , you will not be able to visit it again or send/receive any message'}
       </TextFormatted>
       {isReport == 1 ? (
         <View>
-          <TouchableOpacity style={{ flexDirection: 'row', marginLeft: 20, marginRight: 30, paddingVertical: 2, marginTop: 30 }}>
+          <TouchableOpacity
+            style={{
+              flexDirection: 'row',
+              marginLeft: 20,
+              marginRight: 30,
+              paddingVertical: 2,
+              marginTop: 30,
+            }}>
             <TextFormatted
-              style={{ fontSize: 14, fontWeight: '600', color: ThemeMode.selectedTheme ? theme.colors.primaryBlack : theme.colors.primary, flex: 1 }}
-            >
+              style={{
+                fontSize: 14,
+                fontWeight: '600',
+                color: ThemeMode.selectedTheme
+                  ? theme.colors.primaryBlack
+                  : theme.colors.primary,
+                flex: 1,
+              }}>
               Report post
             </TextFormatted>
-            <Icon name="navigate-next" size={20} color={ThemeMode.selectedTheme ? theme.colors.primaryBlack : theme.colors.primary} />
+            <Icon
+              name="navigate-next"
+              size={20}
+              color={
+                ThemeMode.selectedTheme
+                  ? theme.colors.primaryBlack
+                  : theme.colors.primary
+              }
+            />
           </TouchableOpacity>
-          <TouchableOpacity style={{ flexDirection: 'row', marginLeft: 20, marginRight: 30, paddingVertical: 2, marginTop: 10 }}>
+          <TouchableOpacity
+            style={{
+              flexDirection: 'row',
+              marginLeft: 20,
+              marginRight: 30,
+              paddingVertical: 2,
+              marginTop: 10,
+            }}>
             <TextFormatted
-              style={{ fontSize: 14, fontWeight: '600', color: ThemeMode.selectedTheme ? theme.colors.primaryBlack : theme.colors.primary, flex: 1 }}
-            >
+              style={{
+                fontSize: 14,
+                fontWeight: '600',
+                color: ThemeMode.selectedTheme
+                  ? theme.colors.primaryBlack
+                  : theme.colors.primary,
+                flex: 1,
+              }}>
               Report account
             </TextFormatted>
-            <Icon name="navigate-next" size={20} color={ThemeMode.selectedTheme ? theme.colors.primaryBlack : theme.colors.primary} />
+            <Icon
+              name="navigate-next"
+              size={20}
+              color={
+                ThemeMode.selectedTheme
+                  ? theme.colors.primaryBlack
+                  : theme.colors.primary
+              }
+            />
           </TouchableOpacity>
         </View>
       ) : (
@@ -196,8 +334,7 @@ const BlockReport = ({ refRBSheet2, refRBSheet, isReport, setIsReport }) => {
             onPress={() => {
               refRBSheet.current.open();
               refRBSheet2.current.close();
-            }}
-          >
+            }}>
             Cancel
           </TextFormatted>
         </View>

@@ -1,11 +1,9 @@
 import {
-  FlatList,
   Image,
   ImageBackground,
   ScrollView,
   StatusBar,
   StyleSheet,
-  Text,
   TouchableOpacity,
   useWindowDimensions,
   View,
@@ -71,7 +69,7 @@ const Security = () => {
           title={'Change password'}
           onPress={() => refRBSheet.current.open()}
         />
-        <View
+        {/*    <View
           style={{
             flexDirection: 'row',
             alignItems: 'center',
@@ -129,7 +127,7 @@ const Security = () => {
               }
             />
           </TouchableOpacity>
-        </View>
+        </View> */}
         <ButtonRow
           title={'Manage payments account'}
           onPress={() => refRBSheet1.current.open()}
@@ -244,12 +242,7 @@ const Security = () => {
                   ? theme.colors.primaryBlack
                   : theme.colors.primary
               }
-              borderWidth={
-                repeatPassword == '' ||
-                (repeatPassword != null && !validPass(repeatPassword))
-                  ? 1
-                  : 0
-              }
+              borderWidth={newPassword == repeatPassword ? 0 : 1}
               right={
                 <Ionicons
                   name={show2 ? 'md-eye-off-outline' : 'md-eye-outline'}
@@ -261,12 +254,7 @@ const Security = () => {
               }
               secureTextEntry={show2 ? false : true}
               containerStyle={{marginTop: 20}}
-              showMess={
-                repeatPassword == '' ||
-                (repeatPassword != null && !validPass(repeatPassword))
-                  ? true
-                  : false
-              }
+              showMess={newPassword == repeatPassword ? false : true}
               // mess={'Password should be minimum 8 digits length with 1 Uppercase and 1 number'}
               mess={
                 'password is matching the expectation but its not the same as the above password'
@@ -419,22 +407,28 @@ const CreditCard = ({
       }}>
       <StatusBar backgroundColor={'#00000077'} />
       <ScrollView>
-        <Fontisto
-          name="close-a"
-          size={14}
-          color={
-            ThemeMode.selectedTheme
-              ? theme.colors.primaryBlack
-              : theme.colors.primary
-          }
+        <TouchableOpacity
+          onPress={() => refRBSheet1.current.close()}
           style={{
             alignSelf: 'flex-end',
-            marginRight: 20,
+            marginRight: 30,
             marginTop: 5,
-            padding: 10,
-          }}
-          onPress={() => refRBSheet1.current.close()}
-        />
+          }}>
+          <Image
+            source={require('../../assets/icons/close_immg.png')}
+            style={{
+              height: 5,
+              width: 5,
+              resizeMode: 'contain',
+              alignSelf: 'flex-end',
+              padding: 8,
+              tintColor: ThemeMode.selectedTheme
+                ? theme.colors.primaryBlack
+                : theme.colors.primary,
+            }}
+          />
+        </TouchableOpacity>
+
         <TextFormatted
           style={{
             fontSize: 18,
@@ -498,27 +492,49 @@ const CreditCard = ({
                       </TextFormatted>
                     </View>
                   </View>
-                  {index == 0 && (
-                    <TouchableOpacity
-                      onPress={() => refRBSheet3.current.open()}
-                      style={{
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        height: 40,
-                        width: 114,
-                        justifyContent: 'center',
-                        borderRadius: 16,
-                        borderWidth: 1,
-                        borderColor: '#fff',
-                        position: 'absolute',
-                        right: 20,
-                        top: 20,
-                      }}>
-                      <Image
-                        source={require('../../assets/icons/edit_pen.png')}
-                        style={{height: 24, width: 24, resizeMode: 'contain'}}
-                      />
-                      <TextFormatted
+
+                  <TouchableOpacity
+                    onPress={() => refRBSheet3.current.open()}
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      /*   height: 40,
+                        width: 114, */
+                      justifyContent: 'center',
+                      borderRadius: 12,
+                      borderWidth: 1,
+                      borderColor: '#fff',
+                      position: 'absolute',
+                      right: 60,
+                      top: 20,
+                      padding: 5,
+                    }}>
+                    <Image
+                      source={require('../../assets/icons/edit_pen.png')}
+                      style={{height: 24, width: 24, resizeMode: 'contain'}}
+                    />
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    /*    onPress={() => refRBSheet3.current.open()} */
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      /*   height: 40,
+                        width: 114, */
+                      justifyContent: 'center',
+                      borderRadius: 12,
+                      borderWidth: 1,
+                      borderColor: '#fff',
+                      position: 'absolute',
+                      right: 15,
+                      top: 20,
+                      padding: 5,
+                    }}>
+                    <Image
+                      source={require('../../assets/icons/delete_icon.png')}
+                      style={{height: 24, width: 24, resizeMode: 'contain'}}
+                    />
+                    {/*  <TextFormatted
                         style={{
                           fontSize: 14,
                           fontWeight: '600',
@@ -526,9 +542,8 @@ const CreditCard = ({
                           marginLeft: 5,
                         }}>
                         Edit card
-                      </TextFormatted>
-                    </TouchableOpacity>
-                  )}
+                      </TextFormatted> */}
+                  </TouchableOpacity>
                 </ImageBackground>
                 {show && (
                   <View style={{position: 'absolute'}}>

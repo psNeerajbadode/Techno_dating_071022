@@ -31,6 +31,8 @@ const FingerPrint = ({navigation}) => {
     TouchID.authenticate('', optionalConfigObject)
       .then(success => {
         console.log('success', success);
+
+        navigation.replace('HomeNavigation');
         setTouch(true);
         setAuthentication(success);
       })

@@ -113,10 +113,11 @@ const ProfileSetting = () => {
       </ScrollView>
       <ButtonRow
         title={'Close account'}
-        coloricon
-        color
+        coloricon={theme.colors.darkGrey}
+        color={theme.colors.darkGrey}
         onPress={() => refRBSheet.current.open()}
       />
+
       <CloseAccount refRBSheet={refRBSheet} />
       <View style={{height: 20}} />
     </View>
@@ -140,9 +141,10 @@ const ButtonRow = ({title, onPress, color, coloricon}) => {
           fontSize: 14,
           fontWeight: '600',
           color:
-            color || ThemeMode.selectedTheme
+            color ||
+            (ThemeMode.selectedTheme
               ? theme.colors.primaryBlack
-              : theme.colors.primary,
+              : theme.colors.primary),
           flex: 1,
         }}>
         {title}
@@ -151,9 +153,10 @@ const ButtonRow = ({title, onPress, color, coloricon}) => {
         name="chevron-small-right"
         size={20}
         color={
-          coloricon || ThemeMode.selectedTheme
+          coloricon ||
+          (ThemeMode.selectedTheme
             ? theme.colors.primaryBlack
-            : theme.colors.primary
+            : theme.colors.primary)
         }
       />
     </TouchableOpacity>
