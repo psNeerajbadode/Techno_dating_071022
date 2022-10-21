@@ -1,8 +1,8 @@
-import {Image, StyleSheet, Text, TextInput, View} from 'react-native';
+import {StyleSheet, TextInput, View} from 'react-native';
 import React from 'react';
 import TextFormatted from './TextFormatted';
 import {theme} from '../utils/Constants';
-import {useDispatch, useSelector} from 'react-redux';
+import {useSelector} from 'react-redux';
 
 const TextInputFormat = ({
   right,
@@ -20,6 +20,7 @@ const TextInputFormat = ({
   showMess,
   marginHorizontal,
   leftlabel,
+  placeholderTextColor,
   ...props
 }) => {
   const ThemeMode = useSelector(state => state.Theme);
@@ -86,7 +87,7 @@ const TextInputFormat = ({
 
           placeholder={placeholder}
           keyboardType={keyboardType || 'default'}
-          placeholderTextColor={'#8490AE'}
+          placeholderTextColor={placeholderTextColor || '#8490AE'}
           value={value}
           onChangeText={onChangeText}
           style={[

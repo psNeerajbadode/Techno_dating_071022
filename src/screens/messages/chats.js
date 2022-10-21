@@ -194,14 +194,14 @@ const Chats = () => {
                     <Image
                       source={v.img}
                       resizeMode="contain"
-                      style={{width: 50, height: 50}}
+                      style={{width: 45, height: 45}}
                     />
                     <TextFormatted
                       style={{
-                        fontSize: 16,
+                        fontSize: 15,
                         fontWeight: '700',
                         color: theme.colors.darkGrey,
-                        marginTop: 12,
+                        marginTop: 10,
                       }}>
                       {v.title}
                     </TextFormatted>
@@ -231,7 +231,9 @@ const Chats = () => {
           <View
             style={{
               padding: 15,
-              backgroundColor: '#FAFAFA',
+              backgroundColor: ThemeMode.selectedTheme
+                ? '#FAFAFA'
+                : '#FFFFFF0D',
               marginLeft: 10,
               flexDirection: 'row',
               borderTopRightRadius: 50,

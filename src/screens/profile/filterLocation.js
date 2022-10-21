@@ -101,7 +101,7 @@ const FilterLocation = () => {
           val={parseInt(setkm).toFixed(0)}
         />
       </ScrollView>
-      <BottomSheet refRBSheet={refRBSheet} height={250}>
+      <BottomSheet refRBSheet={refRBSheet} height={235}>
         <Setting
           distance={distance}
           setdistance={setDistance}
@@ -212,10 +212,10 @@ const Setting = ({setdistance, distance, refRBSheet}) => {
             marginTop: 10,
             marginBottom: 0,
           }}>
-          Select your type
+          Select Unit of Measure
         </TextFormatted>
 
-        <TextFormatted
+        {/*   <TextFormatted
           style={{
             fontSize: 14,
             fontWeight: '600',
@@ -225,57 +225,19 @@ const Setting = ({setdistance, distance, refRBSheet}) => {
             marginLeft: 40,
             marginTop: 25,
           }}>
-          Unit
-        </TextFormatted>
-        <Dropdown
-          style={[
-            styles.dropdown,
-            {
-              backgroundColor: ThemeMode.selectedTheme
-                ? theme.colors.primary
-                : theme.colors.primaryBlack,
-            },
-          ]}
-          dropdownPosition="auto"
-          containerStyle={{borderRadius: 20, overflow: 'hidden'}}
-          placeholderStyle={{
-            ...styles.placeholderStyle,
-            color: ThemeMode.selectedTheme
-              ? theme.colors.primaryBlack
-              : theme.colors.primary,
-          }}
-          selectedTextStyle={{
-            ...styles.selectedTextStyle,
-            color: ThemeMode.selectedTheme
-              ? theme.colors.primaryBlack
-              : theme.colors.primary,
-            backgroundColor: ThemeMode.selectedTheme
-              ? theme.colors.primary
-              : theme.colors.primaryBlack,
-          }}
-          activeColor={
-            ThemeMode.selectedTheme
-              ? theme.colors.primary
-              : theme.colors.primaryBlack
-          }
-          data={[
-            {label: 'Kilometer ', value: 'km'},
-            {label: 'Millimeter ', value: 'mm'},
-          ]}
-          maxHeight={100}
-          labelField="label"
-          valueField="value"
-          // placeholder={'Choose Gender'}
-          value={distance}
-          onChange={item => setdistance(item.value)}
-          renderRightIcon={() => (
-            <Icon
-              name="chevron-small-down"
-              color={theme.colors.primaryBlack}
-              size={20}
-            />
-          )}
-        />
+          km/miles
+        </TextFormatted> */}
+        <View style={{marginTop: -20, marginBottom: 10}}>
+          <Dropdown1
+            data={[
+              {label: 'Kilometer ', value: 'km'},
+              {label: 'Millimeter ', value: 'mm'},
+            ]}
+            value={distance}
+            onChange={item => setdistance(item.value)}
+            height={150}
+          />
+        </View>
       </ScrollView>
 
       <ButtonView>

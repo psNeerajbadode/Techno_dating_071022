@@ -283,7 +283,7 @@ const UserLikeBottomSheet = ({refRBSheet, setLike}) => {
         refRBSheet={DatatypeRef}
         height={600}
         children={
-          <View style={{marginHorizontal: 20, marginTop: 90}}>
+          <View style={{marginHorizontal: 10, marginTop: 90}}>
             <View style={{alignSelf: 'center'}}>
               <SearchBar
                 onPress={() => setSearch('')}
@@ -314,10 +314,10 @@ const UserLikeBottomSheet = ({refRBSheet, setLike}) => {
                 justifyContent: 'space-evenly',
                 alignItems: 'center',
                 flexDirection: 'row',
-                paddingHorizontal: 40,
+                width: '96%',
+                paddingHorizontal: 35,
                 paddingVertical: 15,
                 borderRadius: 15,
-                width: '98%',
               }}>
               <Image
                 resizeMode="contain"
@@ -350,7 +350,8 @@ const UserLikeBottomSheet = ({refRBSheet, setLike}) => {
               data={data.filter(item => {
                 return item.title.toLowerCase().includes(search.toLowerCase());
               })}
-              style={{height: 260, paddingVertical: 15}}
+              contentContainerStyle={{paddingBottom: 20}}
+              style={{height: 260, paddingTop: 15}}
               renderItem={({item, index}) => (
                 <TouchableOpacity
                   onPress={() =>
@@ -378,6 +379,7 @@ const UserLikeBottomSheet = ({refRBSheet, setLike}) => {
                       ? theme.colors.primary
                       : theme.colors.primaryBlack,
                     borderRadius: 15,
+                    marginHorizontal: 10,
                   }}>
                   <View
                     style={{
@@ -475,7 +477,7 @@ const UserLikeBottomSheet = ({refRBSheet, setLike}) => {
               <Button
                 opacity={additem.length >= 1 ? 1 : 0.5}
                 disabled={additem.length >= 1 ? false : true}
-                buttonName={'Save'}
+                buttonName={'Send'}
                 color={'#fff'}
                 marginTop={1}
                 width={dimension.width / 2 - 10}

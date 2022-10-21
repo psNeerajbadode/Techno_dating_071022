@@ -20,7 +20,7 @@ import {Dropdown} from 'react-native-element-dropdown';
 import Icon from 'react-native-vector-icons/Entypo';
 import {useNavigation} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
-import RangeSlider from 'rn-range-slider';
+
 import {
   BluelightImage,
   GreenlightImage,
@@ -28,17 +28,23 @@ import {
   RedlightImage,
   YellowlightImage,
 } from '../../utils/CustomImages';
+import MultiSlider from '@ptomasroos/react-native-multi-slider';
 
 const SelectYourType = () => {
   const navigation = useNavigation();
-  const [age, setAge] = useState('');
-  const [height, setHeight] = useState('');
-  const [weight, setWeight] = useState('');
+  const dimension = useWindowDimensions();
+  const [age, setAge] = useState([0, 10]);
+  const ageSliderValuesChange = values => setAge(values);
+  const [height, setHeight] = useState([0, 20]);
+  const heightSliderValuesChange = values => setHeight(values);
+  const [weight, setWeight] = useState([0, 10]);
+  const weightSliderValuesChange = values => setWeight(values);
   const [showMe, setShowMe] = useState('woman');
   const [lookingfor, setLookingfor] = useState('Casual');
   const [heightMajor, setHeightMajor] = useState('cm');
   const [weightMajor, setWeightMajor] = useState('kg');
   const refRBSheet = useRef();
+
   const ThemeMode = useSelector(state => state.Theme);
   const data = [
     {name: 'Casual', img: require('../../assets/icons/chattype1.png')},
@@ -79,31 +85,40 @@ const SelectYourType = () => {
 
       <ScrollView showsVerticalScrollIndicator={false}>
         <SliderView
-          maxvalu={50}
+          maxvalu={age[0]}
+          minVal={'18'}
+          maxVal={'+50'}
           header={'Max age'}
-          min={'18'}
-          max={'50+'}
-          value={age}
-          onValueChange={setAge}
-          val={(age * (50 - 18)).toFixed('0')}
+          min={18}
+          max={50}
+          value={[age[0], age[1]]}
+          onValuesChange={ageSliderValuesChange}
+          val={age[1]}
+          sliderLength={dimension.width - 40}
         />
         <SliderView
-          maxvalu={200}
+          maxvalu={height[0]}
           header={'Max height'}
-          min={'-150' + heightMajor}
-          max={'+200' + heightMajor}
-          value={height}
-          onValueChange={setHeight}
-          val={(height * (200 - 150) + 150).toFixed('0')}
+          min={150}
+          max={200}
+          minVal={'-150cm'}
+          maxVal={'+200cm'}
+          value={[height[0], height[1]]}
+          onValuesChange={heightSliderValuesChange}
+          val={height[1]}
+          sliderLength={dimension.width - 40}
         />
         <SliderView
-          maxvalu={100}
+          maxvalu={weight[0]}
           header={'Max weight'}
-          min={'40' + weightMajor}
-          max={'+100' + weightMajor}
-          value={weight}
-          onValueChange={setWeight}
-          val={(weight * (100 - 40) + 40).toFixed('0')}
+          min={40}
+          max={100}
+          minVal={'-40kg'}
+          maxVal={'+100kg'}
+          value={[weight[0], weight[1]]}
+          onValuesChange={weightSliderValuesChange}
+          val={weight[1]}
+          sliderLength={dimension.width - 40}
         />
         <View style={{marginLeft: 20, marginTop: 30}}>
           <TextFormatted
@@ -272,7 +287,18 @@ const SelectYourType = () => {
     </View>
   );
 };
-const SliderView = ({header, min, max, value, onValueChange, val, maxvalu}) => {
+const SliderView = ({
+  header,
+  minVal,
+  maxVal,
+  min,
+  max,
+  value,
+  onValuesChange,
+  val,
+  maxvalu,
+  sliderLength,
+}) => {
   const ThemeMode = useSelector(state => state.Theme);
   const colorMode =
     ThemeMode.themecolr == 'Red'
@@ -305,16 +331,26 @@ const SliderView = ({header, min, max, value, onValueChange, val, maxvalu}) => {
           {maxvalu}/{val}
         </TextFormatted>
       </View>
-      <Slider
-        value={value}
-        // step={1}
-        onValueChange={onValueChange}
-        // minimumValue={}
-        containerStyle={{height: 50}}
-        trackStyle={{height: 6, borderRadius: 10}}
-        minimumTrackTintColor={colorMode}
-        maximumTrackTintColor={'#FAFAFA'}
-        renderThumbComponent={() => (
+
+      <MultiSlider
+        values={value}
+        sliderLength={sliderLength}
+        onValuesChange={onValuesChange}
+        min={min}
+        max={max}
+        step={1}
+        selectedStyle={{backgroundColor: colorMode, height: 5}}
+        markerContainerStyle={{alignSelf: 'center', marginTop: 2}}
+        containerStyle={{alignItems: 'center'}}
+        trackStyle={{height: 4, backgroundColor: '#FAFAFA'}}
+        markerStyle={{
+          height: 28,
+          width: 28,
+          backgroundColor: colorMode,
+          borderWidth: 4,
+          borderRadius: 40,
+        }}
+        customMarker={() => (
           <Image
             source={
               ThemeMode.themecolr == 'Red'
@@ -333,14 +369,15 @@ const SliderView = ({header, min, max, value, onValueChange, val, maxvalu}) => {
           />
         )}
       />
+
       <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
         <TextFormatted
           style={{fontSize: 12, fontWeight: '400', color: '#8490AE'}}>
-          {min}
+          {minVal}
         </TextFormatted>
         <TextFormatted
           style={{fontSize: 12, fontWeight: '400', color: '#8490AE'}}>
-          {max}
+          {maxVal}
         </TextFormatted>
       </View>
     </View>
