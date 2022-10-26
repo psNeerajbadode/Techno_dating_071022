@@ -1,8 +1,7 @@
-import { StyleSheet, Text, View } from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import React from 'react';
-import { theme } from '../utils/Constants';
 
-const ButtonView = ({ children, height, backgroundColor }) => {
+const ButtonView = ({children, height, backgroundColor}) => {
   return (
     <View
       style={{
@@ -22,8 +21,7 @@ const ButtonView = ({ children, height, backgroundColor }) => {
         borderTopLeftRadius: 30,
         borderTopRightRadius: 30,
         flexDirection: 'row',
-      }}
-    >
+      }}>
       {children}
     </View>
   );

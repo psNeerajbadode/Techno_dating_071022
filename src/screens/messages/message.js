@@ -13,7 +13,6 @@ import HeaderImage_1 from '../../components/HeaderImage_1';
 import Header from '../../components/Header';
 import SearchBar from '../../components/SearchBar';
 import TextFormatted from '../../components/TextFormatted';
-import Feather from 'react-native-vector-icons/Feather';
 import Notification from '../home/notification';
 import {useDispatch, useSelector} from 'react-redux';
 import {

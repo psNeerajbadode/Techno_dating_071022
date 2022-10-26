@@ -1,10 +1,10 @@
-import {StyleSheet, Text, useWindowDimensions, View} from 'react-native';
-import React, {useState} from 'react';
+import {StyleSheet, useWindowDimensions, View} from 'react-native';
+import React from 'react';
 import SelectDropdown from 'react-native-select-dropdown';
 import Icon from 'react-native-vector-icons/Ionicons';
 import TextFormatted from './TextFormatted';
 import {theme} from '../utils/Constants';
-import {useDispatch, useSelector} from 'react-redux';
+import {useSelector} from 'react-redux';
 
 const DropDown = ({
   label,
@@ -17,10 +17,8 @@ const DropDown = ({
   marginLeft,
   top,
 }) => {
-  const dispatch = useDispatch();
   const ThemeMode = useSelector(state => state.Theme);
   const dimensions = useWindowDimensions();
-  const [select, setSelect] = useState('');
 
   return (
     <View
@@ -44,13 +42,6 @@ const DropDown = ({
       </TextFormatted>
       <SelectDropdown
         data={items}
-        // defaultValueByIndex={1}
-        // defaultValue={'Select your gender'}
-
-        // onSelect={(selectedItem, index) => {
-        //   // console.log(selectedItem, index);
-        //   setSelect(selectedItem);
-        // }}
         onSelect={onSelect}
         defaultValue={'hiii'}
         defaultButtonText={placeholder}

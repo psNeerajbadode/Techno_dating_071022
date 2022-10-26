@@ -8,7 +8,7 @@ import {
 import React from 'react';
 import {Icon} from '@rneui/themed';
 import {theme} from '../utils/Constants';
-import {useDispatch, useSelector} from 'react-redux';
+import {useSelector} from 'react-redux';
 import {
   BluelightImage,
   GreenlightImage,
@@ -25,7 +25,6 @@ const SearchBar = ({
   placeholder,
   Cross,
 }) => {
-  const dispatch = useDispatch();
   const ThemeMode = useSelector(state => state.Theme);
   const dimension = useWindowDimensions();
   return (
@@ -86,7 +85,18 @@ const SearchBar = ({
         }}
       />
       {Cross || value?.length < 1 || (
-        <Icon name="close" size={20} color={'#000'} onPress={onPress} />
+        // <Icon name="close" size={20} color={'#000'} onPress={onPress} />
+        <Image
+          resizeMode="contain"
+          source={require('../assets/icons/close_immg.png')}
+          style={{
+            tintColor: ThemeMode.selectedTheme
+              ? theme.colors.primaryBlack
+              : theme.colors.darkGrey,
+            width: 12,
+            height: 12,
+          }}
+        />
       )}
     </View>
   );

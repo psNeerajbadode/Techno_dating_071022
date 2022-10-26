@@ -2,7 +2,6 @@ import {
   Image,
   StatusBar,
   StyleSheet,
-  Text,
   TouchableOpacity,
   View,
 } from 'react-native';
@@ -13,8 +12,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import {theme} from '../../utils/Constants';
 import LinearGradient from 'react-native-linear-gradient';
 import Button from '../../components/Button';
-import AntDesign from 'react-native-vector-icons/AntDesign';
-import {useDispatch, useSelector} from 'react-redux';
+import {useSelector} from 'react-redux';
 
 const MoreOptions = ({refRBSheet}) => {
   const refRBSheet2 = useRef();
@@ -66,7 +64,17 @@ const MoreOptions = ({refRBSheet}) => {
           style={{fontSize: 14, fontWeight: '600', color: colormode, flex: 1}}>
           Report...
         </TextFormatted>
-        <Icon name="navigate-next" size={20} color={colormode} />
+        <Image
+          resizeMode="contain"
+          source={require('../../assets/icons/chevron_down_ico.png')}
+          style={{
+            marginTop: 0,
+            height: 12,
+            width: 10,
+            transform: [{rotate: '-90deg'}],
+            tintColor: colormode,
+          }}
+        />
       </TouchableOpacity>
       <TouchableOpacity
         style={{
@@ -91,14 +99,19 @@ const MoreOptions = ({refRBSheet}) => {
           }}>
           Block account
         </TextFormatted>
-        <Icon
-          name="navigate-next"
-          size={20}
-          color={
-            ThemeMode.selectedTheme
+
+        <Image
+          resizeMode="contain"
+          source={require('../../assets/icons/chevron_down_ico.png')}
+          style={{
+            marginTop: 0,
+            height: 12,
+            width: 10,
+            transform: [{rotate: '-90deg'}],
+            tintColor: ThemeMode.selectedTheme
               ? theme.colors.primaryBlack
-              : theme.colors.primary
-          }
+              : theme.colors.primary,
+          }}
         />
       </TouchableOpacity>
       <BlockReport
@@ -131,52 +144,30 @@ const BlockReport = ({refRBSheet2, refRBSheet, isReport, setIsReport}) => {
       }}>
       <StatusBar backgroundColor={'#00000077'} translucent />
 
-      <AntDesign
+      <TouchableOpacity
         onPress={() => {
           refRBSheet.current.open();
           refRBSheet2.current.close();
         }}
-        name="arrowleft"
-        size={20}
-        color={
-          ThemeMode.selectedTheme
-            ? theme.colors.primaryBlack
-            : theme.colors.primary
-        }
         style={{
-          height: 40,
-          width: 40,
-          backgroundColor: ThemeMode.selectedTheme
-            ? '#FFFFFF33'
-            : 'transparent',
           textAlign: 'center',
           textAlignVertical: 'center',
-          borderRadius: 12,
           marginLeft: 20,
-        }}
-      />
-      {/*  <TouchableOpacity
-        onPress={() => {
-          refRBSheet.current.open();
-          refRBSheet2.current.close();
-        }}
-        style={{
-          alignSelf: 'flex-start',
-          marginLeft: 30,
-          marginTop: 5,
         }}>
         <Image
-          source={require('../../../assets/icons/sheet_arrow.png')}
+          resizeMode="contain"
+          source={require('../../assets/icons/sheet_arrow.png')}
           style={{
-            height: 5,
-            width: 5,
-            resizeMode: 'contain',
-            alignSelf: 'flex-end',
-            padding: 8,
-            tintColor: ThemeMode.selectedTheme ? theme.colors.primaryBlack : theme.colors.primary,
+            marginTop: 0,
+            height: 15,
+            width: 15,
+
+            tintColor: ThemeMode.selectedTheme
+              ? theme.colors.primaryBlack
+              : theme.colors.primary,
           }}
         />
-      </TouchableOpacity> */}
+      </TouchableOpacity>
 
       <LinearGradient
         colors={['#EEF4FF', '#CFE7FD']}
@@ -271,14 +262,19 @@ const BlockReport = ({refRBSheet2, refRBSheet, isReport, setIsReport}) => {
               }}>
               Report post
             </TextFormatted>
-            <Icon
-              name="navigate-next"
-              size={20}
-              color={
-                ThemeMode.selectedTheme
+
+            <Image
+              resizeMode="contain"
+              source={require('../../assets/icons/chevron_down_ico.png')}
+              style={{
+                marginTop: 0,
+                height: 12,
+                width: 10,
+                transform: [{rotate: '-90deg'}],
+                tintColor: ThemeMode.selectedTheme
                   ? theme.colors.primaryBlack
-                  : theme.colors.primary
-              }
+                  : theme.colors.primary,
+              }}
             />
           </TouchableOpacity>
           <TouchableOpacity
@@ -300,14 +296,18 @@ const BlockReport = ({refRBSheet2, refRBSheet, isReport, setIsReport}) => {
               }}>
               Report account
             </TextFormatted>
-            <Icon
-              name="navigate-next"
-              size={20}
-              color={
-                ThemeMode.selectedTheme
+            <Image
+              resizeMode="contain"
+              source={require('../../assets/icons/chevron_down_ico.png')}
+              style={{
+                marginTop: 0,
+                height: 12,
+                width: 10,
+                transform: [{rotate: '-90deg'}],
+                tintColor: ThemeMode.selectedTheme
                   ? theme.colors.primaryBlack
-                  : theme.colors.primary
-              }
+                  : theme.colors.primary,
+              }}
             />
           </TouchableOpacity>
         </View>

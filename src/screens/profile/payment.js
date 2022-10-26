@@ -3,7 +3,6 @@ import {
   ScrollView,
   StatusBar,
   StyleSheet,
-  Text,
   TouchableOpacity,
   useWindowDimensions,
   View,
@@ -12,7 +11,6 @@ import React, {useRef, useState} from 'react';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import TextFormatted from '../../components/TextFormatted';
 import {theme} from '../../utils/Constants';
-import Icon from 'react-native-vector-icons/Entypo';
 import ButtonView from '../../components/buttonView';
 import Button from '../../components/Button';
 import LinearGradient from 'react-native-linear-gradient';
@@ -74,7 +72,9 @@ const Payment = ({refRBSheet, isPlan}) => {
           source={require('../../assets/icons/Paypal.png')}
           title={'PayPal'}
           onPress={() => setSelectedType(1)}
-          icon={selectedType == 1 ? 'chevron-small-up' : 'chevron-small-right'}
+          transform={
+            selectedType == 1 ? [{rotate: '-90deg'}] : [{rotate: '0deg'}]
+          }
         />
         <PaymentButton
           source={require('../../assets/icons/google.png')}
@@ -82,13 +82,17 @@ const Payment = ({refRBSheet, isPlan}) => {
           height={30}
           width={34}
           onPress={() => setSelectedType(2)}
-          icon={selectedType == 2 ? 'chevron-small-up' : 'chevron-small-right'}
+          transform={
+            selectedType == 2 ? [{rotate: '-90deg'}] : [{rotate: '0deg'}]
+          }
         />
         <PaymentButton
           source={require('../../assets/icons/credit_card.png')}
           title={'Credit Card'}
           onPress={() => setCredit(!credit)}
-          icon={credit == true ? 'chevron-small-up' : 'chevron-small-right'}>
+          transform={
+            credit == true ? [{rotate: '-90deg'}] : [{rotate: '0deg'}]
+          }>
           {credit == true && (
             <View>
               <Divider />
@@ -489,7 +493,7 @@ const PaymentButton = ({
   source,
   title,
   children,
-  icon,
+  transform,
   onPress,
   height,
   width,
@@ -541,7 +545,17 @@ const PaymentButton = ({
           }}>
           {title}
         </TextFormatted>
-        <Icon name={icon} size={20} color={'#8490AE'} />
+        <Image
+          resizeMode="contain"
+          source={require('../../assets/icons/chevron_down_ico.png')}
+          style={{
+            marginTop: 0,
+            height: 12,
+            width: 10,
+            transform: transform,
+            tintColor: '#8490AE',
+          }}
+        />
       </TouchableOpacity>
       {children}
     </View>

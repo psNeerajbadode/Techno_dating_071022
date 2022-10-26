@@ -3,17 +3,15 @@ import {
   ScrollView,
   StyleSheet,
   ImageBackground,
-  Text,
   TouchableOpacity,
   useWindowDimensions,
   View,
 } from 'react-native';
-import React, {useState, useRef, useEffect} from 'react';
+import React, {useState} from 'react';
 import {theme} from '../../utils/Constants';
 import HeaderImage_1 from '../../components/HeaderImage_1';
 import Header from '../../components/Header';
 import HeaderImage from '../../components/HeaderImage';
-import Icon from 'react-native-vector-icons/Ionicons';
 import TextFormatted from '../../components/TextFormatted';
 import LinearGradient from 'react-native-linear-gradient';
 import Images from './profileComponent/images';

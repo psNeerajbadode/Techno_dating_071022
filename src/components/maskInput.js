@@ -58,15 +58,6 @@ const MaskInput = ({
           flex: 1,
         }}>
         <TextInputMask
-          // type={'credit-card'}
-          // type={type}
-          // options={{
-          //   obfuscated: false,
-          //   issuer: 'visa-or-mastercard',
-          // }}
-          // options={options}
-          // maxLength={}
-
           {...props}
           value={value}
           onChangeText={onChangeText}

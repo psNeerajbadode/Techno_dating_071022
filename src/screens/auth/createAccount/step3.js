@@ -9,7 +9,6 @@ import React, {useEffect, useState} from 'react';
 import HeaderImage_1 from '../../../components/HeaderImage_1';
 import Pagination from '../../../components/Pagination';
 import SearchBar from '../../../components/SearchBar';
-import Icon from 'react-native-vector-icons/Feather';
 import TextFormatted from '../../../components/TextFormatted';
 import Button from '../../../components/Button';
 import {theme} from '../../../utils/Constants';
@@ -177,16 +176,16 @@ const Step3 = () => {
                 alignItems: 'center',
                 marginVertical: 20,
               }}>
-              <Icon
-                name="alert-circle"
-                size={30}
-                color={
-                  ThemeMode.selectedTheme
-                    ? theme.colors.darkGrey
-                    : theme.colors.darkGrey
-                }
-                style={{transform: [{rotate: '180deg'}]}}
+              <Image
+                resizeMode="contain"
+                source={require('../../../assets/icons/alert_ico.png')}
+                style={{
+                  height: 20,
+                  width: 20,
+                  tintColor: theme.colors.darkGrey,
+                }}
               />
+
               <TextFormatted
                 style={{
                   fontSize: 14,

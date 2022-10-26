@@ -2,7 +2,6 @@ import {
   Image,
   ScrollView,
   StyleSheet,
-  Text,
   TouchableOpacity,
   View,
   useWindowDimensions,
@@ -24,9 +23,7 @@ import {
   RedlightImage,
   YellowlightImage,
 } from '../../utils/CustomImages';
-import {Dropdown} from 'react-native-element-dropdown';
 import BottomSheet from '../../components/bottomSheet';
-import Icon from 'react-native-vector-icons/Entypo';
 const FilterLocation = () => {
   const ThemeMode = useSelector(state => state.Theme);
   const [country, setCountry] = useState('1');

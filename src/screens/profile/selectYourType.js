@@ -17,7 +17,6 @@ import Button from '../../components/Button';
 import ButtonView from '../../components/buttonView';
 import BottomSheet from '../../components/bottomSheet';
 import {Dropdown} from 'react-native-element-dropdown';
-import Icon from 'react-native-vector-icons/Entypo';
 import {useNavigation} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
 
@@ -457,10 +456,14 @@ const Setting = ({
           value={height1}
           onChange={item => setHeight1(item.value)}
           renderRightIcon={() => (
-            <Icon
-              name="chevron-small-down"
-              color={theme.colors.primaryBlack}
-              size={20}
+            <Image
+              source={require('../../assets/icons/chevron_down_ico.png')}
+              resizeMode="contain"
+              style={{
+                width: 9,
+                height: 9,
+                tintColor: theme.colors.primaryBlack,
+              }}
             />
           )}
         />
@@ -508,10 +511,14 @@ const Setting = ({
           value={weight1}
           onChange={item => setWeight1(item.value)}
           renderRightIcon={() => (
-            <Icon
-              name="chevron-small-down"
-              color={theme.colors.primaryBlack}
-              size={20}
+            <Image
+              source={require('../../assets/icons/chevron_down_ico.png')}
+              resizeMode="contain"
+              style={{
+                width: 9,
+                height: 9,
+                tintColor: theme.colors.primaryBlack,
+              }}
             />
           )}
           // renderLeftIcon={() => <Image source={require('../../Assets/Icons/Gender.png')} style={{ height: 18, width: 18, resizeMode: 'contain' }} />}

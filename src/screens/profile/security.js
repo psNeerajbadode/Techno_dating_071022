@@ -12,12 +12,8 @@ import React, {useRef, useState} from 'react';
 import HeaderImage_1 from '../../components/HeaderImage_1';
 import Header from '../../components/Header';
 import TextFormatted from '../../components/TextFormatted';
-import Icon from 'react-native-vector-icons/Entypo';
 import {theme} from '../../utils/Constants';
-import BottomSheet from '../../components/bottomSheet';
 import TextInputFormat from '../../components/TextInputFormat';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import Fontisto from 'react-native-vector-icons/Fontisto';
 import ButtonView from '../../components/buttonView';
 import Button from '../../components/Button';
 import Carousel from 'react-native-snap-carousel';
@@ -171,13 +167,22 @@ const Security = () => {
               }
               placeholder={'Insert your old password'}
               right={
-                <Ionicons
-                  name={show ? 'md-eye-off-outline' : 'md-eye-outline'}
-                  size={23}
-                  color={'#8490AE'}
-                  onPress={() => setShow(!show)}
-                  style={{marginLeft: 10}}
-                />
+                <TouchableOpacity onPress={() => setShow(!show)}>
+                  <Image
+                    resizeMode="contain"
+                    source={
+                      show
+                        ? require('../../assets/icons/eyehide.png')
+                        : require('../../assets/icons/eyeshow.png')
+                    }
+                    style={{
+                      height: 22,
+                      width: 22,
+                      tintColor: theme.colors.darkGrey,
+                      marginLeft: 10,
+                    }}
+                  />
+                </TouchableOpacity>
               }
               secureTextEntry={show ? false : true}
               showMess={
@@ -210,13 +215,22 @@ const Security = () => {
                   : 0
               }
               right={
-                <Ionicons
-                  name={show1 ? 'md-eye-off-outline' : 'md-eye-outline'}
-                  size={23}
-                  color={'#8490AE'}
-                  onPress={() => setShow1(!show1)}
-                  style={{marginLeft: 10}}
-                />
+                <TouchableOpacity onPress={() => setShow1(!show1)}>
+                  <Image
+                    resizeMode="contain"
+                    source={
+                      show1
+                        ? require('../../assets/icons/eyehide.png')
+                        : require('../../assets/icons/eyeshow.png')
+                    }
+                    style={{
+                      height: 22,
+                      width: 22,
+                      tintColor: theme.colors.darkGrey,
+                      marginLeft: 10,
+                    }}
+                  />
+                </TouchableOpacity>
               }
               secureTextEntry={show1 ? false : true}
               containerStyle={{marginTop: 20}}
@@ -244,13 +258,22 @@ const Security = () => {
               }
               borderWidth={newPassword == repeatPassword ? 0 : 1}
               right={
-                <Ionicons
-                  name={show2 ? 'md-eye-off-outline' : 'md-eye-outline'}
-                  size={23}
-                  color={'#8490AE'}
-                  onPress={() => setShow2(!show2)}
-                  style={{marginLeft: 10}}
-                />
+                <TouchableOpacity onPress={() => setShow2(!show2)}>
+                  <Image
+                    resizeMode="contain"
+                    source={
+                      show2
+                        ? require('../../assets/icons/eyehide.png')
+                        : require('../../assets/icons/eyeshow.png')
+                    }
+                    style={{
+                      height: 22,
+                      width: 22,
+                      tintColor: theme.colors.darkGrey,
+                      marginLeft: 10,
+                    }}
+                  />
+                </TouchableOpacity>
               }
               secureTextEntry={show2 ? false : true}
               containerStyle={{marginTop: 20}}
@@ -345,14 +368,19 @@ const ButtonRow = ({title, onPress}) => {
         }}>
         {title}
       </TextFormatted>
-      <Icon
-        name="chevron-small-right"
-        size={20}
-        color={
-          ThemeMode.selectedTheme
+
+      <Image
+        resizeMode="contain"
+        source={require('../../assets/icons/chevron_down_ico.png')}
+        style={{
+          marginTop: 0,
+          height: 12,
+          width: 10,
+          transform: [{rotate: '-90deg'}],
+          tintColor: ThemeMode.selectedTheme
             ? theme.colors.primaryBlack
-            : theme.colors.primary
-        }
+            : theme.colors.primary,
+        }}
       />
     </TouchableOpacity>
   );

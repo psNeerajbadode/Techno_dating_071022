@@ -2,7 +2,6 @@ import {
   Image,
   ScrollView,
   StyleSheet,
-  Text,
   TouchableOpacity,
   useWindowDimensions,
   View,
@@ -10,8 +9,6 @@ import {
 import React, {useEffect, useState} from 'react';
 import HeaderImage from '../../components/HeaderImage';
 import Header from '../../components/Header';
-import Icon from 'react-native-vector-icons/Feather';
-import Entypo from 'react-native-vector-icons/Entypo';
 import TextFormatted from '../../components/TextFormatted';
 import LinearGradient from 'react-native-linear-gradient';
 import UserMedia from './homeComponent/userMedia';
@@ -81,42 +78,72 @@ const UserProfile = ({navigation}) => {
                 marginTop={20}
                 right={
                   <View style={{flexDirection: 'row'}}>
-                    <Icon
+                    <TouchableOpacity
                       onPress={() =>
                         navigation.navigate('chats', {params: null})
                       }
-                      name="send"
-                      size={20}
-                      color={theme.colors.primary}
                       style={{
                         height: 40,
                         width: 40,
-                        backgroundColor: ThemeMode.selectedTheme
-                          ? '#FFFFFF33'
-                          : '#1A1D2533',
-                        textAlign: 'center',
-                        textAlignVertical: 'center',
+                        alignItems: 'center',
+                        justifyContent: 'center',
                         borderRadius: 10,
-                      }}
-                    />
-
+                      }}>
+                      {ThemeMode.selectedTheme ? (
+                        <Image
+                          source={require('../../assets/icons/send_light2.png')}
+                          style={{
+                            height: 40,
+                            width: 40,
+                            resizeMode: 'contain',
+                            marginRight: 10,
+                          }}
+                        />
+                      ) : (
+                        <Image
+                          source={require('../../assets/icons/send_darkk.png')}
+                          style={{
+                            height: 40,
+                            width: 40,
+                            resizeMode: 'contain',
+                            marginRight: 10,
+                          }}
+                        />
+                      )}
+                    </TouchableOpacity>
                     <View style={{width: 15}} />
-                    <Entypo
+
+                    <TouchableOpacity
                       onPress={() => refRBSheet1.current.open()}
-                      name="dots-three-vertical"
-                      size={16}
-                      color={theme.colors.primary}
                       style={{
                         height: 40,
                         width: 40,
-                        backgroundColor: ThemeMode.selectedTheme
-                          ? '#FFFFFF33'
-                          : '#1A1D2533',
-                        textAlign: 'center',
-                        textAlignVertical: 'center',
+                        alignItems: 'center',
+                        justifyContent: 'center',
                         borderRadius: 10,
-                      }}
-                    />
+                      }}>
+                      {ThemeMode.selectedTheme ? (
+                        <Image
+                          source={require('../../assets/icons/menus.png')}
+                          style={{
+                            height: 40,
+                            width: 40,
+                            resizeMode: 'contain',
+                            marginRight: 10,
+                          }}
+                        />
+                      ) : (
+                        <Image
+                          source={require('../../assets/icons/menù_dark.png')}
+                          style={{
+                            height: 40,
+                            width: 40,
+                            resizeMode: 'contain',
+                            marginRight: 10,
+                          }}
+                        />
+                      )}
+                    </TouchableOpacity>
                   </View>
                 }
               />

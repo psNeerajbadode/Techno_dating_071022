@@ -140,24 +140,14 @@ const ViewSelfMedia = () => {
         <View style={{flex: 1}} />
         <View>
           {ThemeMode.selectedTheme ? (
-            <Feather
-              // onPress={() => refRBSheet.current.open()}
-              onPress={() => {
-                Storage_permission();
-              }}
-              name="download"
-              size={16}
-              color={theme.colors.primary}
-              style={{
-                height: 40,
-                width: 40,
-                // backgroundColor: '#FFFFFF33',
-                textAlign: 'center',
-                textAlignVertical: 'center',
-                borderRadius: 10,
-                alignSelf: 'flex-end',
-              }}
-            />
+            <TouchableOpacity
+              onPress={() => Storage_permission()}
+              style={{alignSelf: 'flex-start'}}>
+              <Image
+                source={require('../../assets/icons/download_light.png')}
+                style={{height: 40, width: 40, resizeMode: 'contain'}}
+              />
+            </TouchableOpacity>
           ) : (
             <TouchableOpacity
               onPress={() => Storage_permission()}

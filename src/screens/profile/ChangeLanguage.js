@@ -2,17 +2,13 @@ import {
   FlatList,
   Image,
   StyleSheet,
-  Text,
-  TextInput,
   TouchableOpacity,
-  useWindowDimensions,
   View,
 } from 'react-native';
 import React, {useState} from 'react';
 import {theme} from '../../utils/Constants';
 import HeaderImage_1 from '../../components/HeaderImage_1';
 import TextFormatted from '../../components/TextFormatted';
-import {Icon} from '@rneui/themed';
 import Button from '../../components/Button';
 import SearchBar from '../../components/SearchBar';
 import ButtonView from '../../components/buttonView';

@@ -14,7 +14,6 @@ import HeaderImage_1 from '../../components/HeaderImage_1';
 import Header from '../../components/Header';
 import TextFormatted from '../../components/TextFormatted';
 import LinearGradient from 'react-native-linear-gradient';
-import Icon from 'react-native-vector-icons/Entypo';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import BottomSheet from '../../components/bottomSheet';
 import Button from '../../components/Button';
@@ -532,14 +531,18 @@ const ButtonRow = ({title, onPress}) => {
         }}>
         {title}
       </TextFormatted>
-      <Icon
-        name="chevron-small-right"
-        size={20}
-        color={
-          ThemeMode.selectedTheme
+      <Image
+        resizeMode="contain"
+        source={require('../../assets/icons/chevron_down_ico.png')}
+        style={{
+          marginTop: 0,
+          height: 12,
+          width: 10,
+          transform: [{rotate: '-90deg'}],
+          tintColor: ThemeMode.selectedTheme
             ? theme.colors.primaryBlack
-            : theme.colors.primary
-        }
+            : theme.colors.primary,
+        }}
       />
     </TouchableOpacity>
   );

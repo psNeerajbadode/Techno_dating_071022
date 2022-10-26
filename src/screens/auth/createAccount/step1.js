@@ -23,8 +23,6 @@ import {launchImageLibrary, launchCamera} from 'react-native-image-picker';
 import ImagePicker from 'react-native-image-crop-picker';
 import ButtonView from '../../../components/buttonView';
 import BottomSheet from '../../../components/bottomSheet';
-import Icon from 'react-native-vector-icons/Ionicons';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useDispatch, useSelector} from 'react-redux';
 import LinearGradient from 'react-native-linear-gradient';
 import {
@@ -469,15 +467,17 @@ const Step1 = ({navigation}) => {
                   onPress={() => {
                     setFilterstate(3);
                   }}>
-                  <MaterialCommunityIcons
-                    name="water-outline"
-                    color={
-                      ThemeMode.selectedTheme
+                  <Image
+                    source={require('../../../assets/icons/saturationIco.png')}
+                    style={{
+                      height: 24,
+                      width: 24,
+                      resizeMode: 'contain',
+                      alignSelf: 'center',
+                      tintColor: ThemeMode.selectedTheme
                         ? theme.colors.darkGrey
-                        : theme.colors.primary
-                    }
-                    size={32}
-                    style={{alignSelf: 'center'}}
+                        : theme.colors.primary,
+                    }}
                   />
                   <TextFormatted
                     style={{
@@ -486,7 +486,7 @@ const Step1 = ({navigation}) => {
                       color: ThemeMode.selectedTheme
                         ? theme.colors.darkGrey
                         : theme.colors.primary,
-                      marginTop: 1,
+                      marginTop: 10,
                     }}>
                     Saturation
                   </TextFormatted>
@@ -531,15 +531,17 @@ const Step1 = ({navigation}) => {
                         ? theme.colors.primaryOff
                         : theme.colors.blackOn
                     }>
-                    <Icon
-                      name="ios-crop-sharp"
-                      color={
-                        ThemeMode.selectedTheme
+                    <Image
+                      source={require('../../../assets/icons/cropico.png')}
+                      resizeMode="contain"
+                      style={{
+                        width: 22,
+                        height: 22,
+                        marginRight: 10,
+                        tintColor: ThemeMode.selectedTheme
                           ? theme.colors.darkGrey
-                          : theme.colors.primary
-                      }
-                      size={24}
-                      style={{marginRight: 5}}
+                          : theme.colors.primary,
+                      }}
                     />
                     <TextFormatted
                       style={{
@@ -924,7 +926,6 @@ const Option = ({refRBSheet, onPress, onPress1}) => {
 const Bottom = ({refRBSheet, selectedDate, setSelectedDate}) => {
   const [refresh, setRefresh] = useState(true);
   const dimension = useWindowDimensions();
-  const dispatch = useDispatch();
   const ThemeMode = useSelector(state => state.Theme);
   useEffect(() => {
     if (!refresh) {
@@ -1110,41 +1111,7 @@ const Bottom = ({refRBSheet, selectedDate, setSelectedDate}) => {
     </RBSheet>
   );
 };
-const ButtonRow = ({title, onPress}) => {
-  const ThemeMode = useSelector(state => state.Theme);
-  return (
-    <TouchableOpacity
-      onPress={onPress}
-      style={{
-        flexDirection: 'row',
-        alignItems: 'center',
-        marginHorizontal: 30,
-        paddingVertical: 5,
-        marginVertical: 5,
-      }}>
-      <TextFormatted
-        style={{
-          fontSize: 14,
-          fontWeight: '600',
-          color: ThemeMode.selectedTheme
-            ? theme.colors.primaryBlack
-            : theme.colors.primary,
-          flex: 1,
-        }}>
-        {title}
-      </TextFormatted>
-      <Icon
-        name="chevron-small-right"
-        size={20}
-        color={
-          ThemeMode.selectedTheme
-            ? theme.colors.primaryBlack
-            : theme.colors.primary
-        }
-      />
-    </TouchableOpacity>
-  );
-};
+
 const Imgfilter = ({onValueChange, value, RangeValue, onPress, Filtername}) => {
   const ThemeMode = useSelector(state => state.Theme);
   return (
@@ -1163,14 +1130,17 @@ const Imgfilter = ({onValueChange, value, RangeValue, onPress, Filtername}) => {
             justifyContent: 'flex-start',
             alignItems: 'center',
           }}>
-          <Icon
-            name="arrow-back-outline"
-            color={
-              ThemeMode.selectedTheme
+          <Image
+            resizeMode="contain"
+            source={require('../../../assets/icons/sheet_arrow.png')}
+            style={{
+              height: 12,
+              width: 12,
+              tintColor: ThemeMode.selectedTheme
                 ? theme.colors.Black
-                : theme.colors.primary
-            }
-            size={20}
+                : theme.colors.primary,
+              marginRight: 8,
+            }}
           />
           <TextFormatted
             style={{

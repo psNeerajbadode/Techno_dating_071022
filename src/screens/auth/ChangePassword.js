@@ -1,4 +1,10 @@
-import {ScrollView, StyleSheet, View} from 'react-native';
+import {
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+  View,
+} from 'react-native';
 import React, {useState} from 'react';
 import HeaderImage from '../../components/HeaderImage';
 import Header from '../../components/Header';
@@ -108,13 +114,22 @@ const ChangePassword = ({navigation}) => {
             onChangeText={setNewPassword}
             containerStyle={{marginTop: 20}}
             right={
-              <Icon
-                name={show ? 'md-eye-off-outline' : 'md-eye-outline'}
-                size={23}
-                color={'#8490AE'}
-                onPress={() => setShow(!show)}
-                style={{marginLeft: 10}}
-              />
+              <TouchableOpacity onPress={() => setShow(!show)}>
+                <Image
+                  resizeMode="contain"
+                  source={
+                    show
+                      ? require('../../assets/icons/eyehide.png')
+                      : require('../../assets/icons/eyeshow.png')
+                  }
+                  style={{
+                    height: 22,
+                    width: 22,
+                    tintColor: theme.colors.darkGrey,
+                    marginLeft: 10,
+                  }}
+                />
+              </TouchableOpacity>
             }
             secureTextEntry={show ? false : true}
           />
@@ -151,13 +166,22 @@ const ChangePassword = ({navigation}) => {
             onChangeText={setReNewPassword}
             containerStyle={{marginTop: 20}}
             right={
-              <Icon
-                name={showr ? 'md-eye-off-outline' : 'md-eye-outline'}
-                size={23}
-                color={'#8490AE'}
-                onPress={() => setShowr(!showr)}
-                style={{marginLeft: 10}}
-              />
+              <TouchableOpacity onPress={() => setShowr(!showr)}>
+                <Image
+                  resizeMode="contain"
+                  source={
+                    showr
+                      ? require('../../assets/icons/eyehide.png')
+                      : require('../../assets/icons/eyeshow.png')
+                  }
+                  style={{
+                    height: 22,
+                    width: 22,
+                    tintColor: theme.colors.darkGrey,
+                    marginLeft: 10,
+                  }}
+                />
+              </TouchableOpacity>
             }
             secureTextEntry={showr ? false : true}
           />

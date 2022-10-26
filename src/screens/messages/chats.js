@@ -11,9 +11,6 @@ import React, {useRef, useState} from 'react';
 import {theme} from '../../utils/Constants';
 import HeaderImage_1 from '../../components/HeaderImage_1';
 import Header from '../../components/Header';
-import Icon from 'react-native-vector-icons/Entypo';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import Feather from 'react-native-vector-icons/Feather';
 import TextFormatted from '../../components/TextFormatted';
 import LinearGradient from 'react-native-linear-gradient';
 import MoreOptions from '../home/moreOptions';
@@ -121,16 +118,31 @@ const Chats = () => {
               style={{
                 height: 40,
                 width: 40,
-                backgroundColor: ThemeMode.selectedTheme
-                  ? '#FFFFFF33'
-                  : '#1A1D2533',
                 alignItems: 'center',
                 justifyContent: 'center',
                 borderRadius: 10,
-                position: 'absolute',
-                right: 0,
               }}>
-              <Icon name="dots-three-vertical" color={'#fff'} size={16} />
+              {ThemeMode.selectedTheme ? (
+                <Image
+                  source={require('../../assets/icons/menus.png')}
+                  style={{
+                    height: 40,
+                    width: 40,
+                    resizeMode: 'contain',
+                    marginRight: 10,
+                  }}
+                />
+              ) : (
+                <Image
+                  source={require('../../assets/icons/menù_dark.png')}
+                  style={{
+                    height: 40,
+                    width: 40,
+                    resizeMode: 'contain',
+                    marginRight: 10,
+                  }}
+                />
+              )}
             </TouchableOpacity>
           }
         />

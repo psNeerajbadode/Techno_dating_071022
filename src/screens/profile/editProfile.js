@@ -21,15 +21,12 @@ import {Calendar} from 'react-native-calendars';
 import Dropdown1 from '../../components/dropdown1';
 import {useSelector} from 'react-redux';
 import {
-  DrinksList,
   EducationList,
   EthnicityList,
   genderList,
-  HasKidsList,
   LookingList,
   SexualList,
   showMeList,
-  SmokesList,
   ZodiacList,
 } from '../../utils/dropDownData';
 import ButtonView from '../../components/buttonView';
@@ -42,7 +39,6 @@ import {
   RedlightImage,
   YellowlightImage,
 } from '../../utils/CustomImages';
-import {Baseurl} from '../../utils/baseurl';
 import {STAP} from '../../redux/actions/ActionType';
 import {useDispatch} from 'react-redux';
 

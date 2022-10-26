@@ -218,14 +218,16 @@ const Step7 = ({navigation}) => {
                       padding: 8,
                     }}>
                     {i == 9 ? (
-                      <Icon
-                        name="arrow-left"
-                        size={30}
-                        color={
-                          ThemeMode.selectedTheme
+                      <Image
+                        resizeMode="contain"
+                        source={require('../../../assets/icons/sheet_arrow.png')}
+                        style={{
+                          height: 22,
+                          width: 22,
+                          tintColor: ThemeMode.selectedTheme
                             ? theme.colors.primaryBlack
-                            : theme.colors.primary
-                        }
+                            : theme.colors.primary,
+                        }}
                       />
                     ) : i == 10 ? (
                       0

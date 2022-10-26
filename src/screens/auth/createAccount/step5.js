@@ -12,7 +12,6 @@ import HeaderImage_1 from '../../../components/HeaderImage_1';
 import TextFormatted from '../../../components/TextFormatted';
 import {theme} from '../../../utils/Constants';
 import Button from '../../../components/Button';
-import {check, PERMISSIONS, RESULTS} from 'react-native-permissions';
 import ButtonView from '../../../components/buttonView';
 import {useDispatch, useSelector} from 'react-redux';
 import Geolocation from 'react-native-geolocation-service';

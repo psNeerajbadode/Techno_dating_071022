@@ -1,7 +1,6 @@
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, View, Image} from 'react-native';
 import React from 'react';
 import {Dropdown} from 'react-native-element-dropdown';
-import Icon from 'react-native-vector-icons/Entypo';
 import {theme} from '../utils/Constants';
 import TextFormatted from './TextFormatted';
 import {useSelector} from 'react-redux';
@@ -88,14 +87,16 @@ const Dropdown1 = ({
         onChange={onChange}
         renderRightIcon={() =>
           renderRightIcon || (
-            <Icon
-              name="chevron-small-down"
-              color={
-                ThemeMode.selectedTheme
+            <Image
+              source={require('../assets/icons/chevron_down_ico.png')}
+              resizeMode="contain"
+              style={{
+                width: 9,
+                height: 9,
+                tintColor: ThemeMode.selectedTheme
                   ? theme.colors.primaryBlack
-                  : theme.colors.darkGrey
-              }
-              size={20}
+                  : theme.colors.darkGrey,
+              }}
             />
           )
         }

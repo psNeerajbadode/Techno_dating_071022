@@ -1,10 +1,4 @@
-import {
-  ScrollView,
-  StyleSheet,
-  Text,
-  useWindowDimensions,
-  View,
-} from 'react-native';
+import {ScrollView, StyleSheet, useWindowDimensions, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import TextFormatted from './TextFormatted';
@@ -24,38 +18,18 @@ const CalenderView = ({refRBSheet, selectedDate, setSelectedDate}) => {
       }, 10);
     }
   }, [refresh]);
-  const months = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December',
-  ];
-  const years = [
-    '1993',
-    '1994',
-    '1995',
-    '1996',
-    '1997',
-    '1998',
-    '1999',
-    '2000',
-    '2001',
-    '2002',
-    '2003',
-    '2004',
-    '2005',
-    '2006',
-    '2007',
-    '2008',
-  ];
+
+  const months = moment.months(new Date());
+
+  function getyears() {
+    var currentYear = new Date().getFullYear() - 18,
+      years = [];
+    let startYear = new Date().getFullYear() - 70;
+    while (startYear <= currentYear) {
+      years.push(startYear++);
+    }
+    return years;
+  }
   return (
     <RBSheet
       ref={refRBSheet}
@@ -98,7 +72,6 @@ const CalenderView = ({refRBSheet, selectedDate, setSelectedDate}) => {
             label={'Month'}
             marginLeft={20}
             placeholder={months[moment(selectedDate).month()]}
-            // selected={moment(selectedDate)}
             onSelect={(selectedItem, index) => {
               setSelectedDate(v =>
                 moment(v).set('month', index).format('yyyy-MM-DD'),
@@ -114,7 +87,7 @@ const CalenderView = ({refRBSheet, selectedDate, setSelectedDate}) => {
             label={'Year'}
             marginLeft={20}
             // placeholder={sele}
-            placeholder={moment(selectedDate).get('year') + ''}
+            placeholder={new Date().getFullYear() - 18}
             top={1}
             onSelect={(selectedItem, index) => {
               setSelectedDate(v =>
@@ -124,7 +97,7 @@ const CalenderView = ({refRBSheet, selectedDate, setSelectedDate}) => {
               );
               setRefresh(false);
             }}
-            items={years}
+            items={getyears()}
           />
         </View>
         {/* <Button

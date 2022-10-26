@@ -11,7 +11,6 @@ import {theme} from '../../utils/Constants';
 import HeaderImageShadow from '../../components/HeaderImageShadow';
 import Header from '../../components/Header';
 import TextFormatted from '../../components/TextFormatted';
-import Icon from 'react-native-vector-icons/Feather';
 import {PASSCODE} from '../../redux/actions/ActionType';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
@@ -168,12 +167,17 @@ const PassCode = () => {
                     fontWeight: '400',
                   }}>
                   {i == 9 ? (
-                    <Icon
-                      name="arrow-left"
-                      size={30}
-                      onPress={() => Removeval()}
-                      color={'#8490AE'}
-                    />
+                    <TouchableOpacity onPress={() => Removeval()}>
+                      <Image
+                        resizeMode="contain"
+                        source={require('../../assets/icons/sheet_arrow.png')}
+                        style={{
+                          height: 24,
+                          width: 24,
+                          tintColor: theme.colors.darkGrey,
+                        }}
+                      />
+                    </TouchableOpacity>
                   ) : i == 10 ? (
                     0
                   ) : (
@@ -182,24 +186,7 @@ const PassCode = () => {
                 </TextFormatted>
               </TouchableOpacity>
             ))}
-          {/* {passcode.length == 4 ? (
-            <Icon
-              name="arrow-right"
-              size={30}
-              onPress={() => App_passcode()}
-              color={
-                ThemeMode.selectedTheme
-                  ? theme.colors.primaryBlack
-                  : theme.colors.primary
-              }
-              style={{
-                alignSelf: 'center',
-                justifyContent: 'center',
-                marginHorizontal: 35,
-                flex: 1,
-              }}
-            />
-          ) : ( */}
+
           <TouchableOpacity
             style={{marginLeft: 24}}
             onPress={() => navigation.replace('FingerPrint')}>

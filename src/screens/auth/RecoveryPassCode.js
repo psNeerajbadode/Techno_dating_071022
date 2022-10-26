@@ -1,4 +1,5 @@
 import {
+  Image,
   ScrollView,
   StyleSheet,
   TouchableOpacity,
@@ -156,12 +157,17 @@ const RecoveryPassCode = ({navigation}) => {
                     padding: 8,
                   }}>
                   {i == 9 ? (
-                    <Icon
-                      name="arrow-left"
-                      size={30}
-                      onPress={() => Removeval()}
-                      color={'#8490AE'}
-                    />
+                    <TouchableOpacity onPress={() => Removeval()}>
+                      <Image
+                        resizeMode="contain"
+                        source={require('../../assets/icons/sheet_arrow.png')}
+                        style={{
+                          height: 24,
+                          width: 24,
+                          tintColor: theme.colors.darkGrey,
+                        }}
+                      />
+                    </TouchableOpacity>
                   ) : i == 10 ? (
                     0
                   ) : (

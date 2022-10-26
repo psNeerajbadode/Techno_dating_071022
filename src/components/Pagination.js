@@ -1,13 +1,31 @@
-import { StyleSheet, Text, View } from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import React from 'react';
 import TextFormatted from './TextFormatted';
 
-const Pagination = ({ position, title, subTitle }) => {
+const Pagination = ({position, title, subTitle}) => {
   return (
     <View>
-      <TextFormatted style={{ fontSize: 16, fontWeight: '700', color: '#fff', textAlign: 'center', marginTop: 20 }}>{title}</TextFormatted>
-      <TextFormatted style={{ fontSize: 14, fontWeight: '400', color: '#fff', textAlign: 'center', marginTop: 5 }}>{subTitle}</TextFormatted>
-      <View style={{ flexDirection: 'row', alignSelf: 'center', marginTop: 18 }}>
+      <TextFormatted
+        style={{
+          fontSize: 16,
+          fontWeight: '700',
+          color: '#fff',
+          textAlign: 'center',
+          marginTop: 20,
+        }}>
+        {title}
+      </TextFormatted>
+      <TextFormatted
+        style={{
+          fontSize: 14,
+          fontWeight: '400',
+          color: '#fff',
+          textAlign: 'center',
+          marginTop: 5,
+        }}>
+        {subTitle}
+      </TextFormatted>
+      <View style={{flexDirection: 'row', alignSelf: 'center', marginTop: 18}}>
         {Array(8)
           .fill('')
           .map((_, i) => (

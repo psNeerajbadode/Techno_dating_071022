@@ -4,7 +4,6 @@ import {
   ScrollView,
   StatusBar,
   StyleSheet,
-  Text,
   TouchableOpacity,
   useWindowDimensions,
   View,
@@ -13,10 +12,8 @@ import React, {useRef} from 'react';
 import HeaderImage_1 from '../../components/HeaderImage_1';
 import {theme} from '../../utils/Constants';
 import Header from '../../components/Header';
-import Icon from 'react-native-vector-icons/Entypo';
 import TextFormatted from '../../components/TextFormatted';
 import RBSheet from 'react-native-raw-bottom-sheet';
-import Fontisto from 'react-native-vector-icons/Fontisto';
 import {useDispatch, useSelector} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 
@@ -80,14 +77,19 @@ const ButtonRow = ({title, onPress}) => {
         }}>
         {title}
       </TextFormatted>
-      <Icon
-        name="chevron-small-right"
-        size={20}
-        color={
-          ThemeMode.selectedTheme
+
+      <Image
+        resizeMode="contain"
+        source={require('../../assets/icons/chevron_down_ico.png')}
+        style={{
+          marginTop: 0,
+          height: 12,
+          width: 10,
+          transform: [{rotate: '-90deg'}],
+          tintColor: ThemeMode.selectedTheme
             ? theme.colors.primaryBlack
-            : theme.colors.primary
-        }
+            : theme.colors.primary,
+        }}
       />
     </TouchableOpacity>
   );
@@ -99,7 +101,7 @@ const FollowUs = ({refRBSheet}) => {
   return (
     <RBSheet
       ref={refRBSheet}
-      height={390}
+      height={380}
       closeOnDragDown={true}
       closeOnPressBack={true}
       customStyles={{
@@ -114,18 +116,27 @@ const FollowUs = ({refRBSheet}) => {
         },
       }}>
       <StatusBar backgroundColor={'#00000077'} translucent />
-      <Fontisto
-        name="close-a"
-        size={14}
-        color="#000"
+
+      <TouchableOpacity
         style={{
           alignSelf: 'flex-end',
-          marginRight: 20,
-          marginTop: 5,
-          paddingHorizontal: 10,
+          marginRight: 30,
+          marginBottom: 5,
         }}
-        onPress={() => refRBSheet.current.close()}
-      />
+        onPress={() => refRBSheet.current.close()}>
+        <Image
+          resizeMode="contain"
+          source={require('../../assets/icons/close_immg.png')}
+          style={{
+            marginTop: 0,
+            height: 15,
+            width: 15,
+            tintColor: ThemeMode.selectedTheme
+              ? theme.colors.primaryBlack
+              : theme.colors.primary,
+          }}
+        />
+      </TouchableOpacity>
       {/* <TextFormatted
         style={{
           fontSize: 18,

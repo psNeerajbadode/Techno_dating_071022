@@ -10,7 +10,6 @@ import {theme} from '../../utils/Constants';
 import HeaderImage from '../../components/HeaderImage';
 import Logo from '../../components/Logo';
 import Header from '../../components/Header';
-import Icon from 'react-native-vector-icons/Ionicons';
 import TextInputFormat from '../../components/TextInputFormat';
 import TextFormatted from '../../components/TextFormatted';
 import Button from '../../components/Button';
@@ -148,13 +147,22 @@ const Login = ({navigation}) => {
           onChangeText={setPassword}
           containerStyle={{marginTop: 20}}
           right={
-            <Icon
-              name={show ? 'md-eye-off-outline' : 'md-eye-outline'}
-              size={23}
-              color={'#8490AE'}
-              onPress={() => setShow(!show)}
-              style={{marginLeft: 10}}
-            />
+            <TouchableOpacity onPress={() => setShow(!show)}>
+              <Image
+                resizeMode="contain"
+                source={
+                  show
+                    ? require('../../assets/icons/eyehide.png')
+                    : require('../../assets/icons/eyeshow.png')
+                }
+                style={{
+                  height: 22,
+                  width: 22,
+                  tintColor: theme.colors.darkGrey,
+                  marginLeft: 10,
+                }}
+              />
+            </TouchableOpacity>
           }
           secureTextEntry={show ? false : true}
           showMess={

@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text } from 'react-native';
+import React from 'react';
+import {Text} from 'react-native';
 import _ from 'lodash';
-import { theme } from '../utils/Constants';
+import {theme} from '../utils/Constants';
 
-function TextFormatted({ children, style, fontFamily = 'Rubik', ...props }) {
+function TextFormatted({children, style, fontFamily = 'Rubik', ...props}) {
   let transformedStyle = {};
   if (Array.isArray(style)) {
-    _.flattenDeep(style).map(v => (transformedStyle = { ...transformedStyle, ...(v || {}) }));
+    _.flattenDeep(style).map(
+      v => (transformedStyle = {...transformedStyle, ...(v || {})}),
+    );
   } else {
     transformedStyle = style || {};
   }
@@ -14,17 +16,21 @@ function TextFormatted({ children, style, fontFamily = 'Rubik', ...props }) {
     <Text
       {...props}
       style={[
-        { color: theme.colors.text },
+        {color: theme.colors.text},
         transformedStyle,
         {
-          fontWeight: transformedStyle?.fontFamily || !fontFamily ? transformedStyle?.fontWeight : null,
+          fontWeight:
+            transformedStyle?.fontFamily || !fontFamily
+              ? transformedStyle?.fontWeight
+              : null,
           fontFamily:
             transformedStyle?.fontFamily || !fontFamily
               ? transformedStyle?.fontFamily
-              : fontFamily + getFontWeightName(transformedStyle?.fontWeight) + (transformedStyle?.fontStyle == 'italic' ? 'Italic' : ''),
+              : fontFamily +
+                getFontWeightName(transformedStyle?.fontWeight) +
+                (transformedStyle?.fontStyle == 'italic' ? 'Italic' : ''),
         },
-      ]}
-    >
+      ]}>
       {children}
     </Text>
   );

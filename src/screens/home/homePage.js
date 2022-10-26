@@ -11,7 +11,6 @@ import {
 import React, {useEffect, useRef, useState} from 'react';
 import Swiper from 'react-native-swiper';
 import TextFormatted from '../../components/TextFormatted';
-import Entypo from 'react-native-vector-icons/Entypo';
 import {useNavigation} from '@react-navigation/native';
 import Notification from './notification';
 import MoreOptions from './moreOptions';
@@ -385,18 +384,19 @@ const HomePage = () => {
                     style={{
                       height: 40,
                       width: 40,
-                      backgroundColor: ThemeMode.selectedTheme
-                        ? '#FFFFFF33'
-                        : 'transparent',
                       alignItems: 'center',
                       justifyContent: 'center',
                       borderRadius: 10,
                     }}>
                     {ThemeMode.selectedTheme ? (
-                      <Entypo
-                        name="dots-three-vertical"
-                        color={'#fff'}
-                        size={16}
+                      <Image
+                        source={require('../../assets/icons/menus.png')}
+                        style={{
+                          height: 40,
+                          width: 40,
+                          resizeMode: 'contain',
+                          marginRight: 10,
+                        }}
                       />
                     ) : (
                       <Image

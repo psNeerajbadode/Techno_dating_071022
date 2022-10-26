@@ -1,14 +1,22 @@
-import { FlatList, Image, StyleSheet, Text, TouchableOpacity, useWindowDimensions, View, ImageBackground } from 'react-native';
-import React, { useRef, useState } from 'react';
-import { theme } from '../../utils/Constants';
+import {
+  FlatList,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+  useWindowDimensions,
+  View,
+  ImageBackground,
+} from 'react-native';
+import React, {useRef, useState} from 'react';
+import {theme} from '../../utils/Constants';
 import HeaderImage_1 from '../../components/HeaderImage_1';
 import Header from '../../components/Header';
 import SearchBar from '../../components/SearchBar';
 import TextFormatted from '../../components/TextFormatted';
 import LinearGradient from 'react-native-linear-gradient';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import Notification from '../home/notification';
-import { useDispatch, useSelector } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import * as Animatable from 'react-native-animatable';
 
 const ChatList = () => {
@@ -20,19 +28,39 @@ const ChatList = () => {
   const navigation = useNavigation();
   const refRBSheet = useRef();
   const recentData = [
-    { img: require('../../assets/images/unsplash_1.png') },
-    { img: require('../../assets/images/unsplash_2.png') },
-    { img: require('../../assets/images/unsplash_3.png') },
-    { img: require('../../assets/images/unsplash_4.png') },
-    { img: require('../../assets/images/unsplash_3.png') },
-    { img: require('../../assets/images/unsplash_2.png') },
-    { img: require('../../assets/images/unsplash_1.png') },
+    {img: require('../../assets/images/unsplash_1.png')},
+    {img: require('../../assets/images/unsplash_2.png')},
+    {img: require('../../assets/images/unsplash_3.png')},
+    {img: require('../../assets/images/unsplash_4.png')},
+    {img: require('../../assets/images/unsplash_3.png')},
+    {img: require('../../assets/images/unsplash_2.png')},
+    {img: require('../../assets/images/unsplash_1.png')},
   ];
   const messageData = [
-    { pic: require('../../assets/images/unsplash_1.png'), name: 'Emma Hatchan, 22', mess: 'Hi, how are you? 😄 are you...', timing: '12:34' },
-    { pic: require('../../assets/images/unsplash_1.png'), name: 'Emma Hatchan, 22', mess: 'Hi, how are you? 😄 are you...', timing: '12:34' },
-    { pic: require('../../assets/images/unsplash_1.png'), name: 'Emma Hatchan, 22', mess: 'Hi, how are you? 😄 are you...', timing: '12:34' },
-    { pic: require('../../assets/images/unsplash_1.png'), name: 'Emma Hatchan, 22', mess: 'Hi, how are you? 😄 are you...', timing: '12:34' },
+    {
+      pic: require('../../assets/images/unsplash_1.png'),
+      name: 'Emma Hatchan, 22',
+      mess: 'Hi, how are you? 😄 are you...',
+      timing: '12:34',
+    },
+    {
+      pic: require('../../assets/images/unsplash_1.png'),
+      name: 'Emma Hatchan, 22',
+      mess: 'Hi, how are you? 😄 are you...',
+      timing: '12:34',
+    },
+    {
+      pic: require('../../assets/images/unsplash_1.png'),
+      name: 'Emma Hatchan, 22',
+      mess: 'Hi, how are you? 😄 are you...',
+      timing: '12:34',
+    },
+    {
+      pic: require('../../assets/images/unsplash_1.png'),
+      name: 'Emma Hatchan, 22',
+      mess: 'Hi, how are you? 😄 are you...',
+      timing: '12:34',
+    },
   ];
   const homeTab = [
     {
@@ -57,7 +85,13 @@ const ChatList = () => {
     },
   ];
   return (
-    <View style={{ flex: 1, backgroundColor: ThemeMode.selectedTheme ? theme.colors.primary : theme.colors.primaryBlack }}>
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: ThemeMode.selectedTheme
+          ? theme.colors.primary
+          : theme.colors.primaryBlack,
+      }}>
       <View>
         <HeaderImage_1 marginBottom={30} height={150}>
           <Header
@@ -65,8 +99,12 @@ const ChatList = () => {
             left={
               <TouchableOpacity onPress={() => navigation.navigate('message')}>
                 <Image
-                  source={ThemeMode.selectedTheme ? require('../../assets/icons/matches_light.png') : require('../../assets/icons/matche_dark.png')}
-                  style={{ height: 40, width: 40, resizeMode: 'contain' }}
+                  source={
+                    ThemeMode.selectedTheme
+                      ? require('../../assets/icons/matches_light.png')
+                      : require('../../assets/icons/matche_dark.png')
+                  }
+                  style={{height: 40, width: 40, resizeMode: 'contain'}}
                 />
               </TouchableOpacity>
             }
@@ -76,13 +114,14 @@ const ChatList = () => {
                 style={{
                   height: 40,
                   width: 40,
-                  backgroundColor: ThemeMode.selectedTheme ? '#FFFFFF33' : '#1A1D254D',
+                  backgroundColor: ThemeMode.selectedTheme
+                    ? '#FFFFFF33'
+                    : '#1A1D254D',
                   alignItems: 'center',
                   justifyContent: 'center',
                   borderRadius: 10,
                 }}
-                onPress={() => refRBSheet.current.open()}
-              >
+                onPress={() => refRBSheet.current.open()}>
                 <LinearGradient
                   colors={
                     ThemeMode.themecolr == 'Red'
@@ -97,44 +136,73 @@ const ChatList = () => {
                       ? theme.colors.primaryYellow
                       : theme.colors.primaryOn
                   }
-                  start={{ x: 0, y: 0 }}
-                  end={{ x: 1, y: 1 }}
-                  style={{ height: 10, width: 10, borderRadius: 50, position: 'absolute', top: 5, right: 10, zIndex: 1 }}
+                  start={{x: 0, y: 0}}
+                  end={{x: 1, y: 1}}
+                  style={{
+                    height: 10,
+                    width: 10,
+                    borderRadius: 50,
+                    position: 'absolute',
+                    top: 5,
+                    right: 10,
+                    zIndex: 1,
+                  }}
                 />
-                <Image source={require('../../assets/icons/Notifyy.png')} style={{ height: 25, width: 25, resizeMode: 'contain' }} />
+                <Image
+                  source={require('../../assets/icons/Notifyy.png')}
+                  style={{height: 25, width: 25, resizeMode: 'contain'}}
+                />
               </TouchableOpacity>
             }
           />
         </HeaderImage_1>
-        <SearchBar borderRadius={50} value={search} onChangeText={setSearch} onPress={() => setSearch('')} placeholder={'Search chat'} />
+        <SearchBar
+          borderRadius={50}
+          value={search}
+          onChangeText={setSearch}
+          onPress={() => setSearch('')}
+          placeholder={'Search chat'}
+        />
       </View>
       <FlatList
-        contentContainerStyle={{ paddingBottom: 60 }}
+        contentContainerStyle={{paddingBottom: 60}}
         data={messageData.filter(item => {
           return item.name.toLowerCase().includes(search.toLowerCase());
         })}
         showsVerticalScrollIndicator={false}
         ListHeaderComponent={
-          <View style={{ marginTop: 30 }}>
+          <View style={{marginTop: 30}}>
             <TextFormatted
               style={{
                 fontSize: 16,
                 fontWeight: '700',
-                color: ThemeMode.selectedTheme ? theme.colors.primaryBlack : theme.colors.primary,
+                color: ThemeMode.selectedTheme
+                  ? theme.colors.primaryBlack
+                  : theme.colors.primary,
                 marginHorizontal: 20,
-              }}
-            >
+              }}>
               Recent matches
             </TextFormatted>
             <FlatList
               data={recentData}
               horizontal
-              style={{ marginHorizontal: 0 }}
-              contentContainerStyle={{ paddingLeft: 20 }}
+              style={{marginHorizontal: 0}}
+              contentContainerStyle={{paddingLeft: 20}}
               showsHorizontalScrollIndicator={false}
-              renderItem={({ item }) => (
-                <TouchableOpacity style={{ marginRight: 9 }} onPress={() => navigation.navigate('userProfile')}>
-                  <Image source={item.img} style={{ height: 70, width: 70, resizeMode: 'cover', borderRadius: 50, marginTop: 20 }} />
+              renderItem={({item}) => (
+                <TouchableOpacity
+                  style={{marginRight: 9}}
+                  onPress={() => navigation.navigate('userProfile')}>
+                  <Image
+                    source={item.img}
+                    style={{
+                      height: 70,
+                      width: 70,
+                      resizeMode: 'cover',
+                      borderRadius: 50,
+                      marginTop: 20,
+                    }}
+                  />
                 </TouchableOpacity>
               )}
             />
@@ -142,20 +210,25 @@ const ChatList = () => {
               style={{
                 fontSize: 16,
                 fontWeight: '700',
-                color: ThemeMode.selectedTheme ? theme.colors.primaryBlack : theme.colors.primary,
+                color: ThemeMode.selectedTheme
+                  ? theme.colors.primaryBlack
+                  : theme.colors.primary,
                 marginTop: 20,
                 marginHorizontal: 20,
-              }}
-            >
+              }}>
               Messages
             </TextFormatted>
           </View>
         }
-        renderItem={({ item, index }) => (
+        renderItem={({item, index}) => (
           <TouchableOpacity
-            style={{ marginHorizontal: 20, flexDirection: 'row', alignItems: 'center', marginVertical: 10 }}
-            onPress={() => navigation.navigate('chats', { params: null })}
-          >
+            style={{
+              marginHorizontal: 20,
+              flexDirection: 'row',
+              alignItems: 'center',
+              marginVertical: 10,
+            }}
+            onPress={() => navigation.navigate('chats', {params: null})}>
             <View>
               {index <= 1 && (
                 <LinearGradient
@@ -181,24 +254,60 @@ const ChatList = () => {
                     position: 'absolute',
                     zIndex: 1,
                     right: 0,
-                  }}
-                >
-                  <TextFormatted style={{ color: theme.colors.primary, fontSize: 13, fontWeight: '400' }}>{index + 1}</TextFormatted>
+                  }}>
+                  <TextFormatted
+                    style={{
+                      color: theme.colors.primary,
+                      fontSize: 13,
+                      fontWeight: '400',
+                    }}>
+                    {index + 1}
+                  </TextFormatted>
                 </LinearGradient>
               )}
-              <Image source={item.pic} style={{ height: 70, width: 70, resizeMode: 'cover', borderRadius: 50, position: 'relative', zIndex: 0 }} />
+              <Image
+                source={item.pic}
+                style={{
+                  height: 70,
+                  width: 70,
+                  resizeMode: 'cover',
+                  borderRadius: 50,
+                  position: 'relative',
+                  zIndex: 0,
+                }}
+              />
             </View>
-            <View style={{ marginHorizontal: 10, flex: 1 }}>
+            <View style={{marginHorizontal: 10, flex: 1}}>
               <TextFormatted
-                style={{ fontSize: 16, fontWeight: '700', color: ThemeMode.selectedTheme ? theme.colors.primaryBlack : theme.colors.primary }}
-              >
+                style={{
+                  fontSize: 16,
+                  fontWeight: '700',
+                  color: ThemeMode.selectedTheme
+                    ? theme.colors.primaryBlack
+                    : theme.colors.primary,
+                }}>
                 {item.name}
               </TextFormatted>
-              <TextFormatted numberOfLines={1} style={{ fontSize: 14, fontWeight: '400', color: '#8490AE', marginTop: 9 }}>
+              <TextFormatted
+                numberOfLines={1}
+                style={{
+                  fontSize: 14,
+                  fontWeight: '400',
+                  color: '#8490AE',
+                  marginTop: 9,
+                }}>
                 {item.mess}
               </TextFormatted>
             </View>
-            <TextFormatted style={{ fontSize: 12, fontWeight: '300', color: '#8490AE', height: 40 }}>{item.timing}</TextFormatted>
+            <TextFormatted
+              style={{
+                fontSize: 12,
+                fontWeight: '300',
+                color: '#8490AE',
+                height: 40,
+              }}>
+              {item.timing}
+            </TextFormatted>
           </TouchableOpacity>
         )}
       />
@@ -218,14 +327,22 @@ const ChatList = () => {
           flexDirection: 'row',
           alignItems: 'center',
           justifyContent: 'space-around',
-        }}
-      >
-        <Tab source={require('../../assets/home_icons/home.png')} onPress={() => navigation.navigate('homePage')} />
+        }}>
+        <Tab
+          source={require('../../assets/home_icons/home.png')}
+          onPress={() => navigation.navigate('homePage')}
+        />
         <Tab source={require('../../assets/home_icons/focus.png')} />
 
-        <Tab currentTab={true} source={require('../../assets/icons/colormssg.png')} />
+        <Tab
+          currentTab={true}
+          source={require('../../assets/icons/colormssg.png')}
+        />
 
-        <Tab onPress={() => navigation.navigate('myProfile')} source={require('../../assets/home_icons/profile.png')} />
+        <Tab
+          onPress={() => navigation.navigate('myProfile')}
+          source={require('../../assets/home_icons/profile.png')}
+        />
       </ImageBackground>
       <View
         style={{
@@ -246,14 +363,13 @@ const ChatList = () => {
           width: '32%',
           position: 'absolute',
           bottom: 0,
-        }}
-      ></View>
+        }}></View>
       <Notification refRBSheet={refRBSheet} />
     </View>
   );
 };
 
-const Tab = ({ disabled, onPress, source, currentTab, style }) => {
+const Tab = ({disabled, onPress, source, currentTab, style}) => {
   const dimension = useWindowDimensions();
   const ThemeMode = useSelector(state => state.Theme);
   return (
@@ -262,23 +378,20 @@ const Tab = ({ disabled, onPress, source, currentTab, style }) => {
       onPress={onPress}
       style={{
         marginBottom: 6,
-      }}
-    >
+      }}>
       <View
         style={{
           width: dimension.width / 5,
           justifyContent: 'center',
           alignItems: 'center',
           height: 50,
-        }}
-      >
+        }}>
         <Animatable.View
           animation={'fadeIn'}
           duration={1500}
           // iterationCount={1}
 
-          easing={'ease-in'}
-        >
+          easing={'ease-in'}>
           <Image
             source={source}
             style={
@@ -290,7 +403,9 @@ const Tab = ({ disabled, onPress, source, currentTab, style }) => {
                 marginBottom: 5,
 
                 opacity: currentTab ? 1 : 0.5,
-                tintColor: ThemeMode.selectedTheme ? theme.colors.primaryBlack : theme.colors.primary,
+                tintColor: ThemeMode.selectedTheme
+                  ? theme.colors.primaryBlack
+                  : theme.colors.primary,
               }
             }
           />
@@ -313,8 +428,7 @@ const Tab = ({ disabled, onPress, source, currentTab, style }) => {
                   : ThemeMode.themecolr == 'Yellow'
                   ? theme.colors.Yellow
                   : theme.colors.red,
-            }}
-          ></View>
+            }}></View>
         )}
       </View>
     </TouchableOpacity>

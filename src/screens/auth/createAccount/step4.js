@@ -173,11 +173,14 @@ const Step4 = ({navigation}) => {
             alignItems: 'center',
             marginTop: 10,
           }}>
-          <Icon
-            name="alert-circle"
-            size={30}
-            color={'#8490AE'}
-            style={{transform: [{rotate: '180deg'}]}}
+          <Image
+            resizeMode="contain"
+            source={require('../../../assets/icons/alert_ico.png')}
+            style={{
+              height: 20,
+              width: 20,
+              tintColor: theme.colors.darkGrey,
+            }}
           />
           <TextFormatted
             style={{

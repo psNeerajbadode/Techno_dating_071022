@@ -1,7 +1,6 @@
 import {
   ScrollView,
   StyleSheet,
-  Text,
   TouchableOpacity,
   View,
   Image,
@@ -11,10 +10,9 @@ import {theme} from '../../utils/Constants';
 import HeaderImage_1 from '../../components/HeaderImage_1';
 import Header from '../../components/Header';
 import TextFormatted from '../../components/TextFormatted';
-import Icon from 'react-native-vector-icons/Entypo';
 import {useNavigation} from '@react-navigation/native';
 import CloseAccount from './closeAccount/closeAccount';
-import {useDispatch, useSelector} from 'react-redux';
+import {useSelector} from 'react-redux';
 import {
   BluelightImage,
   GreenlightImage,
@@ -149,15 +147,20 @@ const ButtonRow = ({title, onPress, color, coloricon}) => {
         }}>
         {title}
       </TextFormatted>
-      <Icon
-        name="chevron-small-right"
-        size={20}
-        color={
-          coloricon ||
-          (ThemeMode.selectedTheme
-            ? theme.colors.primaryBlack
-            : theme.colors.primary)
-        }
+      <Image
+        resizeMode="contain"
+        source={require('../../assets/icons/chevron_down_ico.png')}
+        style={{
+          marginTop: 0,
+          height: 12,
+          width: 10,
+          transform: [{rotate: '-90deg'}],
+          tintColor:
+            coloricon ||
+            (ThemeMode.selectedTheme
+              ? theme.colors.primaryBlack
+              : theme.colors.primary),
+        }}
       />
     </TouchableOpacity>
   );

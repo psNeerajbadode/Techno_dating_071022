@@ -197,10 +197,18 @@ const ButtonRow = ({title, onPress}) => {
         }}>
         {title}
       </TextFormatted>
-      <Icon
-        name="chevron-small-right"
-        size={20}
-        color={theme.colors.primaryBlack}
+      <Image
+        resizeMode="contain"
+        source={require('../../../assets/icons/chevron_down_ico.png')}
+        style={{
+          marginTop: 0,
+          height: 12,
+          width: 10,
+          transform: [{rotate: '-90deg'}],
+          tintColor: ThemeMode.selectedTheme
+            ? theme.colors.primaryBlack
+            : theme.colors.primary,
+        }}
       />
     </TouchableOpacity>
   );
