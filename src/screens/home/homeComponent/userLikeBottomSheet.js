@@ -9,7 +9,7 @@ import {
   View,
   TouchableOpacity,
 } from 'react-native';
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import TextFormatted from '../../../components/TextFormatted';
 import LinearGradient from 'react-native-linear-gradient';
@@ -28,6 +28,8 @@ import {
   YellowlightImage,
 } from '../../../utils/CustomImages';
 import Sheetbutton from '../../../components/Sheetbutton';
+import axios from 'axios';
+import ActivityLoader from '../../../components/ActivityLoader';
 
 const UserLikeBottomSheet = ({refRBSheet, setLike}) => {
   const ThemeMode = useSelector(state => state.Theme);
@@ -37,82 +39,25 @@ const UserLikeBottomSheet = ({refRBSheet, setLike}) => {
   const [type, setType] = useState();
   const [search, setSearch] = useState('');
   const [additem, setAdditem] = useState([]);
+  const [chatPssion, setChatPssion] = useState([]);
+  const [load, setload] = useState(false);
+  const [passion, setpassion] = useState([]);
   const kaylength = search.length;
   const userprofile = require('../../../assets/images/profile2.png');
-  const data = [
-    {
-      img: require('../../../assets/icons/clapperboard.png'),
-      title: 'Movies',
-      subtitle: 'Tell me what to watch tonight',
-    },
-
-    // { img: require('../../../assets/icons/icecream.png'), title: 'Ice cream' },
-    // { img: require('../../../assets/icons/table.png'), title: 'Restaurant' },
-    {
-      img: require('../../../assets/icons/hot_coffee.png'),
-      title: 'Coffee',
-      subtitle: 'Take me to your favorite cafe',
-    },
-    // { img: require('../../../assets/icons/beach_chair.png'), title: 'Beach' },
-    // { img: require('../../../assets/icons/pina_colada.png'), title: 'Bar' },
-    {
-      img: require('../../../assets/icons/mirror_ball.png'),
-      title: 'Club',
-      subtitle: 'Let’s have some fun',
-    },
-    // { img: require('../../../assets/icons/pizza.png'), title: 'Pizza' },
-    // { img: require('../../../assets/icons/museum.png'), title: 'Museum' },
-    // { img: require('../../../assets/icons/theater.png'), title: 'Theater' },
-    // { img: require('../../../assets/icons/micro.png'), title: 'karaoke' },
-    // { img: require('../../../assets/icons/wine_glass.png'), title: 'Wine' },
-    // { img: require('../../../assets/icons/beer.png'), title: 'Beer' },
-    // { img: require('../../../assets/icons/zoo.png'), title: 'Zoo' },
-    {
-      img: require('../../../assets/icons/art_and_design.png'),
-      title: 'Art',
-      subtitle: 'Take me to your favorite Art',
-    },
-    {
-      img: require('../../../assets/icons/sports.png'),
-      title: 'Sports',
-      subtitle: 'Take me to your favorite Sports',
-    },
-    // { img: require('../../../assets/icons/teddy_bear.png'), title: 'Bear' },
-    // { img: require('../../../assets/icons/lectern.png'), title: 'Politics' },
-    // { img: require('../../../assets/icons/picnic_basket.png'), title: 'Picnic' },
-    // { img: require('../../../assets/icons/cooking.png'), title: 'Cooking' },
-    // { img: require('../../../assets/icons/books.png'), title: 'Reading' },
-    // { img: require('../../../assets/icons/diy.png'), title: 'DIY' },
-    // { img: require('../../../assets/icons/dog.png'), title: 'Animals' },
-    // { img: require('../../../assets/icons/dice.png'), title: 'Board Games' },
-    {
-      img: require('../../../assets/icons/aeroplane.png'),
-      title: 'Travel',
-      subtitle: 'Take me to your favorite Travel',
-    },
-    // { img: require('../../../assets/icons/polo.png'), title: 'Fashion' },
-    // { img: require('../../../assets/icons/herbal_tea.png'), title: 'Tea' },
-    // { img: require('../../../assets/icons/photography.png'), title: 'Photography' },
-    // { img: require('../../../assets/icons/shopping_bags.png'), title: 'Shopping' },
-    {
-      img: require('../../../assets/icons/console.png'),
-      title: 'Games',
-      subtitle: 'Take me to your favorite Games',
-    },
-    // { img: require('../../../assets/icons/manuscript.png'), title: 'Writing' },
-    // { img: require('../../../assets/icons/nature.png'), title: 'Outdoors' },
-    // { img: require('../../../assets/icons/rumba.png'), title: 'Dancing' },
-    // { img: require('../../../assets/icons/walking.png'), title: 'Walking' },
-    // { img: require('../../../assets/icons/ecology.png'), title: 'Environment' },
-    // { img: require('../../../assets/icons/love.png'), title: 'Volunteering' },
-    // { img: require('../../../assets/icons/instagram.png'), title: 'Instagram' },
-    // { img: require('../../../assets/icons/architecture.png'), title: 'Architecture' },
-    {
-      img: require('../../../assets/icons/love_1.png'),
-      title: 'Friends',
-      subtitle: 'Let’s be friends. Maybe even besties',
-    },
-  ];
+  const getPassion = () => {
+    setload(true);
+    axios({
+      method: 'get',
+      url: `https://technorizen.com/Dating/webservice/get_passion`,
+    }).then(response => {
+      console.log('response=>', response.data.result);
+      setload(false);
+      setpassion(response.data.result);
+    });
+  };
+  useEffect(() => {
+    getPassion();
+  }, []);
 
   return (
     <View>
@@ -346,104 +291,118 @@ const UserLikeBottomSheet = ({refRBSheet, setLike}) => {
               </TextFormatted>
             </LinearGradient>
 
-            <FlatList
-              data={data.filter(item => {
-                return item.title.toLowerCase().includes(search.toLowerCase());
-              })}
-              contentContainerStyle={{paddingBottom: 20}}
-              style={{height: 260, paddingTop: 15}}
-              renderItem={({item, index}) => (
-                <TouchableOpacity
-                  onPress={() =>
-                    setAdditem(pre =>
-                      pre.find((v, i) => v == item.title)
-                        ? pre.filter((v, i) => v != item.title)
-                        : [...pre, item.title],
-                    )
-                  }
-                  style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    padding: 15,
-                    marginVertical: 8,
-                    justifyContent: 'space-between',
-                    shadowColor: '#8490ae85',
-                    shadowOffset: {
-                      width: 0,
-                      height: 1,
-                    },
-                    shadowOpacity: 0.22,
-                    shadowRadius: 2.22,
-                    elevation: 10,
-                    backgroundColor: ThemeMode.selectedTheme
-                      ? theme.colors.primary
-                      : theme.colors.primaryBlack,
-                    borderRadius: 15,
-                    marginHorizontal: 10,
-                  }}>
-                  <View
+            {load ? (
+              <View
+                style={{
+                  flex: 1,
+                  justifyContent: 'center',
+                  paddingVertical: 30,
+                }}>
+                <ActivityLoader />
+              </View>
+            ) : (
+              <FlatList
+                data={passion.filter(item => {
+                  return item.passion_name
+                    .toLowerCase()
+                    .includes(search.toLowerCase());
+                })}
+                contentContainerStyle={{paddingBottom: 20}}
+                style={{height: 260, paddingTop: 15}}
+                renderItem={({item, index}) => (
+                  <TouchableOpacity
+                    onPress={() => {
+                      setAdditem(pre =>
+                        pre.find((v, i) => v == item.id)
+                          ? pre.filter((v, i) => v != item.id)
+                          : [...pre, item.id],
+                      );
+                    }}
                     style={{
                       flexDirection: 'row',
-                      overflow: 'hidden',
-                      flex: 1,
-                      marginRight: 20,
+                      alignItems: 'center',
+                      padding: 15,
+                      marginVertical: 8,
+                      justifyContent: 'space-between',
+                      shadowColor: '#8490ae85',
+                      shadowOffset: {
+                        width: 0,
+                        height: 1,
+                      },
+                      shadowOpacity: 0.22,
+                      shadowRadius: 2.22,
+                      elevation: 10,
+                      backgroundColor: ThemeMode.selectedTheme
+                        ? theme.colors.primary
+                        : theme.colors.primaryBlack,
+                      borderRadius: 15,
+                      marginHorizontal: 10,
                     }}>
-                    <Image
-                      source={item.img}
+                    <View
                       style={{
-                        height: 40,
-                        width: 40,
-                        resizeMode: 'contain',
-                        opacity: 1,
-                        marginRight: 10,
-                      }}
-                    />
-                    <View>
-                      <TextFormatted
+                        flexDirection: 'row',
+                        overflow: 'hidden',
+                        flex: 1,
+                        marginRight: 20,
+                      }}>
+                      <Image
+                        source={{uri: item.image}}
                         style={{
-                          fontSize: 18,
-                          fontWeight: '700',
-                          color: ThemeMode.selectedTheme
-                            ? theme.colors.primaryBlack
-                            : theme.colors.primary,
-                          flex: 1,
-                          marginLeft: 10,
-                        }}>
-                        {item.title}
-                      </TextFormatted>
-                      <TextFormatted
-                        style={{
-                          fontSize: 12,
-                          fontWeight: '400',
-                          color: theme.colors.darkGrey,
-                          flex: 1,
-                          marginLeft: 10,
-                        }}>
-                        {item.subtitle}
-                      </TextFormatted>
+                          height: 40,
+                          width: 40,
+                          resizeMode: 'contain',
+                          opacity: 1,
+                          marginRight: 10,
+                        }}
+                      />
+                      <View>
+                        <TextFormatted
+                          style={{
+                            fontSize: 18,
+                            fontWeight: '700',
+                            color: ThemeMode.selectedTheme
+                              ? theme.colors.primaryBlack
+                              : theme.colors.primary,
+                            flex: 1,
+                            marginLeft: 10,
+                          }}>
+                          {item.passion_name}
+                        </TextFormatted>
+                        <TextFormatted
+                          style={{
+                            fontSize: 12,
+                            fontWeight: '400',
+                            color: theme.colors.darkGrey,
+                            flex: 1,
+                            marginLeft: 10,
+                          }}>
+                          {/* {item.subtitle} */} Tell me your favorite
+                        </TextFormatted>
+                      </View>
                     </View>
-                  </View>
-                  <Image
-                    source={
-                      additem.find((v, i) => v == item.title)
-                        ? ThemeMode.themecolr == 'Red'
-                          ? RedlightImage.check_red
-                          : ThemeMode.themecolr == 'Blue'
-                          ? BluelightImage.check_blue
-                          : ThemeMode.themecolr == 'Green'
-                          ? GreenlightImage.check_green
-                          : ThemeMode.themecolr == 'Purple'
-                          ? PurplelightImage.check_purple
-                          : ThemeMode.themecolr == 'Yellow'
-                          ? YellowlightImage.check_yellow
-                          : RedlightImage.check_red
-                        : require('../../../assets/icons/check.png')
-                    }
-                    style={{height: 29, width: 29, resizeMode: 'contain'}}
-                  />
-                </TouchableOpacity>
-              )}
-            />
+                    <Image
+                      source={
+                        additem.find((v, i) => v == item.id)
+                          ? ThemeMode.themecolr == 'Red'
+                            ? RedlightImage.check_red
+                            : ThemeMode.themecolr == 'Blue'
+                            ? BluelightImage.check_blue
+                            : ThemeMode.themecolr == 'Green'
+                            ? GreenlightImage.check_green
+                            : ThemeMode.themecolr == 'Purple'
+                            ? PurplelightImage.check_purple
+                            : ThemeMode.themecolr == 'Yellow'
+                            ? YellowlightImage.check_yellow
+                            : RedlightImage.check_red
+                          : require('../../../assets/icons/check.png')
+                      }
+                      style={{height: 29, width: 29, resizeMode: 'contain'}}
+                    />
+                  </TouchableOpacity>
+                )}
+              />
+            )}
+
             <View
               style={{
                 alignSelf: 'center',

@@ -11,7 +11,7 @@ import HeaderImage_1 from '../../components/HeaderImage_1';
 import TextFormatted from '../../components/TextFormatted';
 import Button from '../../components/Button';
 import SearchBar from '../../components/SearchBar';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {
   BluelightImage,
   GreenlightImage,
@@ -19,7 +19,9 @@ import {
   RedlightImage,
   YellowlightImage,
 } from '../../utils/CustomImages';
+import {STAP} from '../../redux/actions/ActionType';
 const LanguageSelection = ({navigation}) => {
+  const dispatch = useDispatch();
   const [select, setSelect] = useState('English');
   const [search, setSearch] = useState('');
   const ThemeMode = useSelector(state => state.Theme);
@@ -121,7 +123,12 @@ const LanguageSelection = ({navigation}) => {
         disabled={select ? false : true}
         marginTop={20}
         marginBottom={30}
-        onPress={() => navigation.navigate('Login')}
+        onPress={() =>
+          navigation.navigate(
+            'Login',
+            dispatch({type: STAP, payload: {Leng: select}}),
+          )
+        }
       />
     </View>
   );

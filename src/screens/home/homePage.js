@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   useWindowDimensions,
   View,
+  SafeAreaView,
 } from 'react-native';
 import React, {useEffect, useRef, useState} from 'react';
 import Swiper from 'react-native-swiper';
@@ -25,6 +26,7 @@ import axios from 'axios';
 import ActivityLoader from '../../components/ActivityLoader';
 import FastImage from 'react-native-fast-image';
 import {ShowToast} from '../../utils/Baseurl';
+import Statusbar from '../../components/Statusbar';
 const HomePage = () => {
   const ThemeMode = useSelector(state => state.Theme);
   const Staps = useSelector(state => state.Stap);
@@ -210,10 +212,8 @@ const HomePage = () => {
   };
 
   useEffect(() => {
-    /* getUserAll(); */
     getUserPost();
   }, []);
-
   return (
     <View
       style={{
@@ -222,11 +222,14 @@ const HomePage = () => {
           ? theme.colors.primary
           : theme.colors.primaryBlack,
       }}>
-      <StatusBar
-        translucent={true}
-        backgroundColor={'transparent'}
-        barStyle="light-content"
-      />
+      <SafeAreaView>
+        <StatusBar
+          translucent={true}
+          backgroundColor="transparent"
+          barStyle={'light-content'}
+          // hidden={false}
+        />
+      </SafeAreaView>
 
       {Loading ? (
         <View
@@ -240,7 +243,13 @@ const HomePage = () => {
           <ActivityLoader />
         </View>
       ) : (
-        <View>
+        <View
+          style={{
+            flex: 1,
+            backgroundColor: ThemeMode.selectedTheme
+              ? theme.colors.primary
+              : theme.colors.primaryBlack,
+          }}>
           <FlatList
             data={Userpost}
             initialScrollIndex={indexV}
@@ -251,7 +260,11 @@ const HomePage = () => {
             pagingEnabled={true}
             ref={userRef}
             renderItem={({item, i}) => (
-              <View style={{flex: 1, height: dimension.height}}>
+              <View
+                style={{
+                  flex: 1,
+                  height: dimension.height + StatusBar.currentHeight,
+                }}>
                 <Swiper
                   loop={false}
                   showsButtons={true}
@@ -282,7 +295,7 @@ const HomePage = () => {
                       v.type == 'Image' && (
                         <View
                           style={{
-                            height: dimension.height,
+                            height: dimension.height + StatusBar.currentHeight,
                             width: dimension.width,
                           }}>
                           <Image
@@ -291,7 +304,8 @@ const HomePage = () => {
                             }}
                             resizeMode="cover"
                             style={{
-                              height: dimension.height,
+                              height:
+                                dimension.height + StatusBar.currentHeight,
                               width: dimension.width,
                             }}
                           />

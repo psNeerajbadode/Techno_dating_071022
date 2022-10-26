@@ -10,8 +10,10 @@ import {theme} from '../../utils/Constants';
 import {AnimatedCircularProgress} from 'react-native-circular-progress';
 import {Circle} from 'react-native-svg';
 import Statusbar from '../../components/Statusbar';
+import {useSelector} from 'react-redux';
 const Splash = ({navigation}) => {
   const dimension = useWindowDimensions();
+  const Staps = useSelector(state => state.Stap);
   return (
     <ImageBackground
       resizeMode="stretch"
@@ -46,7 +48,9 @@ const Splash = ({navigation}) => {
         tintColorSecondary="#fff"
         padding={10}
         onAnimationComplete={() => {
-          navigation.replace('LanguageSelection');
+          navigation.replace(
+            (Staps.Leng = !null ? 'Login' : 'LanguageSelection'),
+          );
           // navigation.replace('step4');
           // navigation.replace('HomePage');
         }}

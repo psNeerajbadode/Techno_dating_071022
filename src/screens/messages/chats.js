@@ -7,7 +7,7 @@ import {
   ScrollView,
   useWindowDimensions,
 } from 'react-native';
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {theme} from '../../utils/Constants';
 import HeaderImage_1 from '../../components/HeaderImage_1';
 import Header from '../../components/Header';
@@ -17,16 +17,18 @@ import MoreOptions from '../home/moreOptions';
 import {useDispatch, useSelector} from 'react-redux';
 import DocumentPicker from 'react-native-document-picker';
 import {useRoute} from '@react-navigation/native';
+import axios from 'axios';
 
 const Chats = () => {
   const [multipleFile, setMultipleFile] = useState([]);
   const dispatch = useDispatch();
   const ThemeMode = useSelector(state => state.Theme);
   const refRBSheet = useRef();
+  const [passion, setpassion] = useState([]);
   const {params} = useRoute();
   const [mess, setMess] = useState('');
   const [show, setShow] = useState(false);
-  console.log(params);
+  console.log('params =>', params);
   const dimension = useWindowDimensions();
 
   const selectMultipleFile = async () => {
@@ -51,55 +53,18 @@ const Chats = () => {
       }
     }
   };
-
-  const data = [
-    {
-      img: require('../../assets/icons/clapperboard.png'),
-      title: 'Movies',
-      subtitle: 'Tell me what to watch tonight',
-    },
-
-    {
-      img: require('../../assets/icons/hot_coffee.png'),
-      title: 'Coffee',
-      subtitle: 'Take me to your favorite cafe',
-    },
-
-    {
-      img: require('../../assets/icons/mirror_ball.png'),
-      title: 'Club',
-      subtitle: 'Let’s have some fun',
-    },
-
-    {
-      img: require('../../assets/icons/art_and_design.png'),
-      title: 'Art',
-      subtitle: 'Take me to your favorite Art',
-    },
-    {
-      img: require('../../assets/icons/sports.png'),
-      title: 'Sports',
-      subtitle: 'Take me to your favorite Sports',
-    },
-
-    {
-      img: require('../../assets/icons/aeroplane.png'),
-      title: 'Travel',
-      subtitle: 'Take me to your favorite Travel',
-    },
-
-    {
-      img: require('../../assets/icons/console.png'),
-      title: 'Games',
-      subtitle: 'Take me to your favorite Games',
-    },
-
-    {
-      img: require('../../assets/icons/love_1.png'),
-      title: 'Friends',
-      subtitle: 'Let’s be friends. Maybe even besties',
-    },
-  ];
+  const getPassion = () => {
+    axios({
+      method: 'get',
+      url: `https://technorizen.com/Dating/webservice/get_passion`,
+    }).then(response => {
+      console.log('response=>', response.data.result);
+      setpassion(response.data.result);
+    });
+  };
+  useEffect(() => {
+    getPassion();
+  }, []);
   return (
     <View
       style={{
@@ -193,9 +158,9 @@ const Chats = () => {
         </LinearGradient>
         {params.params != null && (
           <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
-            {data.map(
+            {passion.map(
               (v, i) =>
-                params.params[i] == v.title && (
+                params.params[i] == v.id && (
                   <View
                     style={{
                       width: dimension.width / 3,
@@ -204,7 +169,7 @@ const Chats = () => {
                       marginBottom: 15,
                     }}>
                     <Image
-                      source={v.img}
+                      source={{uri: v.image}}
                       resizeMode="contain"
                       style={{width: 45, height: 45}}
                     />
@@ -215,7 +180,7 @@ const Chats = () => {
                         color: theme.colors.darkGrey,
                         marginTop: 10,
                       }}>
-                      {v.title}
+                      {v.passion_name}
                     </TextFormatted>
                   </View>
                 ),
@@ -329,7 +294,8 @@ const Chats = () => {
               width: 22,
               height: 22,
             }}
-            onPress={selectMultipleFile}>
+            /*  onPress={selectMultipleFile} */
+          >
             <Image
               style={{
                 width: 22,

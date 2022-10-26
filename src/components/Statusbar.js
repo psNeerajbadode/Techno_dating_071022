@@ -1,12 +1,12 @@
 import {SafeAreaView, StyleSheet, StatusBar, View} from 'react-native';
 import React from 'react';
 
-const Statusbar = ({backgroundColor, props, hidden, barStyle}) => {
+const Statusbar = ({backgroundColor, translucent, props, hidden, barStyle}) => {
   return (
     <View style={[{backgroundColor, barStyle}]}>
       <SafeAreaView>
         <StatusBar
-          translucent={true}
+          translucent={translucent || true}
           backgroundColor={backgroundColor}
           barStyle={barStyle}
           hidden={hidden}

@@ -9,7 +9,6 @@ import {
 } from 'react-native';
 import React, {useState} from 'react';
 import {theme} from '../../utils/Constants';
-import HeaderImage_1 from '../../components/HeaderImage_1';
 import Header from '../../components/Header';
 import HeaderImage from '../../components/HeaderImage';
 import TextFormatted from '../../components/TextFormatted';
@@ -20,8 +19,6 @@ import Information from './profileComponent/information';
 import {useNavigation} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
 import * as Animatable from 'react-native-animatable';
-import axios from 'axios';
-import ActivityLoader from '../../components/ActivityLoader';
 
 const MyProfile = () => {
   const navigation = useNavigation();
