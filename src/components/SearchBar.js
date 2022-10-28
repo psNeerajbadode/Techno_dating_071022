@@ -4,9 +4,9 @@ import {
   TextInput,
   useWindowDimensions,
   View,
+  TouchableOpacity,
 } from 'react-native';
 import React from 'react';
-import {Icon} from '@rneui/themed';
 import {theme} from '../utils/Constants';
 import {useSelector} from 'react-redux';
 import {
@@ -86,17 +86,19 @@ const SearchBar = ({
       />
       {Cross || value?.length < 1 || (
         // <Icon name="close" size={20} color={'#000'} onPress={onPress} />
-        <Image
-          resizeMode="contain"
-          source={require('../assets/icons/close_immg.png')}
-          style={{
-            tintColor: ThemeMode.selectedTheme
-              ? theme.colors.primaryBlack
-              : theme.colors.darkGrey,
-            width: 12,
-            height: 12,
-          }}
-        />
+        <TouchableOpacity onPress={onPress}>
+          <Image
+            resizeMode="contain"
+            source={require('../assets/icons/close_immg.png')}
+            style={{
+              tintColor: ThemeMode.selectedTheme
+                ? theme.colors.primaryBlack
+                : theme.colors.darkGrey,
+              width: 13,
+              height: 13,
+            }}
+          />
+        </TouchableOpacity>
       )}
     </View>
   );

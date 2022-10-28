@@ -7,8 +7,6 @@ import {
 } from 'react-native';
 import React, {useRef, useState} from 'react';
 import Swiper from 'react-native-swiper';
-import Feather from 'react-native-vector-icons/Feather';
-import {theme} from '../../utils/Constants';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
 import {Platform} from 'react-native';
@@ -18,17 +16,9 @@ const ViewSelfMedia = () => {
   const navigation = useNavigation();
   const {params = {}} = useRoute();
   const ThemeMode = useSelector(state => state.Theme);
-  const [index, setIndex] = useState(params.imgIndex);
-  // const photos = [
-  //   {img: require('../../assets/images/unsplash_1.png')},
-  //   {img: require('../../assets/images/unsplash_2.png')},
-  //   {img: require('../../assets/images/unsplash_3.png')},
-  //   {img: require('../../assets/images/unsplash_4.png')},
-  //   {img: require('../../assets/images/unsplash_5.png')},
-  //   {img: require('../../assets/images/unsplash_6.png')},
-  // ];
+  const [index, setIndex] = useState(params?.imgIndex);
+  console.log('params', params.imgIndex);
 
-  const refRBSheet = useRef();
   const Storage_permission = async () => {
     if (Platform.OS === 'ios') {
       download_Img();
@@ -55,9 +45,10 @@ const ViewSelfMedia = () => {
 
   const download_Img = () => {
     let date = new Date();
-    let ImageUrl = params.User[index].image;
-    // 'https://cdn.pixabay.com/photo/2022/10/02/05/34/city-7492749__340.jpg';
-    //let extension = ImageUrl.substring(fileName.lastIndexOf('.') + 1);
+    let ImageUrl =
+      params.Signup_User == null
+        ? params?.User[index]?.image
+        : params?.Signup_User[index]?.uri;
     const {config, fs} = RNFetchBlob;
     config({
       addAndroidDownloads: {
@@ -85,7 +76,7 @@ const ViewSelfMedia = () => {
       <Swiper
         loop={false}
         style={styles.wrapper}
-        index={params.imgIndex}
+        index={params?.imgIndex}
         showsButtons={true}
         showsPagination={false}
         onIndexChanged={index => setIndex(index)}
@@ -110,13 +101,15 @@ const ViewSelfMedia = () => {
             style={{height: 145, width: 25, resizeMode: 'contain'}}
           />
         }>
-        {params.User?.map((it, i) => (
-          /* params?.imgIndex == i && */ <Image
-            source={{uri: it.image}}
-            resizeMode="cover"
-            style={{height: '100%', width: '100%'}}
-          />
-        ))}
+        {params?.Signup_User == null
+          ? params?.User?.map
+          : params?.Signup_User?.map((it, i) => (
+              /* params?.imgIndex == i && */ <Image
+                source={{uri: params?.Signup_User == null ? it.image : it.uri}}
+                resizeMode="cover"
+                style={{height: '100%', width: '100%'}}
+              />
+            ))}
       </Swiper>
       <View
         style={{
@@ -138,27 +131,29 @@ const ViewSelfMedia = () => {
           />
         </TouchableOpacity>
         <View style={{flex: 1}} />
-        <View>
-          {ThemeMode.selectedTheme ? (
-            <TouchableOpacity
-              onPress={() => Storage_permission()}
-              style={{alignSelf: 'flex-start'}}>
-              <Image
-                source={require('../../assets/icons/download_light.png')}
-                style={{height: 40, width: 40, resizeMode: 'contain'}}
-              />
-            </TouchableOpacity>
-          ) : (
-            <TouchableOpacity
-              onPress={() => Storage_permission()}
-              style={{alignSelf: 'flex-start'}}>
-              <Image
-                source={require('../../assets/icons/download_dark.png')}
-                style={{height: 40, width: 40, resizeMode: 'contain'}}
-              />
-            </TouchableOpacity>
-          )}
-        </View>
+        {params.Signup_User[index] == null && (
+          <View>
+            {ThemeMode.selectedTheme ? (
+              <TouchableOpacity
+                onPress={() => Storage_permission()}
+                style={{alignSelf: 'flex-start'}}>
+                <Image
+                  source={require('../../assets/icons/download_light.png')}
+                  style={{height: 40, width: 40, resizeMode: 'contain'}}
+                />
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity
+                onPress={() => Storage_permission()}
+                style={{alignSelf: 'flex-start'}}>
+                <Image
+                  source={require('../../assets/icons/download_dark.png')}
+                  style={{height: 40, width: 40, resizeMode: 'contain'}}
+                />
+              </TouchableOpacity>
+            )}
+          </View>
+        )}
       </View>
     </View>
   );

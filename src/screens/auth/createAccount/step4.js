@@ -6,43 +6,48 @@ import {
   TouchableOpacity,
   useWindowDimensions,
   View,
+  RefreshControl,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import HeaderImage_1 from '../../../components/HeaderImage_1';
 import Pagination from '../../../components/Pagination';
 import ButtonView from '../../../components/buttonView';
 import Button from '../../../components/Button';
 import {theme} from '../../../utils/Constants';
 import TextFormatted from '../../../components/TextFormatted';
-import Icon from 'react-native-vector-icons/Feather';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import * as ImagePicker from 'react-native-image-picker';
 import {createThumbnail} from 'react-native-create-thumbnail';
 import {useDispatch, useSelector} from 'react-redux';
-import {STAP} from '../../../redux/actions/ActionType';
 import axios from 'axios';
 import {ShowToast} from '../../../utils/Baseurl';
+import {useNavigation} from '@react-navigation/native';
+import BottomSheet from '../../../components/bottomSheet';
+import {STAP} from '../../../redux/actions/ActionType';
 
-const Step4 = ({navigation}) => {
+const Step4 = () => {
+  const navigation = useNavigation();
   const dispatch = useDispatch();
+  const refRBSheet3 = useRef();
   const ThemeMode = useSelector(state => state.Theme);
   const Staps = useSelector(state => state.Stap);
-  console.log('Staps4', Staps);
   const dimension = useWindowDimensions();
   const [loading, setLoading] = useState(false);
+  const [refresh, setRefresh] = useState(false);
   const [media, setMedia] = useState([]);
   const [vid, setVid] = useState(false);
   const [thumb, setThumb] = useState();
-
   const images = media.filter(v => v.type != 'video/mp4');
   const video = media.filter(v => v.type == 'video/mp4');
-  console.log(video);
-  const selectImage = async () => {
-    await ImagePicker.launchImageLibrary(
+  console.log('video[0]?.uri', video[0]?.type);
+  const selectImage = async type => {
+    await (type == 'cemera'
+      ? ImagePicker.launchCamera
+      : ImagePicker.launchImageLibrary)(
       {
-        mediaType: 'mixed',
+        mediaType: /* type == 'photos' ? 'photo' : */ 'mixed',
         videoQuality: 'high',
-        selectionLimit: 5,
+        selectionLimit: 6,
         quality: 1,
       },
       response => {
@@ -50,10 +55,10 @@ const Step4 = ({navigation}) => {
           if (
             media
               .concat(...response.assets)
-              .filter(v => v.type.includes('video')).length < 2 &&
+              .filter(v => v.type.includes('video')).length <= 1 &&
             media
               .concat(...response.assets)
-              .filter(v => !v.type.includes('video')).length < 6
+              .filter(v => !v.type.includes('video')).length <= 5
           ) {
             setMedia(media.concat(...response.assets));
           } else {
@@ -61,6 +66,7 @@ const Step4 = ({navigation}) => {
               ' Upload at least 2 media to proceed and a maximum of 5 photo and 1 video',
             );
           }
+          generateThumbnail();
         }
       },
     );
@@ -71,13 +77,25 @@ const Step4 = ({navigation}) => {
       const response = await createThumbnail({
         url: video[0].uri,
       });
+      console.log('response', response.path);
       setThumb(response.path);
     } catch (err) {
       console.error(err);
     } finally {
     }
+    setRefresh(true);
+    setTimeout(() => {
+      setRefresh(false);
+    }, 1000);
   }
 
+  function remove_photos(index) {
+    media.splice(index, 1);
+    setMedia(media);
+    setTimeout(() => {
+      setRefresh(false);
+    }, 1000);
+  }
   const ImageApi = () => {
     try {
       setLoading(true);
@@ -123,7 +141,11 @@ const Step4 = ({navigation}) => {
       setLoading(true);
       const body = new FormData();
       body.append('user_id', Staps.id);
-      body.append('image', video[0].uri);
+      body.append('image', {
+        uri: video[0]?.uri,
+        type: video[0]?.type,
+        name: video[0]?.fileName,
+      });
       axios({
         url: 'https://technorizen.com/Dating/webservice/signup6',
         method: 'POST',
@@ -149,6 +171,11 @@ const Step4 = ({navigation}) => {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    /* navigation.addListener('focus', () => generateThumbnail()); */
+  }, []);
+
   return (
     <View
       style={{
@@ -165,7 +192,13 @@ const Step4 = ({navigation}) => {
         />
       </HeaderImage_1>
 
-      <ScrollView>
+      <ScrollView
+        refreshControl={
+          <RefreshControl
+            refreshing={refresh}
+            onRefresh={() => generateThumbnail()}
+          />
+        }>
         <View
           style={{
             flexDirection: 'row',
@@ -198,7 +231,11 @@ const Step4 = ({navigation}) => {
         <View style={{flexDirection: 'row', marginTop: 20}}>
           <View style={{width: '50%', alignItems: 'center'}}>
             <TouchableOpacity
-              onPress={() => selectImage()}
+              onPress={() => {
+                refRBSheet3.current.open();
+                /* selectImage(); */
+                generateThumbnail();
+              }}
               style={{
                 width: (dimension.width - 60) / 2,
                 height: 158,
@@ -259,11 +296,55 @@ const Step4 = ({navigation}) => {
                 Add media
               </TextFormatted>
             </TouchableOpacity>
-            {setVid ? (
-              <View>
-                {media?.map(
-                  (it, i) =>
-                    i == 1 && (
+
+            <View>
+              {media?.map(
+                (it, i) =>
+                  it.type != 'video/mp4' &&
+                  i == 1 && (
+                    <TouchableOpacity
+                      onPress={() =>
+                        navigation.navigate('viewSelfMedia', {
+                          imgIndex: i,
+                          Signup_User: images,
+                        })
+                      }>
+                      <TouchableOpacity
+                        onPress={() => {
+                          remove_photos(i);
+                          setRefresh(true);
+                        }}
+                        style={{
+                          position: 'absolute',
+                          top: 30,
+                          right: 10,
+                          zIndex: 1,
+                          padding: 5,
+                          borderRadius: 10,
+                          backgroundColor:
+                            ThemeMode.themecolr == 'Red'
+                              ? theme.colors.red
+                              : ThemeMode.themecolr == 'Blue'
+                              ? theme.colors.Blue
+                              : ThemeMode.themecolr == 'Green'
+                              ? theme.colors.Green
+                              : ThemeMode.themecolr == 'Purple'
+                              ? theme.colors.Purple
+                              : ThemeMode.themecolr == 'Yellow'
+                              ? theme.colors.Yellow
+                              : theme.colors.red,
+                        }}>
+                        <Image
+                          source={require('../../../assets/icons/delete_icon.png')}
+                          style={{
+                            width: 18,
+                            height: 18,
+                            tintColor: ThemeMode.selectedTheme
+                              ? theme.colors.primary
+                              : theme.colors.primaryBlack,
+                          }}
+                        />
+                      </TouchableOpacity>
                       <Image
                         source={{uri: it.uri}}
                         style={{
@@ -274,76 +355,310 @@ const Step4 = ({navigation}) => {
                           marginTop: 10,
                         }}
                       />
-                    ),
-                )}
-              </View>
-            ) : (
-              <ImageBackground
-                source={{uri: thumb}}
-                style={{
-                  width: (dimension.width - 50) / 2,
-                  height: 253,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}
-                resizeMode="cover"
-                imageStyle={{borderRadius: 20}}>
-                <Image
-                  source={require('../../../assets/icons/play_video.png')}
-                  style={{
-                    height: 60,
-                    width: 60,
-                    resizeMode: 'contain',
-                    position: 'absolute',
-                  }}
-                />
-              </ImageBackground>
-            )}
+                    </TouchableOpacity>
+                  ),
+              )}
+            </View>
           </View>
-          <View style={{width: '50%', alignItems: 'center'}}>
-            {media?.map((it, i) =>
-              i == 0 || i == 2 ? (
-                <Image
-                  source={{uri: it.uri}}
+          <View
+            style={{
+              alignSelf: 'center',
+              width: '100%',
+            }}>
+            <View style={{width: '50%', alignItems: 'center'}}>
+              {media?.map(
+                (it, i) =>
+                  it.type != 'video/mp4' &&
+                  i == 0 && (
+                    <TouchableOpacity
+                      onPress={() =>
+                        navigation.navigate('viewSelfMedia', {
+                          imgIndex: i,
+                          Signup_User: images,
+                        })
+                      }>
+                      <TouchableOpacity
+                        onPress={() => {
+                          remove_photos(i);
+                          setRefresh(true);
+                        }}
+                        style={{
+                          position: 'absolute',
+                          top: 30,
+                          right: 10,
+                          zIndex: 1,
+                          padding: 5,
+                          borderRadius: 10,
+                          backgroundColor:
+                            ThemeMode.themecolr == 'Red'
+                              ? theme.colors.red
+                              : ThemeMode.themecolr == 'Blue'
+                              ? theme.colors.Blue
+                              : ThemeMode.themecolr == 'Green'
+                              ? theme.colors.Green
+                              : ThemeMode.themecolr == 'Purple'
+                              ? theme.colors.Purple
+                              : ThemeMode.themecolr == 'Yellow'
+                              ? theme.colors.Yellow
+                              : theme.colors.red,
+                        }}>
+                        <Image
+                          source={require('../../../assets/icons/delete_icon.png')}
+                          style={{
+                            width: 18,
+                            height: 18,
+                            tintColor: ThemeMode.selectedTheme
+                              ? theme.colors.primary
+                              : theme.colors.primaryBlack,
+                          }}
+                        />
+                      </TouchableOpacity>
+                      <Image
+                        source={{uri: it.uri}}
+                        style={{
+                          width: (dimension.width - 60) / 2,
+                          height: 281,
+                          resizeMode: 'cover',
+                          borderRadius: 20,
+                          marginTop: 20,
+                        }}
+                      />
+                    </TouchableOpacity>
+                  ),
+              )}
+            </View>
+
+            <View style={{width: '50%', alignItems: 'center'}}>
+              {media?.map(
+                (it, i) =>
+                  it.type != 'video/mp4' &&
+                  i == 2 && (
+                    <TouchableOpacity
+                      onPress={() =>
+                        navigation.navigate('viewSelfMedia', {
+                          imgIndex: i,
+                          Signup_User: images,
+                        })
+                      }>
+                      <TouchableOpacity
+                        onPress={() => {
+                          remove_photos(i);
+                          setRefresh(true);
+                        }}
+                        style={{
+                          position: 'absolute',
+                          top: 30,
+                          right: 10,
+                          zIndex: 1,
+                          padding: 5,
+                          borderRadius: 10,
+                          backgroundColor:
+                            ThemeMode.themecolr == 'Red'
+                              ? theme.colors.red
+                              : ThemeMode.themecolr == 'Blue'
+                              ? theme.colors.Blue
+                              : ThemeMode.themecolr == 'Green'
+                              ? theme.colors.Green
+                              : ThemeMode.themecolr == 'Purple'
+                              ? theme.colors.Purple
+                              : ThemeMode.themecolr == 'Yellow'
+                              ? theme.colors.Yellow
+                              : theme.colors.red,
+                        }}>
+                        <Image
+                          source={require('../../../assets/icons/delete_icon.png')}
+                          style={{
+                            width: 18,
+                            height: 18,
+                            tintColor: ThemeMode.selectedTheme
+                              ? theme.colors.primary
+                              : theme.colors.primaryBlack,
+                          }}
+                        />
+                      </TouchableOpacity>
+                      <Image
+                        source={{uri: it.uri}}
+                        style={{
+                          width: (dimension.width - 60) / 2,
+                          height: 130,
+                          resizeMode: 'cover',
+                          borderRadius: 20,
+                          marginTop: 20,
+                        }}
+                      />
+                    </TouchableOpacity>
+                  ),
+              )}
+            </View>
+            <View style={{width: '50%', alignItems: 'center'}}>
+              {media?.map(
+                (it, i) =>
+                  it.type != 'video/mp4' &&
+                  i == 3 && (
+                    <TouchableOpacity
+                      onPress={() =>
+                        navigation.navigate('viewSelfMedia', {
+                          imgIndex: i,
+                          Signup_User: images,
+                        })
+                      }>
+                      <TouchableOpacity
+                        onPress={() => {
+                          remove_photos(i);
+                          setRefresh(true);
+                        }}
+                        style={{
+                          position: 'absolute',
+                          top: 30,
+                          right: 10,
+                          zIndex: 1,
+                          padding: 5,
+                          borderRadius: 10,
+                          backgroundColor:
+                            ThemeMode.themecolr == 'Red'
+                              ? theme.colors.red
+                              : ThemeMode.themecolr == 'Blue'
+                              ? theme.colors.Blue
+                              : ThemeMode.themecolr == 'Green'
+                              ? theme.colors.Green
+                              : ThemeMode.themecolr == 'Purple'
+                              ? theme.colors.Purple
+                              : ThemeMode.themecolr == 'Yellow'
+                              ? theme.colors.Yellow
+                              : theme.colors.red,
+                        }}>
+                        <Image
+                          source={require('../../../assets/icons/delete_icon.png')}
+                          style={{
+                            width: 18,
+                            height: 18,
+                            tintColor: ThemeMode.selectedTheme
+                              ? theme.colors.primary
+                              : theme.colors.primaryBlack,
+                          }}
+                        />
+                      </TouchableOpacity>
+                      <Image
+                        source={{uri: it.uri}}
+                        style={{
+                          width: (dimension.width - 60) / 2,
+                          height: 281,
+                          resizeMode: 'cover',
+                          borderRadius: 20,
+                          marginTop: 20,
+                        }}
+                      />
+                    </TouchableOpacity>
+                  ),
+              )}
+            </View>
+          </View>
+        </View>
+        {media?.map(
+          (it, i) =>
+            it.type == 'video/mp4' && (
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate('playVideo', {data: video[0]?.uri})
+                }>
+                <ImageBackground
+                  source={{uri: thumb}}
                   style={{
-                    width: (dimension.width - 60) / 2,
-                    height: i == 0 ? 281 : 130,
+                    width: dimension.width - 40,
+                    height: 223,
                     resizeMode: 'cover',
                     borderRadius: 20,
                     marginTop: 20,
+                    alignSelf: 'center',
+                    backgroundColor: '#EEF4FF',
+                  }}
+                  resizeMode="cover"
+                  imageStyle={{borderRadius: 20}}>
+                  <Image
+                    source={require('../../../assets/icons/play_video.png')}
+                    style={{
+                      height: 60,
+                      width: 60,
+                      resizeMode: 'contain',
+                      position: 'absolute',
+                      alignSelf: 'center',
+                      top: dimension.height * 0.12,
+                    }}
+                  />
+                </ImageBackground>
+              </TouchableOpacity>
+            ),
+        )}
+        {media?.map(
+          (it, i) =>
+            it.type != 'video/mp4' &&
+            i >= 4 && (
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate('viewSelfMedia', {
+                    imgIndex: i,
+                    Signup_User: images,
+                  })
+                }>
+                <TouchableOpacity
+                  onPress={() => {
+                    remove_photos(i);
+                    setRefresh(true);
+                  }}
+                  style={{
+                    position: 'absolute',
+                    top: 30,
+                    right: 30,
+                    zIndex: 1,
+                    padding: 5,
+                    borderRadius: 10,
+                    backgroundColor:
+                      ThemeMode.themecolr == 'Red'
+                        ? theme.colors.red
+                        : ThemeMode.themecolr == 'Blue'
+                        ? theme.colors.Blue
+                        : ThemeMode.themecolr == 'Green'
+                        ? theme.colors.Green
+                        : ThemeMode.themecolr == 'Purple'
+                        ? theme.colors.Purple
+                        : ThemeMode.themecolr == 'Yellow'
+                        ? theme.colors.Yellow
+                        : theme.colors.red,
+                  }}>
+                  <Image
+                    source={require('../../../assets/icons/delete_icon.png')}
+                    style={{
+                      width: 18,
+                      height: 18,
+                      tintColor: ThemeMode.selectedTheme
+                        ? theme.colors.primary
+                        : theme.colors.primaryBlack,
+                    }}
+                  />
+                </TouchableOpacity>
+                <Image
+                  source={{uri: it.uri}}
+                  style={{
+                    width: dimension.width - 40,
+                    height: 223,
+                    resizeMode: 'cover',
+                    borderRadius: 20,
+                    marginTop: 20,
+                    alignSelf: 'center',
                   }}
                 />
-              ) : (
-                <View />
-              ),
-            )}
-          </View>
-        </View>
-        {media?.map((it, i) =>
-          i == 3 || i == 4 ? (
-            <Image
-              source={{uri: it.uri}}
-              style={{
-                width: dimension.width - 40,
-                height: 223,
-                resizeMode: 'cover',
-                borderRadius: 20,
-                marginTop: 20,
-                alignSelf: 'center',
-              }}
-            />
-          ) : (
-            <View />
-          ),
+              </TouchableOpacity>
+            ),
         )}
       </ScrollView>
+
       <ButtonView>
         <Button
-          opacity={media?.length >= 2 && media?.length <= 6 ? 1 : 0.5}
+          opacity={media?.length == 6 ? 1 : 0.5}
           buttonName={'Next'}
           marginTop={1}
           Loading={loading}
-          disabled={media?.length >= 2 && media?.length <= 6 ? false : true}
+          disabled={media?.length == 6 ? false : true}
           color={'#fff'}
           onPress={
             () => {
@@ -352,8 +667,81 @@ const Step4 = ({navigation}) => {
             } /* navigation.navigate('step5') */
           }
         />
+
+        <Option
+          refRBSheet={refRBSheet3}
+          onPress={() => {
+            selectImage('cemera');
+            refRBSheet3.current.close();
+          }}
+          onPress1={() => {
+            selectImage('gallery');
+            refRBSheet3.current.close();
+          }}
+        />
       </ButtonView>
     </View>
+  );
+};
+
+const Option = ({refRBSheet, onPress, onPress1}) => {
+  const ThemeMode = useSelector(state => state.Theme);
+  return (
+    <BottomSheet refRBSheet={refRBSheet} height={200}>
+      <TextFormatted
+        style={{
+          fontSize: 18,
+          fontWeight: '500',
+          color: ThemeMode.selectedTheme
+            ? theme.colors.primaryBlack
+            : theme.colors.primary,
+          marginHorizontal: 20,
+          marginTop: 10,
+        }}>
+        Select an Option
+      </TextFormatted>
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'space-evenly',
+          marginTop: 40,
+        }}>
+        <TouchableOpacity onPress={onPress} style={{alignItems: 'center'}}>
+          <Image
+            source={require('../../../assets/icons/camera.png')}
+            style={{height: 50, width: 50, resizeMode: 'contain'}}
+          />
+          <TextFormatted
+            style={{
+              fontSize: 14,
+              fontWeight: '600',
+              color: ThemeMode.selectedTheme
+                ? theme.colors.primaryBlack
+                : theme.colors.primary,
+              marginTop: 5,
+            }}>
+            Camera
+          </TextFormatted>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={onPress1} style={{alignItems: 'center'}}>
+          <Image
+            source={require('../../../assets/images/gallery.png')}
+            style={{height: 50, width: 50, resizeMode: 'contain'}}
+          />
+          <TextFormatted
+            style={{
+              fontSize: 14,
+              fontWeight: '600',
+              color: ThemeMode.selectedTheme
+                ? theme.colors.primaryBlack
+                : theme.colors.primary,
+              marginTop: 5,
+            }}>
+            Gallery
+          </TextFormatted>
+        </TouchableOpacity>
+      </View>
+    </BottomSheet>
   );
 };
 

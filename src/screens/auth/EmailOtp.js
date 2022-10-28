@@ -131,7 +131,7 @@ const EmailOtp = ({navigation}) => {
         console.log(rslt.status);
       }
     } catch (e) {
-      alert('An error occured.');
+      /*   alert('An error occured.'); */
       console.log(e);
     }
   }

@@ -884,7 +884,7 @@ const Option = ({refRBSheet, onPress, onPress1}) => {
           justifyContent: 'space-evenly',
           marginTop: 40,
         }}>
-        <TouchableOpacity onPress={onPress}>
+        <TouchableOpacity onPress={onPress} style={{alignItems: 'center'}}>
           <Image
             source={require('../../../assets/icons/camera.png')}
             style={{height: 50, width: 50, resizeMode: 'contain'}}
@@ -901,7 +901,7 @@ const Option = ({refRBSheet, onPress, onPress1}) => {
             Camera
           </TextFormatted>
         </TouchableOpacity>
-        <TouchableOpacity onPress={onPress1}>
+        <TouchableOpacity onPress={onPress1} style={{alignItems: 'center'}}>
           <Image
             source={require('../../../assets/images/gallery.png')}
             style={{height: 50, width: 50, resizeMode: 'contain'}}

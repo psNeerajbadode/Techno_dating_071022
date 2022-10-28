@@ -25,6 +25,8 @@ import Step7 from '../../src/screens/auth/createAccount/step7';
 import Step8 from '../../src/screens/auth/createAccount/step8';
 import Filterimage from '../screens/auth/Filterimage';
 import HomePage from '../screens/home/homePage';
+import PlayVideo from '../screens/profile/profileComponent/playVideo';
+import ViewSelfMedia from '../screens/profile/viewSelfmedia';
 
 const Stack = createNativeStackNavigator();
 const AuthNavigation = () => {
@@ -52,6 +54,8 @@ const AuthNavigation = () => {
       <Stack.Screen component={Step8} name="step8" />
       <Stack.Screen component={Filterimage} name="Filterimage" />
       <Stack.Screen component={HomePage} name="HomePage" />
+      <Stack.Screen component={PlayVideo} name="playVideo" />
+      <Stack.Screen name="viewSelfMedia" component={ViewSelfMedia} />
     </Stack.Navigator>
   );
 };
