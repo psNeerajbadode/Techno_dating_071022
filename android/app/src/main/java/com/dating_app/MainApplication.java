@@ -1,5 +1,5 @@
 package com.dating_app;
-
+// import com.rnfs.RNFSPackage;
 import android.app.Application;
 import android.content.Context;
 import com.facebook.react.PackageList;
@@ -50,6 +50,13 @@ public class MainApplication extends Application implements ReactApplication {
     } else {
       return mReactNativeHost;
     }
+   /*    @Override
+    protected List<ReactPackage> getPackages() {
+      return Arrays.<ReactPackage>asList(
+        new MainReactPackage(), // <---- add comma
+        new RNFSPackage() // <---------- add package
+      );
+    } */
   }
 
   @Override

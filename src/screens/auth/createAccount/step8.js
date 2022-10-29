@@ -67,7 +67,7 @@ const Step8 = ({navigation}) => {
           <Button
             color={'#fff'}
             buttonName={'Start Tour'}
-            onPress={() => navigation.replace('Login')}
+            onPress={() => navigation.replace('HomeNavigation')}
           />
           <TextFormatted
             style={{

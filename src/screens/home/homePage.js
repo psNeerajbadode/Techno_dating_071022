@@ -263,7 +263,7 @@ const HomePage = () => {
               <View
                 style={{
                   flex: 1,
-                  height: dimension.height + StatusBar.currentHeight,
+                  height: dimension.height,
                 }}>
                 <Swiper
                   loop={false}

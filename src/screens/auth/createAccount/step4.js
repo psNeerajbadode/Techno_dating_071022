@@ -39,7 +39,8 @@ const Step4 = () => {
   const [thumb, setThumb] = useState();
   const images = media.filter(v => v.type != 'video/mp4');
   const video = media.filter(v => v.type == 'video/mp4');
-  console.log('video[0]?.uri', video[0]?.type);
+  var RNFS = require('react-native-fs');
+  console.log('video[0]?.uri', video[0]?.uri);
   const selectImage = async type => {
     await (type == 'cemera'
       ? ImagePicker.launchCamera
@@ -136,13 +137,19 @@ const Step4 = () => {
     }
   };
 
-  const VideoApi = () => {
+  async function VideoApi() {
     try {
       setLoading(true);
       const body = new FormData();
       body.append('user_id', Staps.id);
+      const urlComponents = video[0]?.uri.split('/');
+      const fileNameAndExtension = urlComponents[urlComponents?.length - 1];
+      const destPath = `${RNFS?.TemporaryDirectoryPath}/${fileNameAndExtension}`;
+      await RNFS.copyFile(video[0]?.uri, destPath);
+      console.log('file://' + destPath);
+
       body.append('image', {
-        uri: video[0]?.uri,
+        uri: 'file://' + destPath,
         type: video[0]?.type,
         name: video[0]?.fileName,
       });
@@ -170,7 +177,7 @@ const Step4 = () => {
     } catch (error) {
       console.log(error);
     }
-  };
+  }
 
   useEffect(() => {
     /* navigation.addListener('focus', () => generateThumbnail()); */
