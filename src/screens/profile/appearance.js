@@ -7,7 +7,7 @@ import {
   useWindowDimensions,
   ImageBackground,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import HeaderImage_1 from '../../components/HeaderImage_1';
 import TextFormatted from '../../components/TextFormatted';
 import {Divider} from 'react-native-paper';
@@ -26,20 +26,21 @@ import {
 } from '../../utils/CustomImages';
 import LinearGradient from 'react-native-linear-gradient';
 import Statusbar from '../../components/Statusbar';
-
+import Netinforsheet from '../../components/Netinforsheet';
 const Appearance = ({navigation}) => {
   const dispatch = useDispatch();
   const ThemeMode = useSelector(state => state.Theme);
   const dimension = useWindowDimensions();
   const [selectedTheme, setSelectedTheme] = useState(ThemeMode.selectedTheme);
   const [themecolr, setthemecolr] = useState(ThemeMode.themecolr);
+  const Staps = useSelector(state => state.Stap);
+
   // const [load, setLoad] = useState({});
   const StateFun = () => {
     dispatch({type: THEMEMODE, payload: {selectedTheme, themecolr}});
     navigation.navigate('settings');
   };
 
-  console.log(selectedTheme, themecolr);
   return (
     <View
       style={{
@@ -147,6 +148,7 @@ const Appearance = ({navigation}) => {
           </LinearGradient>
         </TouchableOpacity>
       </ButtonView>
+      <Netinforsheet />
     </View>
   );
 };

@@ -7,7 +7,7 @@ import {
   useWindowDimensions,
   View,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {theme} from '../../utils/Constants';
 import Header from '../../components/Header';
 import HeaderImage from '../../components/HeaderImage';
@@ -19,7 +19,8 @@ import Information from './profileComponent/information';
 import {useNavigation} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
 import * as Animatable from 'react-native-animatable';
-
+import Netinforsheet from '../../components/Netinforsheet';
+import {STAP} from '../../redux/actions/ActionType';
 const MyProfile = () => {
   const navigation = useNavigation();
   const ThemeMode = useSelector(state => state.Theme);
@@ -299,6 +300,7 @@ const MyProfile = () => {
               : theme.colors.red,
           width: '32%',
         }}></View>
+      <Netinforsheet />
     </View>
   );
 };

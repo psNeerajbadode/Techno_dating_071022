@@ -5,18 +5,18 @@ import {
   Image,
   View,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import HeaderImage from '../../components/HeaderImage';
 import Header from '../../components/Header';
 import Logo from '../../components/Logo';
 import TextFormatted from '../../components/TextFormatted';
 import {theme} from '../../utils/Constants';
 import TextInputFormat from '../../components/TextInputFormat';
-import Icon from 'react-native-vector-icons/Ionicons';
 import Button from '../../components/Button';
 import {useDispatch, useSelector} from 'react-redux';
 import {STAP} from '../../redux/actions/ActionType';
 import axios from 'axios';
+import Netinforsheet from '../../components/Netinforsheet';
 
 const ChangePassword = ({navigation}) => {
   const dispatch = useDispatch();
@@ -27,7 +27,7 @@ const ChangePassword = ({navigation}) => {
   const [show, setShow] = useState(false);
   const [showr, setShowr] = useState(false);
   const [Loading, setLoading] = useState(false);
-  console.log(newPassword);
+
   const validPass = pass => {
     return String(pass).match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/);
   };
@@ -64,6 +64,7 @@ const ChangePassword = ({navigation}) => {
       console.log(error);
     }
   };
+
   return (
     <View
       style={{
@@ -211,6 +212,7 @@ const ChangePassword = ({navigation}) => {
           Cancel
         </TextFormatted>
       </ScrollView>
+      <Netinforsheet />
     </View>
   );
 };

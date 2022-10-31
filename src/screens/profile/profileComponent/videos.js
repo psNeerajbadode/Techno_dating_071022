@@ -9,18 +9,22 @@ import {
   ScrollView,
 } from 'react-native';
 import React, {useEffect, useRef, useState} from 'react';
-import Video from 'react-native-video';
 import TextFormatted from '../../../components/TextFormatted';
 import {theme} from '../../../utils/Constants';
-import Icon from 'react-native-vector-icons/Entypo';
 import {launchImageLibrary, launchCamera} from 'react-native-image-picker';
 import BottomSheet from '../../../components/bottomSheet';
 import {createThumbnail} from 'react-native-create-thumbnail';
-import {Thumbnail} from 'react-native-thumbnail-video';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
 import axios from 'axios';
 import ActivityLoader from '../../../components/ActivityLoader';
+import {
+  BluelightImage,
+  GreenlightImage,
+  PurplelightImage,
+  RedlightImage,
+  YellowlightImage,
+} from '../../../utils/CustomImages';
 
 const Videos = () => {
   const ThemeMode = useSelector(state => state.Theme);
@@ -31,6 +35,7 @@ const Videos = () => {
   const [thumb, setThumb] = useState();
   const [User, setUser] = useState();
   const [Loading, setLoading] = useState(false);
+  const [refresh, setRefresh] = useState(false);
   const refRBSheet = useRef();
   const videoData = [
     {vid: require('../../../assets/images/big_buck_bunny_720p_1mb.mp4')},
@@ -39,7 +44,6 @@ const Videos = () => {
     launchImageLibrary({mediaType: 'video', videoQuality: 'high'}, response => {
       if (!response.didCancel) {
         setUri(response.assets[0]);
-        generateThumbnail(response.assets[0]);
       }
     });
   };
@@ -47,24 +51,9 @@ const Videos = () => {
     launchCamera({mediaType: 'video', videoQuality: 'high'}, response => {
       if (!response.didCancel) {
         setUri(response.assets[0]);
-        generateThumbnail(response.assets[0]);
       }
     });
   };
-  async function generateThumbnail(uri) {
-    if (!uri) {
-      return;
-    }
-    try {
-      const response = await createThumbnail({
-        url: uri.uri,
-      });
-      setThumb(response.path);
-    } catch (err) {
-      console.error(err);
-    } finally {
-    }
-  }
 
   const getUserData = () => {
     setLoading(true);
@@ -80,10 +69,29 @@ const Videos = () => {
       setUser(response.data.result);
     });
   };
+
+  function generateThumbnail() {
+    try {
+      const response = createThumbnail({
+        url: 'https://technorizen.com/Dating/uploads/images/Video_20221029054356.video:1579558',
+      });
+      console.log('response');
+      setThumb(response.path);
+    } catch (err) {
+      console.error(err);
+    } finally {
+    }
+    setRefresh(true);
+    setTimeout(() => {
+      setRefresh(false);
+    }, 1000);
+  }
+
   useEffect(() => {
     getUserData();
+    generateThumbnail();
   }, []);
-  console.log('User Video =>', User);
+
   return (
     <ScrollView>
       {/* {Loading ? (
@@ -94,7 +102,11 @@ const Videos = () => {
       <View style={{flexDirection: 'row'}}>
         <View style={{width: dimension.width / 2}}>
           <TouchableOpacity
-            onPress={() => refRBSheet.current.open()}
+            onPress={
+              () => {
+                generateThumbnail();
+              } /*  refRBSheet.current.open() */
+            }
             style={{
               width: (dimension.width - 50) / 2,
               height: (dimension.width - 50) / 2,
@@ -119,31 +131,31 @@ const Videos = () => {
               source={require('../../../assets/icons/youtube.png')}
               style={{height: 60, width: 60}}
               resizeMode="contain">
-              <View
+              <Image
+                source={
+                  ThemeMode.themecolr == 'Red'
+                    ? RedlightImage.plusicon
+                    : ThemeMode.themecolr == 'Blue'
+                    ? BluelightImage.plusiconblue
+                    : ThemeMode.themecolr == 'Green'
+                    ? GreenlightImage.plusicongreen
+                    : ThemeMode.themecolr == 'Purple'
+                    ? PurplelightImage.plusiconpurple
+                    : ThemeMode.themecolr == 'Yellow'
+                    ? YellowlightImage.plusiconyellow
+                    : RedlightImage.plusicon
+                }
                 style={{
-                  height: 24,
-                  width: 24,
-                  backgroundColor:
-                    ThemeMode.themecolr == 'Red'
-                      ? theme.colors.red
-                      : ThemeMode.themecolr == 'Blue'
-                      ? theme.colors.Blue
-                      : ThemeMode.themecolr == 'Green'
-                      ? theme.colors.Green
-                      : ThemeMode.themecolr == 'Purple'
-                      ? theme.colors.Purple
-                      : ThemeMode.themecolr == 'Yellow'
-                      ? theme.colors.Yellow
-                      : theme.colors.red,
-                  borderRadius: 20,
-                  justifyContent: 'center',
-                  alignItems: 'center',
+                  height: 29,
+                  width: 29,
+                  resizeMode: 'contain',
                   position: 'absolute',
-                  right: -7,
-                  top: -7,
-                }}>
-                <Icon name="plus" color={'#fff'} size={20} />
-              </View>
+                  zIndex: 1,
+                  top: '-25%',
+                  right: '-20%',
+                }}
+                resizeMode="contain"
+              />
             </ImageBackground>
             <TextFormatted
               style={{
@@ -158,41 +170,14 @@ const Videos = () => {
             </TextFormatted>
           </TouchableOpacity>
         </View>
-        {/* <View style={{width: dimension.width / 2}}>
-          {User.map((v, i) => (
-            <View>
-              <TouchableOpacity
-                style={{
-                  marginTop: 20,
-                  marginHorizontal: 10,
-                  alignSelf: 'flex-end',
-                }}
-                // onPress={() => navigation.navigate('viewSelfMedia', { imgIndex: i })}
-              >
-                <Video
-                  source={{uri: v.video}}
-                  style={{
-                    width: (dimension.width - 50) / 2,
-                    height: 253,
-                    borderRadius: 20,
-                  }}
-                  disableFocus
-                  paused
-                  controls
-                  resizeMode="cover"
-                  hideShutterView={true}
-                />
-              </TouchableOpacity>
-            </View>
-          ))}
-
+        <View style={{width: dimension.width / 2}}>
           <TouchableOpacity
             style={{
               marginTop: 20,
               marginHorizontal: 20,
               alignSelf: 'flex-end',
             }}
-            onPress={() => navigation.navigate('playVideo', {data: uri.uri})}>
+            onPress={() => navigation.navigate('playVideo', {data: User})}>
             <ImageBackground
               source={{uri: thumb}}
               style={{
@@ -200,6 +185,7 @@ const Videos = () => {
                 height: 253,
                 justifyContent: 'center',
                 alignItems: 'center',
+                backgroundColor: '#f00',
               }}
               resizeMode="cover"
               imageStyle={{borderRadius: 20}}>
@@ -214,9 +200,8 @@ const Videos = () => {
               />
             </ImageBackground>
           </TouchableOpacity>
-        </View> */}
+        </View>
       </View>
-      {/*   )} */}
 
       <Option
         refRBSheet={refRBSheet}

@@ -6,7 +6,7 @@ import {
   View,
   useWindowDimensions,
 } from 'react-native';
-import React, {useState, useRef} from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import {theme} from '../../utils/Constants';
 import Header from '../../components/Header';
 import HeaderImage_1 from '../../components/HeaderImage_1';
@@ -24,12 +24,17 @@ import {
   YellowlightImage,
 } from '../../utils/CustomImages';
 import BottomSheet from '../../components/bottomSheet';
+import Netinforsheet from '../../components/Netinforsheet';
+
+import {STAP} from '../../redux/actions/ActionType';
 const FilterLocation = () => {
   const ThemeMode = useSelector(state => state.Theme);
+  const Staps = useSelector(state => state.Stap);
   const [country, setCountry] = useState('1');
   const [Kmmajor, setKmmajor] = useState('km');
   const [setkm, setSetkm] = useState(10);
   const refRBSheet = useRef();
+
   const [distance, setDistance] = useState();
 
   return (
@@ -112,6 +117,7 @@ const FilterLocation = () => {
           color={theme.colors.primary}
         />
       </ButtonView>
+      <Netinforsheet />
     </View>
   );
 };

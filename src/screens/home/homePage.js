@@ -27,6 +27,7 @@ import ActivityLoader from '../../components/ActivityLoader';
 import FastImage from 'react-native-fast-image';
 import {ShowToast} from '../../utils/Baseurl';
 import Statusbar from '../../components/Statusbar';
+import Netinforsheet from '../../components/Netinforsheet';
 const HomePage = () => {
   const ThemeMode = useSelector(state => state.Theme);
   const Staps = useSelector(state => state.Stap);
@@ -47,6 +48,7 @@ const HomePage = () => {
   const [Userpost, setUserpost] = useState();
   const [Otherid, setOtherid] = useState();
   const [Uindex, setUindex] = useState();
+
   const Userimage = [
     {
       img: require('../../assets/images/unsplash_1.png'),
@@ -224,7 +226,7 @@ const HomePage = () => {
       }}>
       <SafeAreaView>
         <StatusBar
-          translucent={true}
+          // translucent={true}
           backgroundColor="transparent"
           barStyle={'light-content'}
           // hidden={false}
@@ -295,7 +297,8 @@ const HomePage = () => {
                       v.type == 'Image' && (
                         <View
                           style={{
-                            height: dimension.height + StatusBar.currentHeight,
+                            height:
+                              dimension.height /*  + StatusBar.currentHeight */,
                             width: dimension.width,
                           }}>
                           <Image
@@ -305,7 +308,7 @@ const HomePage = () => {
                             resizeMode="cover"
                             style={{
                               height:
-                                dimension.height + StatusBar.currentHeight,
+                                dimension.height /*  + StatusBar.currentHeight */,
                               width: dimension.width,
                             }}
                           />
@@ -534,6 +537,7 @@ const HomePage = () => {
       <Notification refRBSheet={refRBSheet1} />
       <MoreOptions refRBSheet={refRBSheet} />
       <SelectCategory refRBSheet={refRBSheet2} />
+      <Netinforsheet />
     </View>
   );
 };

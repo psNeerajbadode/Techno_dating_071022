@@ -5,19 +5,21 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import Swiper from 'react-native-swiper';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
 import {Platform} from 'react-native';
 import RNFetchBlob from 'rn-fetch-blob';
-
+import Netinforsheet from '../../components/Netinforsheet';
 const ViewSelfMedia = () => {
   const navigation = useNavigation();
   const {params = {}} = useRoute();
   const ThemeMode = useSelector(state => state.Theme);
   const [index, setIndex] = useState(params?.imgIndex);
-  console.log('params', params.imgIndex);
+
+  const Staps = useSelector(state => state.Stap);
+  console.log('params', params);
 
   const Storage_permission = async () => {
     if (Platform.OS === 'ios') {
@@ -45,10 +47,7 @@ const ViewSelfMedia = () => {
 
   const download_Img = () => {
     let date = new Date();
-    let ImageUrl =
-      params.Signup_User == null
-        ? params?.User[index]?.image
-        : params?.Signup_User[index]?.uri;
+    let ImageUrl = params?.User[index]?.image;
     const {config, fs} = RNFetchBlob;
     config({
       addAndroidDownloads: {
@@ -102,10 +101,16 @@ const ViewSelfMedia = () => {
           />
         }>
         {params?.Signup_User == null
-          ? params?.User?.map
+          ? params?.User?.map((it, i) => (
+              /* params?.imgIndex == i && */ <Image
+                source={{uri: it.image}}
+                resizeMode="cover"
+                style={{height: '100%', width: '100%'}}
+              />
+            ))
           : params?.Signup_User?.map((it, i) => (
               /* params?.imgIndex == i && */ <Image
-                source={{uri: params?.Signup_User == null ? it.image : it.uri}}
+                source={{uri: it.uri}}
                 resizeMode="cover"
                 style={{height: '100%', width: '100%'}}
               />
@@ -131,7 +136,7 @@ const ViewSelfMedia = () => {
           />
         </TouchableOpacity>
         <View style={{flex: 1}} />
-        {params.Signup_User[index] == null && (
+        {params.Signup_User == null && (
           <View>
             {ThemeMode.selectedTheme ? (
               <TouchableOpacity
@@ -155,6 +160,7 @@ const ViewSelfMedia = () => {
           </View>
         )}
       </View>
+      <Netinforsheet />
     </View>
   );
 };

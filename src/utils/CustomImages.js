@@ -14,6 +14,7 @@ export const RedlightImage = {
   check_red: require('../assets/icons/check_red.png'),
   chat_Red: require('../assets/icons/m_chats.png'),
   chat_Red1: require('../assets/icons/Chat_popuv.png'),
+  plusicon: require('../assets/icons/C_plus.png'),
 };
 export const ReddarkImage = {
   Bg_Img1: require('../assets/images/Bg_dark1.png'),
@@ -36,6 +37,7 @@ export const BluelightImage = {
   check_blue: require('../assets/colorimages/blue/check_blue.png'),
   chat_blue: require('../assets/colorimages/blue/chat_blue.png'),
   chat_blue1: require('../assets/colorimages/blue/chat_blue1.png'),
+  plusiconblue: require('../assets/colorimages/blue/C_plus_blue.png'),
 };
 export const GreenlightImage = {
   Bg_Img1: require('../assets/colorimages/green/Bg1_green.png'),
@@ -53,6 +55,7 @@ export const GreenlightImage = {
   check_green: require('../assets/colorimages/green/check_green.png'),
   chat_green: require('../assets/colorimages/green/chat_green.png'),
   chat_green1: require('../assets/colorimages/green/chat_green1.png'),
+  plusicongreen: require('../assets/colorimages/green/C_plus_green.png'),
 };
 export const PurplelightImage = {
   Bg_Img1: require('../assets/colorimages/purplle/Bg1_purple.png'),
@@ -70,6 +73,7 @@ export const PurplelightImage = {
   check_purple: require('../assets/colorimages/purplle/check_purple.png'),
   chat_purple: require('../assets/colorimages/purplle/chat_purple.png'),
   chat_purple1: require('../assets/colorimages/purplle/chat_purple1.png'),
+  plusiconpurple: require('../assets/colorimages/purplle/C_plus_purple.png'),
 };
 export const YellowlightImage = {
   Bg_Img1: require('../assets/colorimages/yellow/Bg1_yellow.png'),
@@ -87,4 +91,5 @@ export const YellowlightImage = {
   check_yellow: require('../assets/colorimages/yellow/check_yellow.png'),
   chat_yellow: require('../assets/colorimages/yellow/chat_yellow.png'),
   chat_yellow1: require('../assets/colorimages/yellow/chat_yellow1.png'),
+  plusiconyellow: require('../assets/colorimages/yellow/C_plus_yellow.png'),
 };

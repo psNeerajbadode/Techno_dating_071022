@@ -7,7 +7,7 @@ import {
   useWindowDimensions,
   View,
 } from 'react-native';
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {theme} from '../../utils/Constants';
 import HeaderImage_1 from '../../components/HeaderImage_1';
 import Header from '../../components/Header';
@@ -24,9 +24,14 @@ import {
 } from '../../utils/CustomImages';
 import LinearGradient from 'react-native-linear-gradient';
 import MoreOptions from '../home/moreOptions';
+import Netinforsheet from '../../components/Netinforsheet';
+
+import {STAP} from '../../redux/actions/ActionType';
 
 const Message = ({navigation}) => {
   const ThemeMode = useSelector(state => state.Theme);
+  const Staps = useSelector(state => state.Stap);
+
   const [search, setSearch] = useState('');
   const dimension = useWindowDimensions();
   const refRBSheet = useRef();
@@ -60,6 +65,7 @@ const Message = ({navigation}) => {
     {img: require('../../assets/images/unsplash_1.png'), name: 'Emma Hatchan'},
     {img: require('../../assets/images/unsplash_1.png'), name: 'Emma Hatchan'},
   ];
+
   return (
     <View
       style={{
@@ -342,6 +348,7 @@ const Message = ({navigation}) => {
 
       <Notification refRBSheet={refRBSheet} />
       <MoreOptions refRBSheet={refRBSheet} />
+      <Netinforsheet />
     </View>
   );
 };

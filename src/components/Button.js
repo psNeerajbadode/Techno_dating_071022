@@ -34,7 +34,8 @@ const Button = ({
       }}>
       <LinearGradient
         colors={
-          buttonColor || ThemeMode.themecolr == 'Red'
+          buttonColor ||
+          (ThemeMode.themecolr == 'Red'
             ? theme.colors.primaryOn
             : ThemeMode.themecolr == 'Blue'
             ? theme.colors.primaryBlue
@@ -44,7 +45,7 @@ const Button = ({
             ? theme.colors.primaryPurple
             : ThemeMode.themecolr == 'Yellow'
             ? theme.colors.primaryYellow
-            : theme.colors.primaryOn
+            : theme.colors.primaryOn)
         }
         start={{x: 0, y: 0}}
         end={{x: 1, y: 1}}

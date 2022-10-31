@@ -1,5 +1,5 @@
 import {ScrollView, StyleSheet, View} from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {theme} from '../../utils/Constants';
 import HeaderImage from '../../components/HeaderImage';
 import Header from '../../components/Header';
@@ -10,6 +10,8 @@ import Button from '../../components/Button';
 import {useSelector} from 'react-redux';
 import axios from 'axios';
 import {ShowToast} from '../../utils/Baseurl';
+import Netinforsheet from '../../components/Netinforsheet';
+
 const validateEmail = email => {
   return String(email)
     .toLowerCase()
@@ -20,6 +22,7 @@ const PasswordRecovery = ({navigation}) => {
   const ThemeMode = useSelector(state => state.Theme);
   const isPasscode = useSelector(state => state.isPasscode.isPasscode);
   const [Loading, setLoading] = useState(false);
+
   const ForgetpasswordApi = () => {
     try {
       setLoading(true);
@@ -83,6 +86,7 @@ const PasswordRecovery = ({navigation}) => {
       console.log(error);
     }
   };
+
   return (
     <View
       style={{
@@ -150,6 +154,7 @@ const PasswordRecovery = ({navigation}) => {
           marginTop={50}
         />
       </ScrollView>
+      <Netinforsheet />
     </View>
   );
 };

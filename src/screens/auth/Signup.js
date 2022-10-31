@@ -5,7 +5,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {theme} from '../../utils/Constants';
 import HeaderImage from '../../components/HeaderImage';
 import Header from '../../components/Header';
@@ -23,6 +23,7 @@ import {
   RedlightImage,
   YellowlightImage,
 } from '../../utils/CustomImages';
+import Netinforsheet from '../../components/Netinforsheet';
 
 const Signup = ({navigation}) => {
   const dispatch = useDispatch();
@@ -78,6 +79,7 @@ const Signup = ({navigation}) => {
       console.log(e);
     }
   }
+
   return (
     <View
       style={{
@@ -405,6 +407,7 @@ const Signup = ({navigation}) => {
           </TextFormatted>
         </View>
       </ScrollView>
+      <Netinforsheet />
     </View>
   );
 };

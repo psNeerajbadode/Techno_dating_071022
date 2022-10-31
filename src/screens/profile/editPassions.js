@@ -23,6 +23,8 @@ import {
 } from '../../utils/CustomImages';
 import axios from 'axios';
 import ActivityLoader from '../../components/ActivityLoader';
+import Netinforsheet from '../../components/Netinforsheet';
+import {STAP} from '../../redux/actions/ActionType';
 
 const EditPassions = () => {
   const ThemeMode = useSelector(state => state.Theme);
@@ -31,6 +33,7 @@ const EditPassions = () => {
   const [search, setSearch] = useState('');
   const [data, setData] = useState([]);
   const [load, setload] = useState(false);
+
   const [selected, setSelected] = useState([
     'Restaurant',
     'Club',
@@ -269,6 +272,7 @@ const EditPassions = () => {
           onPress={() => navigation.navigate('myProfile')}
         />
       </View>
+      <Netinforsheet />
     </View>
   );
 };

@@ -15,7 +15,6 @@ import ButtonView from '../../../components/buttonView';
 import Button from '../../../components/Button';
 import {theme} from '../../../utils/Constants';
 import TextFormatted from '../../../components/TextFormatted';
-import AntDesign from 'react-native-vector-icons/AntDesign';
 import * as ImagePicker from 'react-native-image-picker';
 import {createThumbnail} from 'react-native-create-thumbnail';
 import {useDispatch, useSelector} from 'react-redux';
@@ -24,6 +23,13 @@ import {ShowToast} from '../../../utils/Baseurl';
 import {useNavigation} from '@react-navigation/native';
 import BottomSheet from '../../../components/bottomSheet';
 import {STAP} from '../../../redux/actions/ActionType';
+import {
+  BluelightImage,
+  GreenlightImage,
+  PurplelightImage,
+  RedlightImage,
+  YellowlightImage,
+} from '../../../utils/CustomImages';
 
 const Step4 = () => {
   const navigation = useNavigation();
@@ -263,29 +269,30 @@ const Step4 = () => {
                 justifyContent: 'center',
                 marginBottom: 10,
               }}>
-              <AntDesign
-                name="pluscircle"
-                color={
+              <Image
+                source={
                   ThemeMode.themecolr == 'Red'
-                    ? theme.colors.red
+                    ? RedlightImage.plusicon
                     : ThemeMode.themecolr == 'Blue'
-                    ? theme.colors.Blue
+                    ? BluelightImage.plusiconblue
                     : ThemeMode.themecolr == 'Green'
-                    ? theme.colors.Green
+                    ? GreenlightImage.plusicongreen
                     : ThemeMode.themecolr == 'Purple'
-                    ? theme.colors.Purple
+                    ? PurplelightImage.plusiconpurple
                     : ThemeMode.themecolr == 'Yellow'
-                    ? theme.colors.Yellow
-                    : theme.colors.red
+                    ? YellowlightImage.plusiconyellow
+                    : RedlightImage.plusicon
                 }
-                size={25}
                 style={{
                   position: 'absolute',
                   zIndex: 1,
                   top: '15%',
                   right: '22%',
+                  height: 29,
+                  width: 29,
                 }}
               />
+
               <Image
                 source={require('../../../assets/icons/add_media.png')}
                 style={{width: '50%', height: '50%', resizeMode: 'contain'}}

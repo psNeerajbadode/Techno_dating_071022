@@ -8,7 +8,7 @@ import {
   useWindowDimensions,
   View,
 } from 'react-native';
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import HeaderImage_1 from '../../components/HeaderImage_1';
 import Header from '../../components/Header';
 import TextFormatted from '../../components/TextFormatted';
@@ -28,14 +28,17 @@ import {
   RedlightImage,
   YellowlightImage,
 } from '../../utils/CustomImages';
-
+import Netinforsheet from '../../components/Netinforsheet';
+import {STAP} from '../../redux/actions/ActionType';
 const Security = () => {
   const ThemeMode = useSelector(state => state.Theme);
+  const Staps = useSelector(state => state.Stap);
   const [biometric, setBiometric] = useState(false);
   const refRBSheet = useRef();
   const refRBSheet1 = useRef();
   const refRBSheet2 = useRef();
   const refRBSheet3 = useRef();
+
   const [oldPassword, setOldPassword] = useState();
   const [newPassword, setNewPassword] = useState();
   const [repeatPassword, setRepeatPassword] = useState();
@@ -341,6 +344,7 @@ const Security = () => {
 
         <EditCard refRBSheet3={refRBSheet3} />
       </ScrollView>
+      <Netinforsheet />
     </View>
   );
 };

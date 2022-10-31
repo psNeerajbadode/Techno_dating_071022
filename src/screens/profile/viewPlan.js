@@ -8,7 +8,7 @@ import {
   useWindowDimensions,
   View,
 } from 'react-native';
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import Swiper from 'react-native-swiper';
 import TextFormatted from '../../components/TextFormatted';
 import {theme} from '../../utils/Constants';
@@ -27,14 +27,16 @@ import {
   RedlightImage,
   YellowlightImage,
 } from '../../utils/CustomImages';
-
+import Netinforsheet from '../../components/Netinforsheet';
+import {STAP} from '../../redux/actions/ActionType';
 const ViewPlan = ({navigation}) => {
   const ThemeMode = useSelector(state => state.Theme);
+  const Staps = useSelector(state => state.Stap);
   const {params = {}} = useRoute();
   const [slide, setSlide] = useState(params.currentIndex);
-
   const refRBSheet = useRef();
   const refRBSheet1 = useRef();
+
   const dimension = useWindowDimensions();
   const data = [
     {
@@ -50,6 +52,7 @@ const ViewPlan = ({navigation}) => {
       ],
     },
   ];
+
   return (
     <View style={{flex: 1}}>
       <Swiper
@@ -329,8 +332,9 @@ const ViewPlan = ({navigation}) => {
           {slide == 0 ? 'Current Plan' : 'Upgrade Plan'}
         </TextFormatted>
       </View>
-      <PlanCompaire refRBSheet={refRBSheet}></PlanCompaire>
+      <PlanCompaire refRBSheet={refRBSheet} />
       <UpgradePlan refRBSheet={refRBSheet1} />
+      <Netinforsheet />
     </View>
   );
 };

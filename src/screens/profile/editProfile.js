@@ -41,7 +41,7 @@ import {
 } from '../../utils/CustomImages';
 import {STAP} from '../../redux/actions/ActionType';
 import {useDispatch} from 'react-redux';
-
+import Netinforsheet from '../../components/Netinforsheet';
 const EditProfile = ({navigation}) => {
   const ThemeMode = useSelector(state => state.Theme);
   const Staps = useSelector(state => state.Stap);
@@ -66,6 +66,7 @@ const EditProfile = ({navigation}) => {
   const [Loading, setLoading] = useState(false);
   const refRBSheet = useRef();
   const refRBSheet1 = useRef();
+
   const pickImage = () => {
     launchImageLibrary({quality: 1}, response => {
       if (!response.didCancel) setPic(response.assets[0]);
@@ -79,7 +80,6 @@ const EditProfile = ({navigation}) => {
     });
   };
 
-  console.log(pic);
   async function Update_profile() {
     try {
       const body = new FormData();
@@ -512,6 +512,7 @@ const EditProfile = ({navigation}) => {
           refRBSheet1.current.close();
         }}
       />
+      <Netinforsheet />
     </View>
   );
 };

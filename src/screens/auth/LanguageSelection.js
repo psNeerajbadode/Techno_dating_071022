@@ -5,7 +5,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import {theme} from '../../utils/Constants';
 import HeaderImage_1 from '../../components/HeaderImage_1';
 import TextFormatted from '../../components/TextFormatted';
@@ -20,15 +20,19 @@ import {
   YellowlightImage,
 } from '../../utils/CustomImages';
 import {STAP} from '../../redux/actions/ActionType';
+
 const LanguageSelection = ({navigation}) => {
   const dispatch = useDispatch();
   const [select, setSelect] = useState('English');
   const [search, setSearch] = useState('');
   const ThemeMode = useSelector(state => state.Theme);
+  const Staps = useSelector(state => state.Stap);
+
   const languages = [
     {name: 'English', img: require('../../assets/icons/united_kingdom.png')},
     {name: '简体中文', img: require('../../assets/icons/china.png')},
   ];
+
   return (
     <View
       style={{
@@ -130,6 +134,8 @@ const LanguageSelection = ({navigation}) => {
           )
         }
       />
+
+      <Netinforsheet />
     </View>
   );
 };

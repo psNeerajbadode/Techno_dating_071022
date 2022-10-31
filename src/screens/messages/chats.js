@@ -18,12 +18,17 @@ import {useDispatch, useSelector} from 'react-redux';
 import DocumentPicker from 'react-native-document-picker';
 import {useRoute} from '@react-navigation/native';
 import axios from 'axios';
+import Netinforsheet from '../../components/Netinforsheet';
+
+import {STAP} from '../../redux/actions/ActionType';
 
 const Chats = () => {
-  const [multipleFile, setMultipleFile] = useState([]);
   const dispatch = useDispatch();
   const ThemeMode = useSelector(state => state.Theme);
+  const Staps = useSelector(state => state.Stap);
+  const [multipleFile, setMultipleFile] = useState([]);
   const refRBSheet = useRef();
+
   const [passion, setpassion] = useState([]);
   const {params} = useRoute();
   const [mess, setMess] = useState('');
@@ -62,6 +67,7 @@ const Chats = () => {
       setpassion(response.data.result);
     });
   };
+
   useEffect(() => {
     getPassion();
   }, []);
@@ -346,6 +352,7 @@ const Chats = () => {
         </TouchableOpacity>
       </View>
       <MoreOptions refRBSheet={refRBSheet} />
+      <Netinforsheet />
     </View>
   );
 };

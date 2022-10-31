@@ -11,10 +11,11 @@ import {theme} from '../../utils/Constants';
 import HeaderImageShadow from '../../components/HeaderImageShadow';
 import Header from '../../components/Header';
 import TextFormatted from '../../components/TextFormatted';
-import {PASSCODE} from '../../redux/actions/ActionType';
+import {PASSCODE, STAP} from '../../redux/actions/ActionType';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
 import {ShowToast} from '../../utils/Baseurl';
+import Netinforsheet from '../../components/Netinforsheet';
 
 const PassCode = () => {
   const ThemeMode = useSelector(state => state.Theme);
@@ -22,6 +23,7 @@ const PassCode = () => {
   const navigation = useNavigation();
   const dimension = useWindowDimensions();
   const dispatch = useDispatch();
+
   const [passcode, setPasscode] = useState([]);
   const Removeval = () => {
     const Val_array = [...passcode];
@@ -37,6 +39,7 @@ const PassCode = () => {
       }
     }
   }
+
   useEffect(() => {}, [App_passcode()]);
 
   return (
@@ -222,6 +225,7 @@ const PassCode = () => {
         }}>
         Forgot your passcode?
       </TextFormatted>
+      <Netinforsheet />
     </View>
   );
 };

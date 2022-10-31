@@ -13,10 +13,16 @@ import {useNavigation} from '@react-navigation/native';
 import BottomSheet from '../../../components/bottomSheet';
 import {theme} from '../../../utils/Constants';
 import {useDispatch, useSelector} from 'react-redux';
-import AntDesign from 'react-native-vector-icons/AntDesign';
 import axios from 'axios';
 import {Use} from 'react-native-svg';
 import ActivityLoader from '../../../components/ActivityLoader';
+import {
+  BluelightImage,
+  GreenlightImage,
+  PurplelightImage,
+  RedlightImage,
+  YellowlightImage,
+} from '../../../utils/CustomImages';
 
 const Images = () => {
   const navigation = useNavigation();
@@ -106,27 +112,27 @@ const Images = () => {
                     alignItems: 'center',
                     marginTop: 20,
                   }}>
-                  <AntDesign
-                    name="pluscircle"
-                    color={
+                  <Image
+                    source={
                       ThemeMode.themecolr == 'Red'
-                        ? theme.colors.red
+                        ? RedlightImage.plusicon
                         : ThemeMode.themecolr == 'Blue'
-                        ? theme.colors.Blue
+                        ? BluelightImage.plusiconblue
                         : ThemeMode.themecolr == 'Green'
-                        ? theme.colors.Green
+                        ? GreenlightImage.plusicongreen
                         : ThemeMode.themecolr == 'Purple'
-                        ? theme.colors.Purple
+                        ? PurplelightImage.plusiconpurple
                         : ThemeMode.themecolr == 'Yellow'
-                        ? theme.colors.Yellow
-                        : theme.colors.red
+                        ? YellowlightImage.plusiconyellow
+                        : RedlightImage.plusicon
                     }
-                    size={25}
                     style={{
                       position: 'absolute',
                       zIndex: 1,
                       top: '15%',
                       right: '22%',
+                      height: 29,
+                      width: 29,
                     }}
                   />
                   <Image
@@ -160,6 +166,7 @@ const Images = () => {
                           navigation.navigate('viewSelfMedia', {
                             imgIndex: i,
                             User: User,
+                            Signup_User: null,
                           })
                         }>
                         <Image
@@ -186,6 +193,7 @@ const Images = () => {
                           navigation.navigate('viewSelfMedia', {
                             imgIndex: i,
                             User: User,
+                            Signup_User: null,
                           })
                         }>
                         <Image
@@ -210,6 +218,7 @@ const Images = () => {
                           navigation.navigate('viewSelfMedia', {
                             imgIndex: i,
                             User: User,
+                            Signup_User: null,
                           })
                         }>
                         <Image

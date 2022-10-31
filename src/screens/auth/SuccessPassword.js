@@ -1,5 +1,5 @@
 import {Image, ScrollView, StyleSheet, View} from 'react-native';
-import React from 'react';
+import React, {useEffect, useRef} from 'react';
 import HeaderImage from '../../components/HeaderImage';
 import Header from '../../components/Header';
 import Logo from '../../components/Logo';
@@ -8,10 +8,12 @@ import Button from '../../components/Button';
 import TextFormatted from '../../components/TextFormatted';
 import {PASSCODE} from '../../redux/actions/ActionType';
 import {useSelector} from 'react-redux';
+import Netinforsheet from '../../components/Netinforsheet';
 
 const SuccessPassword = ({navigation}) => {
   const isCode = useSelector(state => state.currentRecovery);
   const ThemeMode = useSelector(state => state.Theme);
+
   return (
     <View
       style={{
@@ -71,6 +73,7 @@ const SuccessPassword = ({navigation}) => {
         marginBottom={30}
         onPress={() => navigation.replace('Login')}
       />
+      <Netinforsheet />
     </View>
   );
 };

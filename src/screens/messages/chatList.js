@@ -7,7 +7,7 @@ import {
   View,
   ImageBackground,
 } from 'react-native';
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {theme} from '../../utils/Constants';
 import HeaderImage_1 from '../../components/HeaderImage_1';
 import Header from '../../components/Header';
@@ -18,15 +18,19 @@ import {useNavigation} from '@react-navigation/native';
 import Notification from '../home/notification';
 import {useDispatch, useSelector} from 'react-redux';
 import * as Animatable from 'react-native-animatable';
+import Netinforsheet from '../../components/Netinforsheet';
 
+import {STAP} from '../../redux/actions/ActionType';
 const ChatList = () => {
   const dispatch = useDispatch();
   const ThemeMode = useSelector(state => state.Theme);
+  const Staps = useSelector(state => state.Stap);
   const [search, setSearch] = useState('');
 
   const dimension = useWindowDimensions();
   const navigation = useNavigation();
   const refRBSheet = useRef();
+
   const recentData = [
     {img: require('../../assets/images/unsplash_1.png')},
     {img: require('../../assets/images/unsplash_2.png')},
@@ -84,6 +88,7 @@ const ChatList = () => {
       link: 'myProfile',
     },
   ];
+
   return (
     <View
       style={{
@@ -365,6 +370,7 @@ const ChatList = () => {
           bottom: 0,
         }}></View>
       <Notification refRBSheet={refRBSheet} />
+      <Netinforsheet />
     </View>
   );
 };

@@ -8,7 +8,7 @@ import {
   useWindowDimensions,
   View,
 } from 'react-native';
-import React, {useRef} from 'react';
+import React, {useEffect, useRef} from 'react';
 import HeaderImage_1 from '../../components/HeaderImage_1';
 import {theme} from '../../utils/Constants';
 import Header from '../../components/Header';
@@ -16,11 +16,14 @@ import TextFormatted from '../../components/TextFormatted';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import {useDispatch, useSelector} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
-
+import Netinforsheet from '../../components/Netinforsheet';
+import {STAP} from '../../redux/actions/ActionType';
 const AboutUs = () => {
   const ThemeMode = useSelector(state => state.Theme);
+  const Staps = useSelector(state => state.Stap);
   const navigation = useNavigation();
   const refRBSheet = useRef();
+
   return (
     <View
       style={{
@@ -49,6 +52,8 @@ const AboutUs = () => {
         <ButtonRow title={'Share ...'} />
         <ButtonRow title={'Community guidelines'} />
       </ScrollView>
+      <Netinforsheet />
+
       <FollowUs refRBSheet={refRBSheet} />
     </View>
   );

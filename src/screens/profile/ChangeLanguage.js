@@ -5,7 +5,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {theme} from '../../utils/Constants';
 import HeaderImage_1 from '../../components/HeaderImage_1';
 import TextFormatted from '../../components/TextFormatted';
@@ -18,22 +18,24 @@ import {
   BluelightImage,
   GreenlightImage,
   PurplelightImage,
-  ReddarkImage,
   RedlightImage,
   YellowlightImage,
 } from '../../utils/CustomImages';
 import {useNavigation} from '@react-navigation/native';
-
+import Netinforsheet from '../../components/Netinforsheet';
+import {STAP} from '../../redux/actions/ActionType';
 const ChangeLanguage = () => {
   const ThemeMode = useSelector(state => state.Theme);
   const [select, setSelect] = useState();
   const [search, setSearch] = useState('');
   const navigation = useNavigation();
+  const Staps = useSelector(state => state.Stap);
 
   const languages = [
     {name: 'English', img: require('../../assets/icons/united_kingdom.png')},
     {name: '简体中文', img: require('../../assets/icons/china.png')},
   ];
+
   return (
     <View
       style={{
@@ -120,6 +122,7 @@ const ChangeLanguage = () => {
           onPress={() => navigation.goBack()}
         />
       </ButtonView>
+      <Netinforsheet />
     </View>
   );
 };

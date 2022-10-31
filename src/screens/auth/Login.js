@@ -17,6 +17,8 @@ import {PASSCODE, STAP} from '../../redux/actions/ActionType';
 import {useDispatch, useSelector} from 'react-redux';
 import axios from 'axios';
 import Toast from 'react-native-toast-message';
+import Netinforsheet from '../../components/Netinforsheet';
+
 const validateEmail = email => {
   return String(email)
     .toLowerCase()
@@ -28,9 +30,9 @@ const validPass = pass => {
   return String(pass).match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/);
 };
 const Login = ({navigation}) => {
+  const dispatch = useDispatch();
   const ThemeMode = useSelector(state => state.Theme);
   const Staps = useSelector(state => state.Stap);
-  const dispatch = useDispatch();
   const [email, setEmail] = useState('demo@gmail.com');
   const [password, setPassword] = useState('Dd123456');
   const [show, setShow] = useState(false);
@@ -303,6 +305,7 @@ const Login = ({navigation}) => {
           </TextFormatted>
         </View>
       </ScrollView>
+      <Netinforsheet />
     </View>
   );
 };

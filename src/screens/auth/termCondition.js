@@ -5,15 +5,19 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React from 'react';
+import React, {useEffect, useRef} from 'react';
 import {theme} from '../../utils/Constants';
 import HeaderImage from '../../components/HeaderImage';
 import Header from '../../components/Header';
 import TextFormatted from '../../components/TextFormatted';
 import {useSelector} from 'react-redux';
+import Netinforsheet from '../../components/Netinforsheet';
+import {STAP} from '../../redux/actions/ActionType';
 
 const TermCondition = () => {
   const ThemeMode = useSelector(state => state.Theme);
+  const Staps = useSelector(state => state.Stap);
+
   return (
     <View
       style={{
@@ -94,6 +98,7 @@ const TermCondition = () => {
           title={'Security tips'}
         />
       </ScrollView>
+      <Netinforsheet />
     </View>
   );
 };

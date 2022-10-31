@@ -5,7 +5,7 @@ import {
   View,
   Image,
 } from 'react-native';
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {theme} from '../../utils/Constants';
 import HeaderImage_1 from '../../components/HeaderImage_1';
 import Header from '../../components/Header';
@@ -20,12 +20,16 @@ import {
   RedlightImage,
   YellowlightImage,
 } from '../../utils/CustomImages';
+import Netinforsheet from '../../components/Netinforsheet';
+import {STAP} from '../../redux/actions/ActionType';
 const ProfileSetting = () => {
+  const ThemeMode = useSelector(state => state.Theme);
+  const Staps = useSelector(state => state.Stap);
   const navigation = useNavigation();
   const [notification, setNotification] = useState(false);
   const [location, setLocation] = useState(false);
   const refRBSheet = useRef();
-  const ThemeMode = useSelector(state => state.Theme);
+
   return (
     <View
       style={{
@@ -118,6 +122,8 @@ const ProfileSetting = () => {
 
       <CloseAccount refRBSheet={refRBSheet} />
       <View style={{height: 20}} />
+
+      <Netinforsheet />
     </View>
   );
 };

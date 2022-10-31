@@ -21,13 +21,17 @@ import {theme} from '../../utils/Constants';
 import {useRoute} from '@react-navigation/native';
 import ActivityLoader from '../../components/ActivityLoader';
 import axios from 'axios';
+import Netinforsheet from '../../components/Netinforsheet';
 
+import {STAP} from '../../redux/actions/ActionType';
 const UserProfile = ({navigation}) => {
   const ThemeMode = useSelector(state => state.Theme);
+  const Staps = useSelector(state => state.Stap);
   const userprofile = require('../../assets/images/profile.png');
   const [media, setMedia] = useState(0);
   const refRBSheet = useRef();
   const refRBSheet1 = useRef();
+
   const {params} = useRoute();
   const [like, setLike] = useState(false);
   const [judge, setJudge] = useState(false);
@@ -47,6 +51,7 @@ const UserProfile = ({navigation}) => {
       setUserdata(response.data.result);
     });
   };
+
   useEffect(() => {
     getUserAll();
   }, []);
@@ -304,6 +309,7 @@ const UserProfile = ({navigation}) => {
             />
           </ScrollView>
           <MoreOptions refRBSheet={refRBSheet1} />
+          <Netinforsheet />
         </View>
       )}
     </View>

@@ -17,11 +17,13 @@ import {useDispatch, useSelector} from 'react-redux';
 import {Baseurl} from '../../utils/Baseurl';
 import {STAP} from '../../redux/actions/ActionType';
 import {ShowToast} from '../../utils/Baseurl';
+import Netinforsheet from '../../components/Netinforsheet';
 
 const EmailOtp = ({navigation}) => {
   const dispatch = useDispatch();
   const ThemeMode = useSelector(state => state.Theme);
   const Staps = useSelector(state => state.Stap);
+
   const isPasscode = useSelector(state => state.isPasscode.isPasscode);
   const {params} = useRoute();
   const dimensions = useWindowDimensions();
@@ -166,6 +168,7 @@ const EmailOtp = ({navigation}) => {
       console.log(e);
     }
   }
+
   return (
     <View
       style={{
@@ -385,6 +388,7 @@ const EmailOtp = ({navigation}) => {
           Resend email
         </TextFormatted>
       </ScrollView>
+      <Netinforsheet />
     </View>
   );
 };

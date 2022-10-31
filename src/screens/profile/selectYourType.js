@@ -7,7 +7,7 @@ import {
   useWindowDimensions,
   View,
 } from 'react-native';
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {theme} from '../../utils/Constants';
 import HeaderImage_1 from '../../components/HeaderImage_1';
 import Header from '../../components/Header';
@@ -28,10 +28,13 @@ import {
   YellowlightImage,
 } from '../../utils/CustomImages';
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
-
+import Netinforsheet from '../../components/Netinforsheet';
+import {STAP} from '../../redux/actions/ActionType';
 const SelectYourType = () => {
   const navigation = useNavigation();
   const dimension = useWindowDimensions();
+  const ThemeMode = useSelector(state => state.Theme);
+  const Staps = useSelector(state => state.Stap);
   const [age, setAge] = useState([0, 10]);
   const ageSliderValuesChange = values => setAge(values);
   const [height, setHeight] = useState([0, 20]);
@@ -44,7 +47,6 @@ const SelectYourType = () => {
   const [weightMajor, setWeightMajor] = useState('kg');
   const refRBSheet = useRef();
 
-  const ThemeMode = useSelector(state => state.Theme);
   const data = [
     {name: 'Casual', img: require('../../assets/icons/chattype1.png')},
     {
@@ -53,6 +55,7 @@ const SelectYourType = () => {
     },
     {name: 'Friends', img: require('../../assets/icons/typeD.png')},
   ];
+
   return (
     <View
       style={{
@@ -283,6 +286,7 @@ const SelectYourType = () => {
           onPress={() => navigation.replace('myProfile')}
         />
       </ButtonView>
+      <Netinforsheet />
     </View>
   );
 };

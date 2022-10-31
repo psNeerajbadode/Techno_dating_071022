@@ -8,7 +8,7 @@ import {
   useWindowDimensions,
   View,
 } from 'react-native';
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {theme} from '../../utils/Constants';
 import HeaderImage_1 from '../../components/HeaderImage_1';
 import Header from '../../components/Header';
@@ -29,9 +29,11 @@ import {
   YellowlightImage,
 } from '../../utils/CustomImages';
 import Sheetbutton from '../../components/Sheetbutton';
-
+import Netinforsheet from '../../components/Netinforsheet';
+import {STAP} from '../../redux/actions/ActionType';
 const Settings = () => {
   const ThemeMode = useSelector(state => state.Theme);
+  const Staps = useSelector(state => state.Stap);
   const navigation = useNavigation();
   const dimension = useWindowDimensions();
   const [active, setActive] = useState(0);
@@ -85,6 +87,7 @@ const Settings = () => {
   const refRBSheet = useRef();
   const refRBSheet1 = useRef();
   const refRBSheet2 = useRef();
+
   const upgradeData = [
     {
       img: require('../../assets/icons/flower.png'),
@@ -104,7 +107,6 @@ const Settings = () => {
     },
   ];
 
-  // console.log(ThemeMode.themecolr);
   return (
     <View
       style={{
@@ -504,6 +506,7 @@ const Settings = () => {
       </BottomSheet>
       <PurchaseUpgrades refRBSheet={refRBSheet1} refRBSheet2={refRBSheet2} />
       <Payment refRBSheet={refRBSheet2} isPlan={true} />
+      <Netinforsheet />
     </View>
   );
 };
