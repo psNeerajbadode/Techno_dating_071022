@@ -1,80 +1,163 @@
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import React, { useRef, useState } from 'react';
+import {
+  Image,
+  PermissionsAndroid,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import React, {useRef, useState} from 'react';
 import Swiper from 'react-native-swiper';
-import Header from '../../../components/Header';
-import Entypo from 'react-native-vector-icons/Entypo';
-import { theme } from '../../../utils/Constants';
-import { useNavigation, useRoute } from '@react-navigation/native';
-import TextFormatted from '../../../components/TextFormatted';
-import LinearGradient from 'react-native-linear-gradient';
+import {useNavigation, useRoute} from '@react-navigation/native';
+
 import MoreOptions from '../moreOptions';
-import { useDispatch, useSelector } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
+import Netinforsheet from '../../../components/Netinforsheet';
+import RNFetchBlob from 'rn-fetch-blob';
 
 const ViewImage = () => {
   const navigation = useNavigation();
-  const { params = {} } = useRoute();
+  const {params = {}} = useRoute();
   const [judge, setJudge] = useState(false);
-  const dispatch = useDispatch();
+  const [index, setIndex] = useState(params?.imgIndex);
   const ThemeMode = useSelector(state => state.Theme);
   const photos = [
-    { img: require('../../../assets/images/unsplash_1.png') },
-    { img: require('../../../assets/images/unsplash_2.png') },
-    { img: require('../../../assets/images/unsplash_3.png') },
-    { img: require('../../../assets/images/unsplash_4.png') },
-    { img: require('../../../assets/images/unsplash_5.png') },
-    { img: require('../../../assets/images/unsplash_6.png') },
+    {img: require('../../../assets/images/unsplash_1.png')},
+    {img: require('../../../assets/images/unsplash_2.png')},
+    {img: require('../../../assets/images/unsplash_3.png')},
+    {img: require('../../../assets/images/unsplash_4.png')},
+    {img: require('../../../assets/images/unsplash_5.png')},
+    {img: require('../../../assets/images/unsplash_6.png')},
   ];
   const refRBSheet = useRef();
+  const Storage_permission = async () => {
+    if (Platform.OS === 'ios') {
+      download_Img();
+    } else {
+      try {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+          {
+            title: 'Storage Permission Required',
+            message: 'App needs access to your Storage ',
+          },
+        );
+        if (granted === 'granted') {
+          console.log('granted Storage Permission');
+          download_Img();
+        } else {
+          console.log('Storage permission denied');
+        }
+      } catch (err) {
+        console.warn(err);
+      }
+    }
+  };
+
+  const download_Img = () => {
+    let date = new Date();
+    let ImageUrl = params?.Userphoto[index]?.image;
+    const {config, fs} = RNFetchBlob;
+    config({
+      addAndroidDownloads: {
+        useDownloadManager: true,
+        description: 'File downloaded by download manager.',
+        notification: true,
+        path:
+          fs.dirs.DCIMDir +
+          '/image_' +
+          Math.floor(date.getTime() + date.getSeconds() / 2),
+      },
+      fileCache: true,
+    })
+      .fetch('GET', ImageUrl, {
+        //some headers ..
+      })
+      .then(res => {
+        // the temp file path
+        console.log('The file saved to ', JSON.stringify(res));
+      });
+  };
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{flex: 1}}>
       <Swiper
         loop={false}
         style={styles.wrapper}
         index={params.imgIndex}
         showsButtons={true}
         showsPagination={false}
-        buttonWrapperStyle={{ paddingHorizontal: 0 }}
+        onIndexChanged={index => setIndex(index)}
+        buttonWrapperStyle={{paddingHorizontal: 0}}
         nextButton={
           <Image
-            source={ThemeMode.selectedTheme ? require('../../../assets/icons/P_sidebar.png') : require('../../../assets/icons/next_dark.png')}
-            style={{ height: 145, width: 25, resizeMode: 'contain' }}
+            source={
+              ThemeMode.selectedTheme
+                ? require('../../../assets/icons/P_sidebar.png')
+                : require('../../../assets/icons/next_dark.png')
+            }
+            style={{height: 145, width: 25, resizeMode: 'contain'}}
           />
         }
         prevButton={
           <Image
-            source={ThemeMode.selectedTheme ? require('../../../assets/icons/N_sidebar.png') : require('../../../assets/icons/prev_dark.png')}
-            style={{ height: 145, width: 25, resizeMode: 'contain' }}
+            source={
+              ThemeMode.selectedTheme
+                ? require('../../../assets/icons/N_sidebar.png')
+                : require('../../../assets/icons/prev_dark.png')
+            }
+            style={{height: 145, width: 25, resizeMode: 'contain'}}
           />
-        }
-      >
-        {photos?.map((it, i) => (
-          <Image source={it.img} resizeMode="cover" style={{ height: '100%', width: '100%' }} />
+        }>
+        {params.Userphoto?.map((it, i) => (
+          <Image
+            source={{uri: it.image}}
+            resizeMode="cover"
+            style={{height: '100%', width: '100%'}}
+          />
         ))}
       </Swiper>
-      <View style={{ position: 'absolute', flexDirection: 'row', marginHorizontal: 20, marginTop: 50 }}>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={{ alignSelf: 'flex-start' }}>
+      <View
+        style={{
+          position: 'absolute',
+          flexDirection: 'row',
+          marginHorizontal: 20,
+          marginTop: 50,
+        }}>
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          style={{alignSelf: 'flex-start'}}>
           <Image
-            source={ThemeMode.selectedTheme ? require('../../../assets/icons/back.png') : require('../../../assets/icons/back_dark.png')}
-            style={{ height: 40, width: 40, resizeMode: 'contain' }}
+            source={
+              ThemeMode.selectedTheme
+                ? require('../../../assets/icons/back.png')
+                : require('../../../assets/icons/back_dark.png')
+            }
+            style={{height: 40, width: 40, resizeMode: 'contain'}}
           />
         </TouchableOpacity>
-        <View style={{ flex: 1 }} />
+        <View style={{flex: 1}} />
+
         <View>
-          <Entypo
-            onPress={() => refRBSheet.current.open()}
-            name="dots-three-vertical"
-            size={16}
-            color={theme.colors.primary}
-            style={{
-              height: 40,
-              width: 40,
-              backgroundColor: ThemeMode.selectedTheme ? '#FFFFFF33' : '#1A1D2533',
-              textAlign: 'center',
-              textAlignVertical: 'center',
-              borderRadius: 10,
-              alignSelf: 'flex-end',
-            }}
-          />
+          {ThemeMode.selectedTheme ? (
+            <TouchableOpacity
+              onPress={() => {
+                Storage_permission(); /* refRBSheet.current.open(); */
+              }}
+              style={{alignSelf: 'flex-start'}}>
+              <Image
+                source={require('../../../assets/icons/download_light.png')}
+                style={{height: 40, width: 40, resizeMode: 'contain'}}
+              />
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity
+              onPress={() => Storage_permission()}
+              style={{alignSelf: 'flex-start'}}>
+              <Image
+                source={require('../../../assets/icons/download_dark.png')}
+                style={{height: 40, width: 40, resizeMode: 'contain'}}
+              />
+            </TouchableOpacity>
+          )}
         </View>
       </View>
       {/* <View
@@ -155,6 +238,7 @@ const ViewImage = () => {
       {/* </View> */}
       {/* </View> */}
       <MoreOptions refRBSheet={refRBSheet} />
+      <Netinforsheet />
     </View>
   );
 };

@@ -2,7 +2,6 @@ import {
   FlatList,
   Image,
   ImageBackground,
-  StatusBar,
   StyleSheet,
   TouchableOpacity,
   useWindowDimensions,
@@ -225,11 +224,11 @@ const HomePage = () => {
           : theme.colors.primaryBlack,
       }}>
       <SafeAreaView>
-        <StatusBar
-          // translucent={true}
+        <Statusbar
+          translucent={true}
           backgroundColor="transparent"
           barStyle={'light-content'}
-          // hidden={false}
+          //hidden={true}
         />
       </SafeAreaView>
 

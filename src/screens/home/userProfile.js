@@ -1,4 +1,5 @@
 import {
+  FlatList,
   Image,
   ScrollView,
   StyleSheet,
@@ -12,18 +13,15 @@ import Header from '../../components/Header';
 import TextFormatted from '../../components/TextFormatted';
 import LinearGradient from 'react-native-linear-gradient';
 import UserMedia from './homeComponent/userMedia';
-import UserInformation from './homeComponent/userInformation';
 import UserLikeBottomSheet from './homeComponent/userLikeBottomSheet';
 import {useRef} from 'react';
 import MoreOptions from './moreOptions';
-import {useDispatch, useSelector} from 'react-redux';
+import {useSelector} from 'react-redux';
 import {theme} from '../../utils/Constants';
 import {useRoute} from '@react-navigation/native';
 import ActivityLoader from '../../components/ActivityLoader';
 import axios from 'axios';
 import Netinforsheet from '../../components/Netinforsheet';
-
-import {STAP} from '../../redux/actions/ActionType';
 const UserProfile = ({navigation}) => {
   const ThemeMode = useSelector(state => state.Theme);
   const Staps = useSelector(state => state.Stap);
@@ -31,15 +29,16 @@ const UserProfile = ({navigation}) => {
   const [media, setMedia] = useState(0);
   const refRBSheet = useRef();
   const refRBSheet1 = useRef();
-
   const {params} = useRoute();
   const [like, setLike] = useState(false);
   const [judge, setJudge] = useState(false);
   const [disLike, setDisLike] = useState(false);
   const [Loading, setLoading] = useState(false);
   const [Userdata, setUserdata] = useState();
+  const [Userpost, setUserpost] = useState();
   const dimension = useWindowDimensions();
-  const getUserAll = () => {
+  console.log(Userdata?.id);
+  const getUser = () => {
     setLoading(true);
     axios({
       method: 'get',
@@ -51,9 +50,21 @@ const UserProfile = ({navigation}) => {
       setUserdata(response.data.result);
     });
   };
-
+  const getUserData = () => {
+    axios({
+      method: 'get',
+      url:
+        'https://technorizen.com/Dating/webservice/getUserPostData?user_id=' +
+        params +
+        '&&' +
+        'type=Image',
+    }).then(response => {
+      setUserpost(response.data.result);
+    });
+  };
   useEffect(() => {
-    getUserAll();
+    getUser();
+    getUserData();
   }, []);
 
   return (
@@ -160,7 +171,7 @@ const UserProfile = ({navigation}) => {
                   textAlign: 'center',
                   marginTop: 17,
                 }}>
-                Emma Hatchan
+                {Userdata?.user_name}
               </TextFormatted>
               <TextFormatted
                 style={{
@@ -170,7 +181,8 @@ const UserProfile = ({navigation}) => {
                   textAlign: 'center',
                   marginTop: 3,
                 }}>
-                22 years old
+                {new Date().getFullYear() - Userdata?.dob?.slice(0, 4)}
+                {/* 22 */} years old
               </TextFormatted>
             </HeaderImage>
             <TouchableOpacity
@@ -187,7 +199,11 @@ const UserProfile = ({navigation}) => {
                 bottom: 0,
               }}>
               <Image
-                source={userprofile}
+                source={
+                  Userdata?.image == null
+                    ? require('../../assets/images/image.png')
+                    : {uri: Userdata?.image}
+                }
                 style={{
                   height: 98,
                   width: 98,
@@ -301,13 +317,198 @@ const UserProfile = ({navigation}) => {
                 </LinearGradient>
               </TouchableOpacity>
             </View>
-            {media == 0 ? <UserMedia /> : <UserInformation />}
-            <UserLikeBottomSheet
-              refRBSheet={refRBSheet}
-              like={like}
-              setLike={setLike}
-            />
+            {media == 0 ? (
+              <View
+                style={{
+                  paddingBottom: dimension.width * 0.9,
+                }}>
+                <View style={{flexDirection: 'row'}}>
+                  <View style={{width: dimension.width / 2}}>
+                    {Userpost?.map(
+                      (v, i) =>
+                        (i != 0 && i != 2) || (
+                          <TouchableOpacity
+                            style={{
+                              marginTop: 20,
+                              marginHorizontal: 10,
+                              alignSelf: 'flex-end',
+                            }}
+                            onPress={() =>
+                              navigation.navigate('viewImage', {
+                                imgIndex: i,
+                                Userphoto: Userpost,
+                              })
+                            }>
+                            <Image
+                              source={{uri: v.image}}
+                              style={{
+                                width: (dimension.width - 50) / 2,
+                                height: i == 0 ? 230 : 337,
+                                resizeMode: 'cover',
+                                borderRadius: 20,
+                              }}
+                            />
+                          </TouchableOpacity>
+                        ),
+                    )}
+                  </View>
+                  <View style={{width: dimension.width / 2}}>
+                    {Userpost?.map(
+                      (v, i) =>
+                        (i != 1 && i != 3 && i != 4) || (
+                          <TouchableOpacity
+                            style={{marginTop: 20, marginHorizontal: 10}}
+                            onPress={() =>
+                              navigation.navigate('viewImage', {
+                                imgIndex: i,
+                                Userphoto: Userpost,
+                              })
+                            }>
+                            <Image
+                              source={{uri: v.image}}
+                              style={{
+                                width: (dimension.width - 50) / 2,
+                                height: i == 1 ? 166 : i == 3 ? 238 : 143,
+                                resizeMode: 'cover',
+                                borderRadius: 20,
+                              }}
+                            />
+                          </TouchableOpacity>
+                        ),
+                    )}
+                  </View>
+                </View>
+                {Userpost?.map(
+                  (v, i) =>
+                    i != 5 || (
+                      <TouchableOpacity
+                        style={{marginTop: 20, alignSelf: 'center'}}
+                        onPress={() =>
+                          navigation.navigate('viewImage', {
+                            imgIndex: i,
+                            Userphoto: Userpost,
+                          })
+                        }>
+                        <Image
+                          source={{uri: v.image}}
+                          style={{
+                            width: dimension.width - 40,
+                            height: 143,
+                            resizeMode: 'cover',
+                            borderRadius: 20,
+                          }}
+                        />
+                      </TouchableOpacity>
+                    ),
+                )}
+              </View>
+            ) : (
+              <View
+                style={{
+                  paddingBottom: dimension.width * 0.9,
+                }}>
+                <TextFormatted
+                  style={{
+                    fontSize: 16,
+                    fontWeight: '700',
+                    color: ThemeMode.selectedTheme
+                      ? theme.colors.primaryBlack
+                      : theme.colors.primary,
+                    marginLeft: 40,
+                  }}>
+                  Passions
+                </TextFormatted>
+                <FlatList
+                  data={Userdata?.category}
+                  horizontal
+                  style={{paddingHorizontal: 10}}
+                  showsHorizontalScrollIndicator={false}
+                  renderItem={({item}) => (
+                    <View
+                      style={{
+                        height: 100,
+                        width: 100,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                      }}>
+                      <Image
+                        source={{uri: item?.image}}
+                        style={{height: 50, width: 50, resizeMode: 'contain'}}
+                      />
+                      <TextFormatted
+                        style={{
+                          fontSize: 16,
+                          fontWeight: '700',
+                          color: '#8490AE',
+                        }}>
+                        {item?.passion_name}
+                      </TextFormatted>
+                    </View>
+                  )}
+                />
+                <View style={{height: 20}}></View>
+                <UserInformation
+                  source={require('../../assets/icons/account.png')}
+                  height={24}
+                  width={24}
+                  title={'About me'}
+                  text={Userdata?.about}
+                />
+                <UserInformation
+                  source={require('../../assets/icons/equality.png')}
+                  title={'Sexual orientation'}
+                  text={Userdata?.sexual_orientation}
+                />
+                <UserInformation
+                  source={require('../../assets/icons/search_2.png')}
+                  title={'Looking for'}
+                  text={Userdata?.looking_for}
+                />
+                <UserInformation
+                  source={require('../../assets/icons/book.png')}
+                  title={'Education'}
+                  text={Userdata?.education}
+                />
+                <UserInformation
+                  source={require('../../assets/icons/location.png')}
+                  title={'Ethnicity'}
+                  text={Userdata?.ethnicity}
+                />
+                <UserInformation
+                  source={require('../../assets/icons/translation.png')}
+                  title={'Language'}
+                  text={'English'}
+                />
+                <UserInformation
+                  source={require('../../assets/icons/favourites.png')}
+                  title={'Zodiac'}
+                  text={Userdata?.zodiac}
+                />
+                <UserInformation
+                  source={require('../../assets/icons/baby_carriage.png')}
+                  title={'Has kids'}
+                  text={Userdata?.kids}
+                />
+                <UserInformation
+                  source={require('../../assets/icons/cocktail.png')}
+                  title={'Drinks'}
+                  text={Userdata?.drink}
+                />
+                <UserInformation
+                  source={require('../../assets/icons/cigarrete.png')}
+                  title={'Smokes'}
+                  text={Userdata?.smoke}
+                />
+              </View>
+            )}
           </ScrollView>
+          <UserLikeBottomSheet
+            U_id={Userdata?.id}
+            refRBSheet={refRBSheet}
+            like={like}
+            setLike={setLike}
+          />
+
           <MoreOptions refRBSheet={refRBSheet1} />
           <Netinforsheet />
         </View>
@@ -315,7 +516,39 @@ const UserProfile = ({navigation}) => {
     </View>
   );
 };
-
+const UserInformation = ({title, text, source}) => {
+  const ThemeMode = useSelector(state => state.Theme);
+  return (
+    <View style={{marginHorizontal: 25, marginVertical: 10}}>
+      <View style={{flexDirection: 'row', alignItems: 'center'}}>
+        <Image
+          source={source}
+          style={{height: 24, width: 24, resizeMode: 'contain'}}
+        />
+        <TextFormatted
+          style={{
+            fontSize: 16,
+            fontWeight: '700',
+            color: ThemeMode.selectedTheme
+              ? theme.colors.primaryBlack
+              : theme.colors.primary,
+            marginLeft: 10,
+          }}>
+          {title}
+        </TextFormatted>
+      </View>
+      <TextFormatted
+        style={{
+          fontSize: 14,
+          fontWeight: '400',
+          color: '#8490AE',
+          marginTop: 10,
+        }}>
+        {text}
+      </TextFormatted>
+    </View>
+  );
+};
 export default UserProfile;
 
 const styles = StyleSheet.create({

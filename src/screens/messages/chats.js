@@ -6,6 +6,7 @@ import {
   TextInput,
   ScrollView,
   useWindowDimensions,
+  FlatList,
 } from 'react-native';
 import React, {useEffect, useRef, useState} from 'react';
 import {theme} from '../../utils/Constants';
@@ -20,8 +21,6 @@ import {useRoute} from '@react-navigation/native';
 import axios from 'axios';
 import Netinforsheet from '../../components/Netinforsheet';
 
-import {STAP} from '../../redux/actions/ActionType';
-
 const Chats = () => {
   const dispatch = useDispatch();
   const ThemeMode = useSelector(state => state.Theme);
@@ -33,9 +32,49 @@ const Chats = () => {
   const {params} = useRoute();
   const [mess, setMess] = useState('');
   const [show, setShow] = useState(false);
-  console.log('params =>', params);
+  const [getmsg, setGetmsg] = useState();
+
   const dimension = useWindowDimensions();
 
+  const chatData = [
+    {
+      reciverId: 1,
+      img: require('../../assets/images/unsplash_1.png'),
+      msg1: 'Alex, let’s meet this weekend. I’ll check with Dave too 😎',
+      time: '8:27 PM',
+    },
+    {
+      sernderId: 0,
+      img: require('../../assets/images/unsplash_1.png'),
+      msg1: 'Sure. Let’s aim for saturday',
+      msg2: 'I’m visiting mom this sunday 👻',
+      time: '8:56 PM',
+    },
+    {
+      reciverId: 1,
+      img: require('../../assets/images/unsplash_1.png'),
+      msg1: 'Alrighty! Will give you a call shortly 🤗',
+      time: '9:01 PM',
+    },
+    {
+      sernderId: 0,
+      img: require('../../assets/images/unsplash_1.png'),
+      msg1: '❤️',
+      time: '9:04 PM',
+    },
+    {
+      reciverId: 1,
+      img: require('../../assets/images/unsplash_1.png'),
+      msg1: 'Hey you! Are you there?',
+      time: '11:53 AM',
+    },
+    {
+      sernderId: 0,
+      img: require('../../assets/images/unsplash_1.png'),
+      msg1: '👋 Hi Jess! What’s up?',
+      time: '12:14 PM',
+    },
+  ];
   const selectMultipleFile = async () => {
     try {
       const results = await DocumentPicker.pickMultiple({
@@ -58,6 +97,54 @@ const Chats = () => {
       }
     }
   };
+
+  const InsertChat = () => {
+    try {
+      setLoading(true);
+      const body = new FormData();
+      body.append('sender_id', Staps.id);
+      body.append('receiver_id', 38);
+      body.append('chat_message', mess);
+      axios({
+        url: 'https://technorizen.com/Dating/webservice/insert_chat',
+        method: 'POST',
+        data: body,
+        headers: {
+          'content-type': 'multipart/form-data',
+        },
+      })
+        .then(function (response) {
+          console.log('response', JSON.stringify(response));
+          if (response.data.status == 1) {
+            setLoading(false);
+          } else {
+            setLoading(false);
+          }
+        })
+        .catch(function (error) {
+          console.log('catch', error);
+          setLoading(false);
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const Getchat_api = () => {
+    axios({
+      method: 'get',
+      url:
+        'https://technorizen.com/Dating/webservice/get_chat?sender_id=' +
+        /* Staps.id */ 49 +
+        '&' +
+        'receiver_id=' +
+        38,
+    }).then(response => {
+      console.log('Chat Message =>', response.data.result);
+      setGetmsg(response.data.result);
+    });
+  };
+
   const getPassion = () => {
     axios({
       method: 'get',
@@ -70,6 +157,7 @@ const Chats = () => {
 
   useEffect(() => {
     getPassion();
+    Getchat_api();
   }, []);
   return (
     <View
@@ -119,20 +207,7 @@ const Chats = () => {
         />
       </HeaderImage_1>
       <ScrollView style={{flex: 1}}>
-        <LinearGradient
-          colors={
-            ThemeMode.themecolr == 'Red'
-              ? theme.colors.primaryOn
-              : ThemeMode.themecolr == 'Blue'
-              ? theme.colors.primaryBlue
-              : ThemeMode.themecolr == 'Green'
-              ? theme.colors.primaryGreen
-              : ThemeMode.themecolr == 'Purple'
-              ? theme.colors.primaryPurple
-              : ThemeMode.themecolr == 'Yellow'
-              ? theme.colors.primaryYellow
-              : theme.colors.primaryOn
-          }
+        <View
           style={{
             padding: 15,
             borderBottomRightRadius: 50,
@@ -140,14 +215,26 @@ const Chats = () => {
             borderBottomLeftRadius: 50,
             // marginLeft: 50,
             marginTop: 20,
-            marginRight: 20,
+            marginRight: 10,
             marginBottom: 15,
             alignSelf: 'flex-end',
             flex: 1,
+            backgroundColor:
+              ThemeMode.themecolr == 'Red'
+                ? theme.colors.red
+                : ThemeMode.themecolr == 'Blue'
+                ? theme.colors.Blue
+                : ThemeMode.themecolr == 'Green'
+                ? theme.colors.Green
+                : ThemeMode.themecolr == 'Purple'
+                ? theme.colors.Purple
+                : ThemeMode.themecolr == 'Yellow'
+                ? theme.colors.Yellow
+                : theme.colors.red,
           }}>
           <TextFormatted
             style={{
-              fontSize: 14,
+              fontSize: 13,
               fontWeight: '400',
               color: theme.colors.primary,
             }}>
@@ -161,7 +248,7 @@ const Chats = () => {
               12:56
             </TextFormatted>
           </TextFormatted>
-        </LinearGradient>
+        </View>
         {params.params != null && (
           <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
             {passion.map(
@@ -193,6 +280,92 @@ const Chats = () => {
             )}
           </View>
         )}
+
+        <FlatList
+          data={getmsg}
+          inverted
+          renderItem={({item, i}) => (
+            <View
+              style={{
+                marginLeft: 20,
+                marginTop: 22,
+                marginHorizontal: 15,
+                alignItems:
+                  item.receiver_id != null ? 'flex-start' : 'flex-end',
+              }}>
+              <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
+                {item.receiver_id != null && (
+                  <Image
+                    source={require('../../assets/images/unsplash_1.png')}
+                    style={{
+                      height: 64,
+                      width: 64,
+                      resizeMode: 'cover',
+                      borderRadius: 50,
+                    }}
+                  />
+                )}
+                <View
+                  style={{
+                    paddingVertical: 15,
+                    paddingRight: 20,
+                    backgroundColor:
+                      item.receiver_id != null
+                        ? ThemeMode.selectedTheme
+                          ? '#FAFAFA'
+                          : '#FFFFFF0D'
+                        : ThemeMode.themecolr == 'Red'
+                        ? theme.colors.red
+                        : ThemeMode.themecolr == 'Blue'
+                        ? theme.colors.Blue
+                        : ThemeMode.themecolr == 'Green'
+                        ? theme.colors.Green
+                        : ThemeMode.themecolr == 'Purple'
+                        ? theme.colors.Purple
+                        : ThemeMode.themecolr == 'Yellow'
+                        ? theme.colors.Yellow
+                        : theme.colors.red,
+                    flexWrap: 'wrap',
+                    flexDirection: 'row',
+                    borderBottomRightRadius: 50,
+                    borderTopLeftRadius: item.receiver_id != null ? 0 : 50,
+                    borderTopRightRadius: item.receiver_id == null ? 0 : 50,
+                    borderBottomLeftRadius: 50,
+                    justifyContent: 'flex-start',
+                  }}>
+                  <TextFormatted
+                    style={{
+                      fontSize: 12,
+                      fontWeight: '300',
+                      color:
+                        item.receiver_id == null
+                          ? theme.colors.primary
+                          : ThemeMode.selectedTheme
+                          ? theme.colors.primaryBlack
+                          : theme.colors.primary,
+                      marginLeft: 15,
+                    }}>
+                    {item.chat_message}
+                  </TextFormatted>
+                  <TextFormatted
+                    style={{
+                      fontSize: 12,
+                      fontWeight: '300',
+                      color:
+                        item.receiver_id == null
+                          ? theme.colors.primary
+                          : ThemeMode.selectedTheme
+                          ? theme.colors.primaryBlack
+                          : theme.colors.primary,
+                      marginLeft: 15,
+                    }}>
+                    12:55
+                  </TextFormatted>
+                </View>
+              </View>
+            </View>
+          )}
+        />
 
         <View
           style={{
@@ -315,7 +488,12 @@ const Chats = () => {
             />
           </TouchableOpacity>
         </View>
-        <TouchableOpacity style={{marginLeft: 15}} onPress={() => setMess('')}>
+        <TouchableOpacity
+          style={{marginLeft: 15}}
+          onPress={() => {
+            setMess('');
+            InsertChat();
+          }}>
           <LinearGradient
             colors={
               mess == ''

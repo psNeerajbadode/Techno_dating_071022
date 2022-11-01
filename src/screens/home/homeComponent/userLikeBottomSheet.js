@@ -31,19 +31,32 @@ import Sheetbutton from '../../../components/Sheetbutton';
 import axios from 'axios';
 import ActivityLoader from '../../../components/ActivityLoader';
 
-const UserLikeBottomSheet = ({refRBSheet, setLike}) => {
+const UserLikeBottomSheet = ({refRBSheet, setLike, U_id}) => {
   const ThemeMode = useSelector(state => state.Theme);
   const dimension = useWindowDimensions();
   const navigation = useNavigation();
   const DatatypeRef = useRef();
-  const [type, setType] = useState();
+
   const [search, setSearch] = useState('');
   const [additem, setAdditem] = useState([]);
-  const [chatPssion, setChatPssion] = useState([]);
   const [load, setload] = useState(false);
   const [passion, setpassion] = useState([]);
+  const [Loading, setLoading] = useState(false);
+  const [Userdata, setUserdata] = useState();
+  const Staps = useSelector(state => state.Stap);
   const kaylength = search.length;
   const userprofile = require('../../../assets/images/profile2.png');
+  const getUser = () => {
+    setLoading(true);
+    axios({
+      method: 'get',
+      url:
+        'https://technorizen.com/Dating/webservice/get_profile?user_id=' + U_id,
+    }).then(response => {
+      setLoading(false);
+      setUserdata(response.data.result);
+    });
+  };
   const getPassion = () => {
     setload(true);
     axios({
@@ -55,10 +68,12 @@ const UserLikeBottomSheet = ({refRBSheet, setLike}) => {
       setpassion(response.data.result);
     });
   };
+
   useEffect(() => {
     getPassion();
+    getUser();
   }, []);
-
+  console.log('Userdata', Userdata);
   return (
     <View>
       <RBSheet
@@ -98,130 +113,154 @@ const UserLikeBottomSheet = ({refRBSheet, setLike}) => {
               marginTop: 10,
             }}
           />
-          <Icon
-            name="close-a"
-            size={16}
-            color="#fff"
+
+          <TouchableOpacity
+            onPress={() => refRBSheet.current.close()}
             style={{
               alignSelf: 'flex-end',
               marginRight: 30,
-              marginTop: 10,
-              padding: 7,
-            }}
-            onPress={() => refRBSheet.current.close()}
-          />
-          <ScrollView>
-            <ImageBackground
-              source={require('../../../assets/icons/circle.png')}
+              marginTop: 15,
+              marginBottom: 15,
+            }}>
+            <Image
+              source={require('../../../assets/icons/close_immg.png')}
               resizeMode="contain"
               style={{
-                height: dimension.width - 100,
-                width: dimension.width - 100,
-                alignSelf: 'center',
-                marginTop: 20,
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
-              <Image
-                source={userprofile}
-                style={{
-                  height: dimension.width / 2.5,
-                  width: dimension.width / 2.5,
-                  borderRadius: 100,
-                  borderWidth: 4,
-                  borderColor: '#fff',
-                }}
-              />
-              <TouchableOpacity onPress={() => navigation.navigate('message')}>
-                <LinearGradient
-                  style={{
-                    height: 55,
-                    width: 55,
-                    position: 'absolute',
-                    bottom: '0%',
-                    left: '15%',
-                    borderRadius: 50,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                  start={{x: 0, y: 0}}
-                  end={{x: 1, y: 1}}
-                  colors={
-                    ThemeMode.themecolr == 'Red'
-                      ? theme.colors.primaryOn
-                      : ThemeMode.themecolr == 'Blue'
-                      ? theme.colors.primaryBlue
-                      : ThemeMode.themecolr == 'Green'
-                      ? theme.colors.primaryGreen
-                      : ThemeMode.themecolr == 'Purple'
-                      ? theme.colors.primaryPurple
-                      : ThemeMode.themecolr == 'Yellow'
-                      ? theme.colors.primaryYellow
-                      : theme.colors.primaryOn
-                  }>
-                  <Image
-                    resizeMode="contain"
-                    source={require('../../../assets/icons/like_match.png')}
-                    style={{height: 30, width: 30}}
-                  />
-                </LinearGradient>
-              </TouchableOpacity>
-            </ImageBackground>
-            <TextFormatted
-              style={{
-                fontSize: 26,
-                fontWeight: '700',
-                color: theme.colors.primary,
-                textAlign: 'center',
-                marginTop: 17,
-              }}>
-              Emma Hatchan
-            </TextFormatted>
-            <TextFormatted
-              style={{
-                fontSize: 18,
-                fontWeight: '400',
-                color: theme.colors.primary,
-                textAlign: 'center',
-              }}>
-              22 years old
-            </TextFormatted>
-            <TextFormatted
-              style={{
-                fontSize: 16,
-                fontWeight: '300',
-                color: theme.colors.primary,
-                textAlign: 'center',
-                marginTop: 20,
-              }}>
-              You have 3 Passions in common!
-            </TextFormatted>
-
-            <Sheetbutton
-              ButtonName={'Send message'}
-              onPress={() => {
-                refRBSheet.current.close();
-                DatatypeRef.current.open();
-                setLike(true);
-                // navigation.navigate('chats');
+                height: 18,
+                width: 18,
+                tintColor: theme.colors.primary,
               }}
             />
-            <TextFormatted
+          </TouchableOpacity>
+
+          {Loading ? (
+            <View
               style={{
-                fontSize: 14,
-                fontWeight: '400',
-                color: theme.colors.primary,
-                alignSelf: 'center',
-                marginVertical: 12,
-                padding: 5,
-              }}
-              onPress={() => {
-                refRBSheet.current.close();
-                setLike(true);
+                flex: 1,
+                justifyContent: 'center',
               }}>
-              View profile
-            </TextFormatted>
-          </ScrollView>
+              <ActivityLoader color={theme.colors.primary} />
+            </View>
+          ) : (
+            <ScrollView>
+              <ImageBackground
+                source={require('../../../assets/icons/circle.png')}
+                resizeMode="contain"
+                style={{
+                  height: dimension.width - 100,
+                  width: dimension.width - 100,
+                  alignSelf: 'center',
+                  marginTop: 20,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <Image
+                  source={
+                    Userdata?.image == null
+                      ? require('../../../assets/images/image.png')
+                      : {uri: Userdata?.image}
+                  }
+                  style={{
+                    height: dimension.width / 2.5,
+                    width: dimension.width / 2.5,
+                    borderRadius: 100,
+                    borderWidth: 4,
+                    borderColor: '#fff',
+                  }}
+                />
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('message')}>
+                  <LinearGradient
+                    style={{
+                      height: 55,
+                      width: 55,
+                      position: 'absolute',
+                      bottom: '0%',
+                      left: '15%',
+                      borderRadius: 50,
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}
+                    start={{x: 0, y: 0}}
+                    end={{x: 1, y: 1}}
+                    colors={
+                      ThemeMode.themecolr == 'Red'
+                        ? theme.colors.primaryOn
+                        : ThemeMode.themecolr == 'Blue'
+                        ? theme.colors.primaryBlue
+                        : ThemeMode.themecolr == 'Green'
+                        ? theme.colors.primaryGreen
+                        : ThemeMode.themecolr == 'Purple'
+                        ? theme.colors.primaryPurple
+                        : ThemeMode.themecolr == 'Yellow'
+                        ? theme.colors.primaryYellow
+                        : theme.colors.primaryOn
+                    }>
+                    <Image
+                      resizeMode="contain"
+                      source={require('../../../assets/icons/like_match.png')}
+                      style={{height: 30, width: 30}}
+                    />
+                  </LinearGradient>
+                </TouchableOpacity>
+              </ImageBackground>
+              <TextFormatted
+                style={{
+                  fontSize: 26,
+                  fontWeight: '700',
+                  color: theme.colors.primary,
+                  textAlign: 'center',
+                  marginTop: 17,
+                }}>
+                {Userdata?.user_name}
+              </TextFormatted>
+              <TextFormatted
+                style={{
+                  fontSize: 18,
+                  fontWeight: '400',
+                  color: theme.colors.primary,
+                  textAlign: 'center',
+                }}>
+                {new Date().getFullYear() - Userdata?.dob?.slice(0, 4)}
+                {/*   22 */} years old
+              </TextFormatted>
+              <TextFormatted
+                style={{
+                  fontSize: 16,
+                  fontWeight: '300',
+                  color: theme.colors.primary,
+                  textAlign: 'center',
+                  marginTop: 20,
+                }}>
+                You have 3 Passions in common!
+              </TextFormatted>
+
+              <Sheetbutton
+                ButtonName={'Send message'}
+                onPress={() => {
+                  refRBSheet.current.close();
+                  DatatypeRef.current.open();
+                  setLike(true);
+                  // navigation.navigate('chats');
+                }}
+              />
+              <TextFormatted
+                style={{
+                  fontSize: 14,
+                  fontWeight: '400',
+                  color: theme.colors.primary,
+                  alignSelf: 'center',
+                  marginVertical: 12,
+                  padding: 5,
+                }}
+                onPress={() => {
+                  refRBSheet.current.close();
+                  setLike(true);
+                }}>
+                View profile
+              </TextFormatted>
+            </ScrollView>
+          )}
         </LinearGradient>
       </RBSheet>
       <BottomSheet

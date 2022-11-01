@@ -28,6 +28,7 @@ import {
 import {STAP} from '../../../redux/actions/ActionType';
 import axios from 'axios';
 import TouchID from 'react-native-touch-id';
+import Netinforsheet from '../../../components/Netinforsheet';
 
 const Step7 = ({navigation}) => {
   const dispatch = useDispatch();
@@ -392,6 +393,7 @@ const Step7 = ({navigation}) => {
           </View>
         </View>
       </Modal>
+      <Netinforsheet />
     </View>
   );
 };

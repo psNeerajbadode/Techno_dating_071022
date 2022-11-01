@@ -20,13 +20,11 @@ import {useDispatch, useSelector} from 'react-redux';
 import * as Animatable from 'react-native-animatable';
 import Netinforsheet from '../../components/Netinforsheet';
 
-import {STAP} from '../../redux/actions/ActionType';
 const ChatList = () => {
   const dispatch = useDispatch();
   const ThemeMode = useSelector(state => state.Theme);
   const Staps = useSelector(state => state.Stap);
   const [search, setSearch] = useState('');
-
   const dimension = useWindowDimensions();
   const navigation = useNavigation();
   const refRBSheet = useRef();

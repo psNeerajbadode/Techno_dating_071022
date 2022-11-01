@@ -25,6 +25,7 @@ import {
   YellowlightImage,
 } from '../../../utils/CustomImages';
 import {STAP} from '../../../redux/actions/ActionType';
+import Netinforsheet from '../../../components/Netinforsheet';
 
 const Step5 = ({navigation}) => {
   const dispatch = useDispatch();
@@ -230,6 +231,7 @@ const Step5 = ({navigation}) => {
           />
         </ButtonView>
       </ScrollView>
+      <Netinforsheet />
     </View>
   );
 };

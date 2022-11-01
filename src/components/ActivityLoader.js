@@ -1,9 +1,9 @@
-import { StyleSheet, View, ActivityIndicator } from 'react-native';
+import {StyleSheet, View, ActivityIndicator} from 'react-native';
 import React from 'react';
-import { theme } from '../utils/Constants';
-import { useSelector } from 'react-redux';
+import {theme} from '../utils/Constants';
+import {useSelector} from 'react-redux';
 
-const ActivityLoader = ({ style }) => {
+const ActivityLoader = ({style, color}) => {
   const ThemeMode = useSelector(state => state.Theme);
   return (
     <View>
@@ -11,7 +11,8 @@ const ActivityLoader = ({ style }) => {
         style={style}
         size={'large'}
         color={
-          ThemeMode.themecolr == 'Red'
+          color ||
+          (ThemeMode.themecolr == 'Red'
             ? theme.colors.red
             : ThemeMode.themecolr == 'Blue'
             ? theme.colors.Blue
@@ -21,7 +22,7 @@ const ActivityLoader = ({ style }) => {
             ? theme.colors.Purple
             : ThemeMode.themecolr == 'yellow'
             ? theme.colors.Yellow
-            : theme.colors.red
+            : theme.colors.red)
         }
       />
     </View>

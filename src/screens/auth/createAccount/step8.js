@@ -6,6 +6,7 @@ import TextFormatted from '../../../components/TextFormatted';
 import {theme} from '../../../utils/Constants';
 import Button from '../../../components/Button';
 import {useDispatch, useSelector} from 'react-redux';
+import Netinforsheet from '../../../components/Netinforsheet';
 
 const Step8 = ({navigation}) => {
   const dispatch = useDispatch();
@@ -83,6 +84,7 @@ const Step8 = ({navigation}) => {
           </TextFormatted>
         </View>
       </ScrollView>
+      <Netinforsheet />
     </View>
   );
 };

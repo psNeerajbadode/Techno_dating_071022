@@ -30,6 +30,7 @@ import {
   RedlightImage,
   YellowlightImage,
 } from '../../../utils/CustomImages';
+import Netinforsheet from '../../../components/Netinforsheet';
 
 const Step4 = () => {
   const navigation = useNavigation();
@@ -694,6 +695,7 @@ const Step4 = () => {
           }}
         />
       </ButtonView>
+      <Netinforsheet />
     </View>
   );
 };

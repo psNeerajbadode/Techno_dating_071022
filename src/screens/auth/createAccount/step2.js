@@ -22,6 +22,7 @@ import {
   RedlightImage,
   YellowlightImage,
 } from '../../../utils/CustomImages';
+import Netinforsheet from '../../../components/Netinforsheet';
 
 const Step2 = ({navigation}) => {
   const dispatch = useDispatch();
@@ -274,6 +275,7 @@ const SwitchBox = ({Name, onPress, toggle}) => {
           }
         />
       </TouchableOpacity>
+      <Netinforsheet />
     </View>
   );
 };

@@ -41,6 +41,7 @@ import {
   RedlightImage,
   YellowlightImage,
 } from '../../../utils/CustomImages';
+import Netinforsheet from '../../../components/Netinforsheet';
 
 const Step1 = ({navigation}) => {
   const dispatch = useDispatch();
@@ -858,6 +859,7 @@ const Step1 = ({navigation}) => {
           />
         </ButtonView>
       </View>
+      <Netinforsheet />
     </View>
   );
 };

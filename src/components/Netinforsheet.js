@@ -5,7 +5,7 @@ import {
   useWindowDimensions,
   Modal,
 } from 'react-native';
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useSelector} from 'react-redux';
 import {theme} from '../utils/Constants';
 import Statusbar from './Statusbar';
@@ -14,7 +14,6 @@ import Button from './Button';
 import LinearGradient from 'react-native-linear-gradient';
 import NetInfo from '@react-native-community/netinfo';
 const Netinforsheet = () => {
-  const NetConnectRef = useRef();
   const Dimension = useWindowDimensions();
   const ThemeMode = useSelector(state => state.Theme);
   const [modelset, setModelset] = useState();

@@ -25,6 +25,7 @@ import {useNavigation} from '@react-navigation/native';
 import axios from 'axios';
 import {STAP} from '../../../redux/actions/ActionType';
 import ActivityLoader from '../../../components/ActivityLoader';
+import Netinforsheet from '../../../components/Netinforsheet';
 
 const Step3 = () => {
   const dispatch = useDispatch();
@@ -294,6 +295,7 @@ const Step3 = () => {
           onPress={() => getCategory() /* navigation.navigate('step4') */}
         />
       </View>
+      <Netinforsheet />
     </View>
   );
 };

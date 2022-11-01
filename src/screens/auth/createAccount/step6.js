@@ -25,6 +25,7 @@ import {
   YellowlightImage,
 } from '../../../utils/CustomImages';
 import Statusbar from '../../../components/Statusbar';
+import Netinforsheet from '../../../components/Netinforsheet';
 const Step6 = ({navigation}) => {
   const ThemeMode = useSelector(state => state.Theme);
   const dimension = useWindowDimensions();
@@ -136,6 +137,7 @@ const Step6 = ({navigation}) => {
           </LinearGradient>
         </TouchableOpacity>
       </ButtonView>
+      <Netinforsheet />
     </View>
   );
 };

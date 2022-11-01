@@ -20,7 +20,7 @@ import {useNavigation} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
 import * as Animatable from 'react-native-animatable';
 import Netinforsheet from '../../components/Netinforsheet';
-import {STAP} from '../../redux/actions/ActionType';
+
 const MyProfile = () => {
   const navigation = useNavigation();
   const ThemeMode = useSelector(state => state.Theme);
