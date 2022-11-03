@@ -19,12 +19,15 @@ import Notification from '../home/notification';
 import {useDispatch, useSelector} from 'react-redux';
 import * as Animatable from 'react-native-animatable';
 import Netinforsheet from '../../components/Netinforsheet';
+import ActivityLoader from '../../components/ActivityLoader';
 
 const ChatList = () => {
   const dispatch = useDispatch();
   const ThemeMode = useSelector(state => state.Theme);
   const Staps = useSelector(state => state.Stap);
   const [search, setSearch] = useState('');
+  const [Chatuser, setChatuser] = useState([]);
+  const [Loading, setLoading] = useState(false);
   const dimension = useWindowDimensions();
   const navigation = useNavigation();
   const refRBSheet = useRef();
@@ -86,6 +89,34 @@ const ChatList = () => {
       link: 'myProfile',
     },
   ];
+
+  const ChatUser = () => {
+    setLoading(true);
+    fetch(
+      'https://technorizen.com/Dating/webservice/get_conversation?receiver_id=' +
+        Staps.id,
+    )
+      .then(response => response.json())
+      .then(response => {
+        if (response.status == 1) {
+          console.log(
+            'chat get_conversation ================================',
+            response.result,
+          );
+          setChatuser(response.result);
+          setLoading(false);
+        } else {
+          setLoading(false);
+        }
+      })
+      .catch(() => {
+        console.log('ERROR GETTING DATA FROM API');
+      });
+  };
+
+  useEffect(() => {
+    ChatUser();
+  }, []);
 
   return (
     <View
@@ -167,73 +198,86 @@ const ChatList = () => {
           placeholder={'Search chat'}
         />
       </View>
-      <FlatList
-        contentContainerStyle={{paddingBottom: 60}}
-        data={messageData.filter(item => {
-          return item.name.toLowerCase().includes(search.toLowerCase());
-        })}
-        showsVerticalScrollIndicator={false}
-        ListHeaderComponent={
-          <View style={{marginTop: 30}}>
-            <TextFormatted
+
+      {Loading ? (
+        <View style={{flex: 1, justifyContent: 'center'}}>
+          <ActivityLoader />
+        </View>
+      ) : (
+        <FlatList
+          contentContainerStyle={{paddingBottom: 60}}
+          data={Chatuser.filter(item => {
+            return item.user_name.toLowerCase().includes(search.toLowerCase());
+          })}
+          showsVerticalScrollIndicator={false}
+          ListHeaderComponent={
+            <View style={{marginTop: 30}}>
+              <TextFormatted
+                style={{
+                  fontSize: 16,
+                  fontWeight: '700',
+                  color: ThemeMode.selectedTheme
+                    ? theme.colors.primaryBlack
+                    : theme.colors.primary,
+                  marginHorizontal: 20,
+                }}>
+                Recent matches
+              </TextFormatted>
+              <FlatList
+                data={Chatuser}
+                horizontal
+                style={{marginHorizontal: 0}}
+                contentContainerStyle={{paddingLeft: 20}}
+                showsHorizontalScrollIndicator={false}
+                renderItem={({item}) => (
+                  <TouchableOpacity
+                    style={{marginRight: 9}}
+                    onPress={() =>
+                      navigation.navigate('userProfile', item?.id)
+                    }>
+                    <Image
+                      source={{uri: item.image}}
+                      style={{
+                        height: 70,
+                        width: 70,
+                        resizeMode: 'cover',
+                        borderRadius: 50,
+                        marginTop: 20,
+                      }}
+                    />
+                  </TouchableOpacity>
+                )}
+              />
+              <TextFormatted
+                style={{
+                  fontSize: 16,
+                  fontWeight: '700',
+                  color: ThemeMode.selectedTheme
+                    ? theme.colors.primaryBlack
+                    : theme.colors.primary,
+                  marginTop: 20,
+                  marginHorizontal: 20,
+                }}>
+                Messages
+              </TextFormatted>
+            </View>
+          }
+          renderItem={({item, index}) => (
+            <TouchableOpacity
               style={{
-                fontSize: 16,
-                fontWeight: '700',
-                color: ThemeMode.selectedTheme
-                  ? theme.colors.primaryBlack
-                  : theme.colors.primary,
                 marginHorizontal: 20,
-              }}>
-              Recent matches
-            </TextFormatted>
-            <FlatList
-              data={recentData}
-              horizontal
-              style={{marginHorizontal: 0}}
-              contentContainerStyle={{paddingLeft: 20}}
-              showsHorizontalScrollIndicator={false}
-              renderItem={({item}) => (
-                <TouchableOpacity
-                  style={{marginRight: 9}}
-                  onPress={() => navigation.navigate('userProfile')}>
-                  <Image
-                    source={item.img}
-                    style={{
-                      height: 70,
-                      width: 70,
-                      resizeMode: 'cover',
-                      borderRadius: 50,
-                      marginTop: 20,
-                    }}
-                  />
-                </TouchableOpacity>
-              )}
-            />
-            <TextFormatted
-              style={{
-                fontSize: 16,
-                fontWeight: '700',
-                color: ThemeMode.selectedTheme
-                  ? theme.colors.primaryBlack
-                  : theme.colors.primary,
-                marginTop: 20,
-                marginHorizontal: 20,
-              }}>
-              Messages
-            </TextFormatted>
-          </View>
-        }
-        renderItem={({item, index}) => (
-          <TouchableOpacity
-            style={{
-              marginHorizontal: 20,
-              flexDirection: 'row',
-              alignItems: 'center',
-              marginVertical: 10,
-            }}
-            onPress={() => navigation.navigate('chats', {params: null})}>
-            <View>
-              {index <= 1 && (
+                flexDirection: 'row',
+                alignItems: 'center',
+                marginVertical: 10,
+              }}
+              onPress={() =>
+                navigation.navigate('chats', {
+                  params: null,
+                  SenderId: item?.sender_id,
+                })
+              }>
+              <View>
+                {/* {index <= 1 && (
                 <LinearGradient
                   colors={
                     ThemeMode.themecolr == 'Red'
@@ -267,53 +311,54 @@ const ChatList = () => {
                     {index + 1}
                   </TextFormatted>
                 </LinearGradient>
-              )}
-              <Image
-                source={item.pic}
-                style={{
-                  height: 70,
-                  width: 70,
-                  resizeMode: 'cover',
-                  borderRadius: 50,
-                  position: 'relative',
-                  zIndex: 0,
-                }}
-              />
-            </View>
-            <View style={{marginHorizontal: 10, flex: 1}}>
+              )} */}
+                <Image
+                  source={{uri: item?.image}}
+                  style={{
+                    height: 70,
+                    width: 70,
+                    resizeMode: 'cover',
+                    borderRadius: 50,
+                    position: 'relative',
+                    zIndex: 0,
+                  }}
+                />
+              </View>
+              <View style={{marginHorizontal: 10, flex: 1}}>
+                <TextFormatted
+                  style={{
+                    fontSize: 16,
+                    fontWeight: '700',
+                    color: ThemeMode.selectedTheme
+                      ? theme.colors.primaryBlack
+                      : theme.colors.primary,
+                  }}>
+                  {item.user_name + item.surname}
+                </TextFormatted>
+                <TextFormatted
+                  numberOfLines={1}
+                  style={{
+                    fontSize: 14,
+                    fontWeight: '400',
+                    color: '#8490AE',
+                    marginTop: 9,
+                  }}>
+                  {item.last_message}
+                </TextFormatted>
+              </View>
               <TextFormatted
                 style={{
-                  fontSize: 16,
-                  fontWeight: '700',
-                  color: ThemeMode.selectedTheme
-                    ? theme.colors.primaryBlack
-                    : theme.colors.primary,
-                }}>
-                {item.name}
-              </TextFormatted>
-              <TextFormatted
-                numberOfLines={1}
-                style={{
-                  fontSize: 14,
-                  fontWeight: '400',
+                  fontSize: 12,
+                  fontWeight: '300',
                   color: '#8490AE',
-                  marginTop: 9,
+                  height: 40,
                 }}>
-                {item.mess}
+                {item.time_ago}
               </TextFormatted>
-            </View>
-            <TextFormatted
-              style={{
-                fontSize: 12,
-                fontWeight: '300',
-                color: '#8490AE',
-                height: 40,
-              }}>
-              {item.timing}
-            </TextFormatted>
-          </TouchableOpacity>
-        )}
-      />
+            </TouchableOpacity>
+          )}
+        />
+      )}
 
       <ImageBackground
         resizeMode="contain"

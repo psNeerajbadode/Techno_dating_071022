@@ -37,7 +37,6 @@ const UserProfile = ({navigation}) => {
   const [Userdata, setUserdata] = useState();
   const [Userpost, setUserpost] = useState();
   const dimension = useWindowDimensions();
-  console.log(Userdata?.id);
   const getUser = () => {
     setLoading(true);
     axios({
@@ -66,7 +65,17 @@ const UserProfile = ({navigation}) => {
     getUser();
     getUserData();
   }, []);
-
+  const calculate_age = dob1 => {
+    var today = new Date();
+    var birthDate = new Date(dob1); // create a date object directly from `dob1` argument
+    var age_now = today.getFullYear() - birthDate.getFullYear();
+    var m = today.getMonth() - birthDate.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+      age_now--;
+    }
+    // console.log(age_now);
+    return age_now;
+  };
   return (
     <View
       style={{
@@ -96,7 +105,10 @@ const UserProfile = ({navigation}) => {
                   <View style={{flexDirection: 'row'}}>
                     <TouchableOpacity
                       onPress={() =>
-                        navigation.navigate('chats', {params: null})
+                        navigation.navigate('chats', {
+                          params: null,
+                          SenderId: Userdata?.id,
+                        })
                       }
                       style={{
                         height: 40,
@@ -181,8 +193,8 @@ const UserProfile = ({navigation}) => {
                   textAlign: 'center',
                   marginTop: 3,
                 }}>
-                {new Date().getFullYear() - Userdata?.dob?.slice(0, 4)}
-                {/* 22 */} years old
+                {calculate_age(Userdata?.dob)}
+                years old
               </TextFormatted>
             </HeaderImage>
             <TouchableOpacity
@@ -322,84 +334,118 @@ const UserProfile = ({navigation}) => {
                 style={{
                   paddingBottom: dimension.width * 0.9,
                 }}>
-                <View style={{flexDirection: 'row'}}>
-                  <View style={{width: dimension.width / 2}}>
-                    {Userpost?.map(
-                      (v, i) =>
-                        (i != 0 && i != 2) || (
-                          <TouchableOpacity
-                            style={{
-                              marginTop: 20,
-                              marginHorizontal: 10,
-                              alignSelf: 'flex-end',
-                            }}
-                            onPress={() =>
-                              navigation.navigate('viewImage', {
-                                imgIndex: i,
-                                Userphoto: Userpost,
-                              })
-                            }>
-                            <Image
-                              source={{uri: v.image}}
-                              style={{
-                                width: (dimension.width - 50) / 2,
-                                height: i == 0 ? 230 : 337,
-                                resizeMode: 'cover',
-                                borderRadius: 20,
-                              }}
-                            />
-                          </TouchableOpacity>
-                        ),
+                {Loading ? (
+                  <View
+                    style={{
+                      flex: 1,
+                      backgroundColor: ThemeMode.selectedTheme
+                        ? theme.colors.primary
+                        : theme.colors.primaryBlack,
+                      justifyContent: 'center',
+                    }}>
+                    <ActivityLoader />
+                  </View>
+                ) : (
+                  <View>
+                    {Loading ? (
+                      <View
+                        style={{
+                          flex: 1,
+                          backgroundColor: ThemeMode.selectedTheme
+                            ? theme.colors.primary
+                            : theme.colors.primaryBlack,
+                          justifyContent: 'center',
+                        }}>
+                        <ActivityLoader />
+                      </View>
+                    ) : (
+                      <View>
+                        <View style={{flexDirection: 'row'}}>
+                          <View style={{width: dimension.width / 2}}>
+                            {Userpost?.map(
+                              (v, i) =>
+                                (i != 0 && i != 2) || (
+                                  <TouchableOpacity
+                                    style={{
+                                      marginTop: 20,
+                                      marginHorizontal: 10,
+                                      alignSelf: 'flex-end',
+                                    }}
+                                    onPress={() =>
+                                      navigation.navigate('viewImage', {
+                                        imgIndex: i,
+                                        Userphoto: Userpost,
+                                      })
+                                    }>
+                                    <Image
+                                      source={{uri: v.image}}
+                                      style={{
+                                        width: (dimension.width - 50) / 2,
+                                        height: i == 0 ? 230 : 337,
+                                        resizeMode: 'cover',
+                                        borderRadius: 20,
+                                      }}
+                                    />
+                                  </TouchableOpacity>
+                                ),
+                            )}
+                          </View>
+                          <View style={{width: dimension.width / 2}}>
+                            {Userpost?.map(
+                              (v, i) =>
+                                (i != 1 && i != 3 && i != 4) || (
+                                  <TouchableOpacity
+                                    style={{
+                                      marginTop: 20,
+                                      marginHorizontal: 10,
+                                    }}
+                                    onPress={() =>
+                                      navigation.navigate('viewImage', {
+                                        imgIndex: i,
+                                        Userphoto: Userpost,
+                                      })
+                                    }>
+                                    <Image
+                                      source={{uri: v.image}}
+                                      style={{
+                                        width: (dimension.width - 50) / 2,
+                                        height:
+                                          i == 1 ? 166 : i == 3 ? 238 : 143,
+                                        resizeMode: 'cover',
+                                        borderRadius: 20,
+                                      }}
+                                    />
+                                  </TouchableOpacity>
+                                ),
+                            )}
+                          </View>
+                        </View>
+                        {Userpost?.map(
+                          (v, i) =>
+                            i != 5 || (
+                              <TouchableOpacity
+                                style={{marginTop: 20, alignSelf: 'center'}}
+                                onPress={() =>
+                                  navigation.navigate('viewImage', {
+                                    imgIndex: i,
+                                    Userphoto: Userpost,
+                                  })
+                                }>
+                                <Image
+                                  source={{uri: v.image}}
+                                  style={{
+                                    width: dimension.width - 40,
+                                    height: 143,
+                                    resizeMode: 'cover',
+                                    borderRadius: 20,
+                                  }}
+                                />
+                              </TouchableOpacity>
+                            ),
+                        )}
+                      </View>
                     )}
                   </View>
-                  <View style={{width: dimension.width / 2}}>
-                    {Userpost?.map(
-                      (v, i) =>
-                        (i != 1 && i != 3 && i != 4) || (
-                          <TouchableOpacity
-                            style={{marginTop: 20, marginHorizontal: 10}}
-                            onPress={() =>
-                              navigation.navigate('viewImage', {
-                                imgIndex: i,
-                                Userphoto: Userpost,
-                              })
-                            }>
-                            <Image
-                              source={{uri: v.image}}
-                              style={{
-                                width: (dimension.width - 50) / 2,
-                                height: i == 1 ? 166 : i == 3 ? 238 : 143,
-                                resizeMode: 'cover',
-                                borderRadius: 20,
-                              }}
-                            />
-                          </TouchableOpacity>
-                        ),
-                    )}
-                  </View>
-                </View>
-                {Userpost?.map(
-                  (v, i) =>
-                    i != 5 || (
-                      <TouchableOpacity
-                        style={{marginTop: 20, alignSelf: 'center'}}
-                        onPress={() =>
-                          navigation.navigate('viewImage', {
-                            imgIndex: i,
-                            Userphoto: Userpost,
-                          })
-                        }>
-                        <Image
-                          source={{uri: v.image}}
-                          style={{
-                            width: dimension.width - 40,
-                            height: 143,
-                            resizeMode: 'cover',
-                            borderRadius: 20,
-                          }}
-                        />
-                      </TouchableOpacity>
-                    ),
                 )}
               </View>
             ) : (

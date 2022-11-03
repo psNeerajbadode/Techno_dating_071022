@@ -65,7 +65,17 @@ const MyProfile = () => {
       link: 'myProfile',
     },
   ];
-
+  const calculate_age = dob1 => {
+    var today = new Date();
+    var birthDate = new Date(Staps.dob); // create a date object directly from `dob1` argument
+    var age_now = today.getFullYear() - birthDate.getFullYear();
+    var m = today.getMonth() - birthDate.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+      age_now--;
+    }
+    // console.log(age_now);
+    return age_now;
+  };
   return (
     <View
       style={{
@@ -122,8 +132,7 @@ const MyProfile = () => {
               textAlign: 'center',
               marginTop: 3,
             }}>
-            {/* {new Date().getFullYear() - Staps.dob.slice(0, 4)} */} 28 years
-            old
+            {calculate_age()} years old
           </TextFormatted>
         </HeaderImage>
         <View

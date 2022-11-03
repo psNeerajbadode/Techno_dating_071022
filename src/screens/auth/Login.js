@@ -4,6 +4,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   View,
+  AppState,
 } from 'react-native';
 import React, {useState} from 'react';
 import {theme} from '../../utils/Constants';

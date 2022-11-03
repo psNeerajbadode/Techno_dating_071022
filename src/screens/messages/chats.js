@@ -20,6 +20,7 @@ import DocumentPicker from 'react-native-document-picker';
 import {useRoute} from '@react-navigation/native';
 import axios from 'axios';
 import Netinforsheet from '../../components/Netinforsheet';
+import ActivityLoader from '../../components/ActivityLoader';
 
 const Chats = () => {
   const dispatch = useDispatch();
@@ -27,13 +28,12 @@ const Chats = () => {
   const Staps = useSelector(state => state.Stap);
   const [multipleFile, setMultipleFile] = useState([]);
   const refRBSheet = useRef();
-
   const [passion, setpassion] = useState([]);
   const {params} = useRoute();
   const [mess, setMess] = useState('');
   const [show, setShow] = useState(false);
-  const [getmsg, setGetmsg] = useState();
-
+  const [getmsg, setGetmsg] = useState([]);
+  const [Loading, setLoading] = useState(true);
   const dimension = useWindowDimensions();
 
   const chatData = [
@@ -100,10 +100,9 @@ const Chats = () => {
 
   const InsertChat = () => {
     try {
-      setLoading(true);
       const body = new FormData();
+      body.append('receiver_id', params.SenderId);
       body.append('sender_id', Staps.id);
-      body.append('receiver_id', 38);
       body.append('chat_message', mess);
       axios({
         url: 'https://technorizen.com/Dating/webservice/insert_chat',
@@ -114,16 +113,15 @@ const Chats = () => {
         },
       })
         .then(function (response) {
-          console.log('response', JSON.stringify(response));
-          if (response.data.status == 1) {
-            setLoading(false);
+          if (response.data.result == 'successful') {
+            Getchat_api();
+            setMess('');
           } else {
-            setLoading(false);
+            setMess('');
           }
         })
         .catch(function (error) {
           console.log('catch', error);
-          setLoading(false);
         });
     } catch (error) {
       console.log(error);
@@ -131,18 +129,26 @@ const Chats = () => {
   };
 
   const Getchat_api = () => {
-    axios({
-      method: 'get',
-      url:
-        'https://technorizen.com/Dating/webservice/get_chat?sender_id=' +
-        /* Staps.id */ 49 +
+    fetch(
+      'https://technorizen.com/Dating/webservice/get_chat?sender_id=' +
+        params.SenderId +
         '&' +
         'receiver_id=' +
-        38,
-    }).then(response => {
-      console.log('Chat Message =>', response.data.result);
-      setGetmsg(response.data.result);
-    });
+        Staps.id,
+      {method: 'post'},
+    )
+      .then(response => response.json())
+      .then(response => {
+        if (response.status == 1) {
+          setGetmsg(response.result);
+          setLoading(false);
+        } else {
+          setLoading(false);
+        }
+      })
+      .catch(() => {
+        console.log('ERROR GETTING DATA FROM API');
+      });
   };
 
   const getPassion = () => {
@@ -150,27 +156,39 @@ const Chats = () => {
       method: 'get',
       url: `https://technorizen.com/Dating/webservice/get_passion`,
     }).then(response => {
-      console.log('response=>', response.data.result);
+      // console.log('response=>', response.data.result);
       setpassion(response.data.result);
     });
   };
 
   useEffect(() => {
+    /*  setTimeout(() => {
+      
+    }, timeout); */
+    setInterval(() => {
+      Getchat_api();
+    }, 5000);
     getPassion();
-    Getchat_api();
   }, []);
+
+  const calculate_age = dob1 => {
+    var today = new Date();
+    var birthDate = new Date(Staps.dob); // create a date object directly from `dob1` argument
+    var age_now = today.getFullYear() - birthDate.getFullYear();
+    var m = today.getMonth() - birthDate.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+      age_now--;
+    }
+    // console.log(age_now);
+    return age_now;
+  };
+  console.log('params', params.SenderId);
   return (
-    <View
-      style={{
-        flex: 1,
-        backgroundColor: ThemeMode.selectedTheme
-          ? theme.colors.primary
-          : theme.colors.primaryBlack,
-      }}>
+    <View style={{flex: 1, backgroundColor: '#fff'}}>
       <HeaderImage_1 height={150} marginBottom={1}>
         <Header
           marginTop={18}
-          title={'Emma Hatchan, 22'}
+          title={Staps.user_name + ', ' + calculate_age()}
           right={
             <TouchableOpacity
               onPress={() => refRBSheet.current.open()}
@@ -206,224 +224,183 @@ const Chats = () => {
           }
         />
       </HeaderImage_1>
-      <ScrollView style={{flex: 1}}>
-        <View
-          style={{
-            padding: 15,
-            borderBottomRightRadius: 50,
-            borderTopLeftRadius: 50,
-            borderBottomLeftRadius: 50,
-            // marginLeft: 50,
-            marginTop: 20,
-            marginRight: 10,
-            marginBottom: 15,
-            alignSelf: 'flex-end',
-            flex: 1,
-            backgroundColor:
-              ThemeMode.themecolr == 'Red'
-                ? theme.colors.red
-                : ThemeMode.themecolr == 'Blue'
-                ? theme.colors.Blue
-                : ThemeMode.themecolr == 'Green'
-                ? theme.colors.Green
-                : ThemeMode.themecolr == 'Purple'
-                ? theme.colors.Purple
-                : ThemeMode.themecolr == 'Yellow'
-                ? theme.colors.Yellow
-                : theme.colors.red,
-          }}>
-          <TextFormatted
-            style={{
-              fontSize: 13,
-              fontWeight: '400',
-              color: theme.colors.primary,
-            }}>
-            Hi, these are the date types I prefer
-            <TextFormatted
-              style={{
-                fontSize: 12,
-                fontWeight: '300',
-                color: theme.colors.primary,
-              }}>
-              12:56
-            </TextFormatted>
-          </TextFormatted>
-        </View>
-        {params.params != null && (
-          <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
-            {passion.map(
-              (v, i) =>
-                params.params[i] == v.id && (
-                  <View
-                    style={{
-                      width: dimension.width / 3,
-                      alignItems: 'center',
-                      alignSelf: 'center',
-                      marginBottom: 15,
-                    }}>
-                    <Image
-                      source={{uri: v.image}}
-                      resizeMode="contain"
-                      style={{width: 45, height: 45}}
-                    />
-                    <TextFormatted
-                      style={{
-                        fontSize: 15,
-                        fontWeight: '700',
-                        color: theme.colors.darkGrey,
-                        marginTop: 10,
-                      }}>
-                      {v.passion_name}
-                    </TextFormatted>
-                  </View>
-                ),
-            )}
+      <View style={{flex: 1}}>
+        {Loading ? (
+          <View style={{flex: 1, justifyContent: 'center'}}>
+            <ActivityLoader />
           </View>
-        )}
-
-        <FlatList
-          data={getmsg}
-          inverted
-          renderItem={({item, i}) => (
-            <View
-              style={{
-                marginLeft: 20,
-                marginTop: 22,
-                marginHorizontal: 15,
-                alignItems:
-                  item.receiver_id != null ? 'flex-start' : 'flex-end',
-              }}>
-              <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
-                {item.receiver_id != null && (
-                  <Image
-                    source={require('../../assets/images/unsplash_1.png')}
+        ) : (
+          <View>
+            {params.params != null && (
+              <View
+                style={{
+                  padding: 15,
+                  borderBottomRightRadius: 50,
+                  borderTopLeftRadius: 50,
+                  borderBottomLeftRadius: 50,
+                  // marginLeft: 50,
+                  marginTop: 20,
+                  marginRight: 10,
+                  marginBottom: 15,
+                  alignSelf: 'flex-end',
+                  flex: 1,
+                  backgroundColor:
+                    ThemeMode.themecolr == 'Red'
+                      ? theme.colors.red
+                      : ThemeMode.themecolr == 'Blue'
+                      ? theme.colors.Blue
+                      : ThemeMode.themecolr == 'Green'
+                      ? theme.colors.Green
+                      : ThemeMode.themecolr == 'Purple'
+                      ? theme.colors.Purple
+                      : ThemeMode.themecolr == 'Yellow'
+                      ? theme.colors.Yellow
+                      : theme.colors.red,
+                }}>
+                <TextFormatted
+                  style={{
+                    fontSize: 13,
+                    fontWeight: '400',
+                    color: theme.colors.primary,
+                  }}>
+                  Hi, these are the date types I prefer
+                  <TextFormatted
                     style={{
-                      height: 64,
-                      width: 64,
-                      resizeMode: 'cover',
-                      borderRadius: 50,
-                    }}
-                  />
+                      fontSize: 12,
+                      fontWeight: '300',
+                      color: theme.colors.primary,
+                    }}>
+                    12:56
+                  </TextFormatted>
+                </TextFormatted>
+              </View>
+            )}
+            {params.params != null && (
+              <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
+                {passion.map(
+                  (v, i) =>
+                    params.params[i] == v.id && (
+                      <View
+                        style={{
+                          width: dimension.width / 3,
+                          alignItems: 'center',
+                          alignSelf: 'center',
+                          marginBottom: 15,
+                        }}>
+                        <Image
+                          source={{uri: v.image}}
+                          resizeMode="contain"
+                          style={{width: 45, height: 45}}
+                        />
+                        <TextFormatted
+                          style={{
+                            fontSize: 15,
+                            fontWeight: '700',
+                            color: theme.colors.darkGrey,
+                            marginTop: 10,
+                          }}>
+                          {v.passion_name}
+                        </TextFormatted>
+                      </View>
+                    ),
                 )}
+              </View>
+            )}
+
+            <FlatList
+              data={getmsg}
+              inverted
+              renderItem={({item, i}) => (
                 <View
                   style={{
-                    paddingVertical: 15,
-                    paddingRight: 20,
-                    backgroundColor:
-                      item.receiver_id != null
-                        ? ThemeMode.selectedTheme
-                          ? '#FAFAFA'
-                          : '#FFFFFF0D'
-                        : ThemeMode.themecolr == 'Red'
-                        ? theme.colors.red
-                        : ThemeMode.themecolr == 'Blue'
-                        ? theme.colors.Blue
-                        : ThemeMode.themecolr == 'Green'
-                        ? theme.colors.Green
-                        : ThemeMode.themecolr == 'Purple'
-                        ? theme.colors.Purple
-                        : ThemeMode.themecolr == 'Yellow'
-                        ? theme.colors.Yellow
-                        : theme.colors.red,
-                    flexWrap: 'wrap',
-                    flexDirection: 'row',
-                    borderBottomRightRadius: 50,
-                    borderTopLeftRadius: item.receiver_id != null ? 0 : 50,
-                    borderTopRightRadius: item.receiver_id == null ? 0 : 50,
-                    borderBottomLeftRadius: 50,
-                    justifyContent: 'flex-start',
+                    marginLeft: 20,
+                    marginTop: 22,
+                    marginHorizontal: 15,
+                    alignItems:
+                      item.receiver_id == Staps.id ? 'flex-start' : 'flex-end',
                   }}>
-                  <TextFormatted
-                    style={{
-                      fontSize: 12,
-                      fontWeight: '300',
-                      color:
-                        item.receiver_id == null
-                          ? theme.colors.primary
-                          : ThemeMode.selectedTheme
-                          ? theme.colors.primaryBlack
-                          : theme.colors.primary,
-                      marginLeft: 15,
-                    }}>
-                    {item.chat_message}
-                  </TextFormatted>
-                  <TextFormatted
-                    style={{
-                      fontSize: 12,
-                      fontWeight: '300',
-                      color:
-                        item.receiver_id == null
-                          ? theme.colors.primary
-                          : ThemeMode.selectedTheme
-                          ? theme.colors.primaryBlack
-                          : theme.colors.primary,
-                      marginLeft: 15,
-                    }}>
-                    12:55
-                  </TextFormatted>
+                  {/* <TextFormatted> {item.chat_message}</TextFormatted> */}
+                  <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
+                    {item.receiver_id == Staps.id && (
+                      <Image
+                        source={{uri: item?.sender_detail?.sender_image}}
+                        style={{
+                          height: 64,
+                          width: 64,
+                          resizeMode: 'cover',
+                          borderRadius: 50,
+                        }}
+                      />
+                    )}
+                    <LinearGradient
+                      start={{x: 0, y: 0}}
+                      end={{x: 1, y: 0}}
+                      colors={
+                        item.receiver_id == Staps.id
+                          ? ThemeMode.selectedTheme
+                            ? ['#FAFAFA', '#FAFAFA']
+                            : ['#FFFFFF0D', '#FFFFFF0D']
+                          : ThemeMode.themecolr == 'Red'
+                          ? theme.colors.primaryOn
+                          : ThemeMode.themecolr == 'Blue'
+                          ? theme.colors.primaryBlue
+                          : ThemeMode.themecolr == 'Green'
+                          ? theme.colors.primaryGreen
+                          : ThemeMode.themecolr == 'Purple'
+                          ? theme.colors.primaryPurple
+                          : ThemeMode.themecolr == 'Yellow'
+                          ? theme.colors.primaryYellow
+                          : theme.colors.primaryOn
+                      }
+                      style={{
+                        paddingVertical: 15,
+                        paddingRight: 20,
+                        flexWrap: 'wrap',
+                        flexDirection: 'row',
+                        borderBottomRightRadius: 50,
+                        borderTopLeftRadius:
+                          item.receiver_id != Staps.id ? 50 : 0,
+                        borderTopRightRadius:
+                          item.receiver_id == Staps.id ? 50 : 0,
+                        borderBottomLeftRadius: 50,
+                        justifyContent: 'flex-start',
+                      }}>
+                      <TextFormatted
+                        style={{
+                          fontSize: 12,
+                          fontWeight: '300',
+                          color:
+                            item.receiver_id == Staps.id
+                              ? ThemeMode.selectedTheme
+                                ? theme.colors.primaryBlack
+                                : theme.colors.primary
+                              : theme.colors.primary,
+                          marginLeft: 15,
+                        }}>
+                        {item.chat_message}
+                      </TextFormatted>
+                      <TextFormatted
+                        style={{
+                          fontSize: 12,
+                          fontWeight: '300',
+                          color:
+                            item.receiver_id == Staps.id
+                              ? ThemeMode.selectedTheme
+                                ? theme.colors.primaryBlack
+                                : theme.colors.primary
+                              : theme.colors.primary,
+                          marginLeft: 15,
+                        }}>
+                        {item.time_ago}
+                      </TextFormatted>
+                    </LinearGradient>
+                  </View>
                 </View>
-              </View>
-            </View>
-          )}
-        />
-
-        <View
-          style={{
-            flexDirection: 'row',
-            marginLeft: 20,
-            marginTop: 20,
-            marginRight: 50,
-            alignItems: 'center',
-          }}>
-          <Image
-            source={require('../../assets/images/unsplash_1.png')}
-            style={{
-              height: 64,
-              width: 64,
-              resizeMode: 'cover',
-              borderRadius: 50,
-            }}
-          />
-          <View
-            style={{
-              padding: 15,
-              backgroundColor: ThemeMode.selectedTheme
-                ? '#FAFAFA'
-                : '#FFFFFF0D',
-              marginLeft: 10,
-              flexDirection: 'row',
-              borderTopRightRadius: 50,
-              borderBottomRightRadius: 50,
-              borderBottomLeftRadius: 50,
-              alignItems: 'flex-start',
-              justifyContent: 'flex-start',
-            }}>
-            <Image
-              style={{
-                width: 27,
-                height: 9,
-                tintColor: ThemeMode.selectedTheme
-                  ? theme.colors.darkGrey
-                  : theme.colors.primary,
-              }}
-              resizeMode="contain"
-              source={require('../../assets/icons/chat_dots.png')}
+              )}
             />
-            <TextFormatted
-              style={{
-                fontSize: 12,
-                fontWeight: '300',
-                color: ThemeMode.selectedTheme
-                  ? theme.colors.primaryBlack
-                  : theme.colors.primary,
-                marginLeft: 15,
-              }}>
-              12:55
-            </TextFormatted>
           </View>
-        </View>
-      </ScrollView>
-
+        )}
+      </View>
       <View
         style={{
           marginHorizontal: 20,
@@ -491,8 +468,8 @@ const Chats = () => {
         <TouchableOpacity
           style={{marginLeft: 15}}
           onPress={() => {
-            setMess('');
             InsertChat();
+            setMess('');
           }}>
           <LinearGradient
             colors={

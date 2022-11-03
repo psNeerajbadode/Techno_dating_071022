@@ -14,7 +14,7 @@ import {theme} from '../../utils/Constants';
 import {useSelector} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 
-const Notification = ({refRBSheet}) => {
+const Notification = ({refRBSheet, Notification}) => {
   const ThemeMode = useSelector(state => state.Theme);
   const navigation = useNavigation();
   const data = [
@@ -131,10 +131,10 @@ const Notification = ({refRBSheet}) => {
         />
       </TouchableOpacity>
       <FlatList
-        data={data}
+        data={Notification}
         renderItem={({item, index}) => (
           <TouchableOpacity
-            onPress={() => navigation.navigate('userProfile')}
+            onPress={() => navigation.navigate('userProfile', item?.user_id)}
             style={{
               flexDirection: 'row',
               marginHorizontal: 20,
@@ -179,7 +179,7 @@ const Notification = ({refRBSheet}) => {
               }}
             />
             <ImageBackground
-              source={item.img}
+              source={{uri: item?.sender_image}}
               style={{height: 53, width: 53}}
               imageStyle={{
                 borderRadius: 50,
@@ -209,7 +209,7 @@ const Notification = ({refRBSheet}) => {
                     ? theme.colors.primaryBlack
                     : theme.colors.primary,
                 }}>
-                {item.name}
+                {item?.sender_user}
               </TextFormatted>
               <TextFormatted
                 style={{
@@ -218,7 +218,7 @@ const Notification = ({refRBSheet}) => {
                   color: '#8490AE',
                   marginTop: 5,
                 }}>
-                {item.mess}
+                {item?.message}
               </TextFormatted>
             </View>
             <TextFormatted
@@ -228,7 +228,7 @@ const Notification = ({refRBSheet}) => {
                 color: '#8490AE',
                 marginTop: -20,
               }}>
-              {item.timing}
+              {item?.time_ago}
             </TextFormatted>
           </TouchableOpacity>
         )}

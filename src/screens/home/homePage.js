@@ -7,6 +7,7 @@ import {
   useWindowDimensions,
   View,
   SafeAreaView,
+  AppState,
 } from 'react-native';
 import React, {useEffect, useRef, useState} from 'react';
 import Swiper from 'react-native-swiper';
@@ -37,16 +38,14 @@ const HomePage = () => {
   const refliky_amy = useRef();
   const userRef = useRef();
   const PluseRef = useRef();
-  const scroll = useRef();
   const dimension = useWindowDimensions();
-  const [liky, setliky] = useState(true);
-  const [indexV, setIndexV] = useState(0);
   const [plu_button, setplu_button] = useState(false);
   const [Loading, setLoading] = useState(false);
-  const [Userall, setUserall] = useState();
   const [Userpost, setUserpost] = useState();
-  const [Otherid, setOtherid] = useState();
+  const [notification, setNotification] = useState();
   const [Uindex, setUindex] = useState();
+  const [ChangeIndex, setChangeIndex] = useState();
+  const [appStatus, setappStatus] = useState(AppState.currentState);
 
   const Userimage = [
     {
@@ -150,41 +149,43 @@ const HomePage = () => {
   ];
 
   function UserScroll() {
-    if (Userall.length == indexV + 1) {
+    if (Userpost.length == ChangeIndex + 1) {
       setplu_button(false);
       ShowToast('User List End');
     } else {
       setplu_button(true);
-      setTimeout(() => {
-        setIndexV(indexV + 1);
-        userRef.current.scrollToIndex({index: indexV + 1});
-      }, 750);
+      // setTimeout(() => {
+      setChangeIndex(ChangeIndex + 1);
+      userRef.current.scrollToIndex({index: ChangeIndex + 1});
+      // }, 100);
     }
   }
-  const onViewableItemsChanged = React.useRef(viewableItems => {
-    console.log(viewableItems?.viewableItems[0].key);
-    setUindex(viewableItems?.viewableItems[0].key);
+  const onViewableItemsChanged = React.useRef(item => {
+    console.log('item.viewableItems', item.viewableItems[0].index);
+    setChangeIndex(item.viewableItems[0].index);
+    setUindex(item?.viewableItems[0].key);
   }, []);
-  // const getUserAll = () => {
-  //   setLoading(true);
-  //   axios({
-  //     method: 'get',
-  //     url:
-  //       'https://technorizen.com/Dating/webservice/get_all_user?user_id' +
-  //       Staps.id,
-  //   }).then(response => {
-  //     setLoading(false);
-  //     setUserall(response.data.result);
-  //   });
-  // };
+
   const getUserPost = () => {
     axios({
-      method: 'get',
+      method: 'post',
       url:
         'https://technorizen.com/Dating/webservice/getallUserPostData?user_id=' +
         Staps.id,
     }).then(response => {
       setUserpost(response.data.result);
+      console.log(response.data.result[0]);
+    });
+  };
+
+  const Getnotification = () => {
+    axios({
+      method: 'post',
+      url:
+        'https://technorizen.com/Dating/webservice/get_notification?user_id=' +
+        Staps.id,
+    }).then(response => {
+      setNotification(response.data.result);
     });
   };
 
@@ -200,8 +201,8 @@ const HomePage = () => {
         method: 'POST',
       })
         .then(function (response) {
-          if (response.data.status == 1) {
-            ShowToast(response.data.result + ' ' + 'successfully');
+          if (response.data.status == 0) {
+            ShowToast(response.data.message /* + ' ' + 'successfully' */);
           }
         })
         .catch(function (error) {
@@ -212,8 +213,65 @@ const HomePage = () => {
     }
   };
 
+  async function status(status) {
+    try {
+      const url =
+        'https://technorizen.com/Dating/webservice/update_online_status';
+
+      const body = new FormData();
+      body.append('user_id', Staps.id);
+      body.append('status', status);
+
+      const res = await fetch(url, {
+        method: 'POST',
+        body: body,
+        headers: {
+          'content-type': 'multipart/form-data',
+        },
+      });
+      const rslt = await res.json();
+      if (rslt.status == 1) {
+        console.log('status', status);
+        setappStatus(status);
+      }
+
+      // alert(status);
+    } catch (e) {}
+  }
+
+  const handlePutAppToBackground = state => {
+    status('ONLINE');
+    if (
+      (Platform.OS == 'android' && state == 'background') ||
+      (Platform.OS == 'ios' && state == 'inactive')
+    )
+      status('OFFLINE');
+    else if (state == 'active') status('ONLINE');
+  };
+
+  const calculate_age = dob1 => {
+    var today = new Date();
+    var birthDate = new Date(Staps.dob); // create a date object directly from `dob1` argument
+    var age_now = today.getFullYear() - birthDate.getFullYear();
+    var m = today.getMonth() - birthDate.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+      age_now--;
+    }
+    // console.log(age_now);
+    return age_now;
+  };
   useEffect(() => {
+    Getnotification();
     getUserPost();
+    status('ONLINE');
+    const appStateListener = AppState.addEventListener(
+      'change',
+      handlePutAppToBackground,
+    );
+    return () => {
+      appStateListener?.remove();
+      return status('OFFLINE');
+    };
   }, []);
   return (
     <View
@@ -253,10 +311,8 @@ const HomePage = () => {
           }}>
           <FlatList
             data={Userpost}
-            initialScrollIndex={indexV}
-            onScroll={event => {
-              setplu_button(false);
-            }}
+            initialScrollIndex={ChangeIndex}
+            onScroll={() => setplu_button(false)}
             onViewableItemsChanged={onViewableItemsChanged.current}
             pagingEnabled={true}
             ref={userRef}
@@ -347,8 +403,7 @@ const HomePage = () => {
                     </TextFormatted>
                     <TextFormatted
                       style={{fontSize: 12, fontWeight: '400', color: '#fff'}}>
-                      {/* {new Date().getFullYear() - item.dob.slice(0, 4)} */}{' '}
-                      28 years old
+                      {calculate_age(item.dob)} years old
                     </TextFormatted>
                   </View>
                   <TouchableOpacity
@@ -457,10 +512,10 @@ const HomePage = () => {
         />
         <Tab source={require('../../assets/home_icons/focus.png')} />
         <Tab
-          /*   onPress={() => {
+          onPress={() => {
+            likeApi(Uindex);
             UserScroll();
-          }} */
-          onLongPress={() => likeApi(Uindex)}
+          }}
           Animatable={
             <View>
               {plu_button == true && (
@@ -533,7 +588,7 @@ const HomePage = () => {
           bottom: 0,
         }}></View>
 
-      <Notification refRBSheet={refRBSheet1} />
+      <Notification Notification={notification} refRBSheet={refRBSheet1} />
       <MoreOptions refRBSheet={refRBSheet} />
       <SelectCategory refRBSheet={refRBSheet2} />
       <Netinforsheet />

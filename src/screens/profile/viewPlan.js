@@ -29,9 +29,11 @@ import {
 } from '../../utils/CustomImages';
 import Netinforsheet from '../../components/Netinforsheet';
 import {STAP} from '../../redux/actions/ActionType';
+import axios from 'axios';
 const ViewPlan = ({navigation}) => {
   const ThemeMode = useSelector(state => state.Theme);
   const Staps = useSelector(state => state.Stap);
+  const [plandata, setPlandata] = useState();
   const {params = {}} = useRoute();
   const [slide, setSlide] = useState(params.currentIndex);
   const refRBSheet = useRef();
@@ -52,6 +54,20 @@ const ViewPlan = ({navigation}) => {
       ],
     },
   ];
+
+  const getPlanData = () => {
+    axios({
+      method: 'get',
+      url: `https://technorizen.com/Dating/webservice/get_plans`,
+    }).then(response => {
+      console.log('setPlandata=>', response.data.result[0].name);
+      setPlandata(response.data.result);
+    });
+  };
+
+  useEffect(() => {
+    getPlanData();
+  }, []);
 
   return (
     <View style={{flex: 1}}>
@@ -131,7 +147,7 @@ const ViewPlan = ({navigation}) => {
               color: theme.colors.primary,
               textAlign: 'center',
             }}>
-            Basic
+            {plandata[0]?.name}
           </TextFormatted>
           <View
             style={{
@@ -142,22 +158,22 @@ const ViewPlan = ({navigation}) => {
             }}>
             <Container
               source={require('../../assets/icons/like.png')}
-              title="300 Like"
+              title={plandata[0]?.like + ' ' + 'Like'}
               subtitle={'per month'}
             />
             <Container
               source={require('../../assets/icons/flower.png')}
-              title="30 Flowers"
+              title={plandata[0]?.flower + ' ' + 'Flowers'}
               subtitle={'per month'}
             />
 
             <Container
               source={require('../../assets/icons/camera.png')}
-              title="5 Photo"
+              title={plandata[0]?.image + ' ' + 'Photo'}
             />
             <Container
               source={require('../../assets/icons/youtube.png')}
-              title="1 Video"
+              title={plandata[0]?.video + ' ' + 'Video'}
             />
           </View>
         </ImageBackground>
@@ -177,8 +193,9 @@ const ViewPlan = ({navigation}) => {
               color: theme.colors.primary,
               textAlign: 'center',
             }}>
-            Pro
+            {plandata[1]?.name}
           </TextFormatted>
+
           <View
             style={{
               marginVertical: 30,
@@ -188,26 +205,25 @@ const ViewPlan = ({navigation}) => {
             }}>
             <Container
               source={require('../../assets/icons/like.png')}
-              title="1000 Like"
+              title={plandata[1]?.like + ' ' + 'Like'}
               subtitle={'per month'}
             />
             <Container
               source={require('../../assets/icons/flower.png')}
-              title="100 Flowers"
+              title={plandata[1]?.flower + ' ' + 'Flowers'}
               subtitle={'per month'}
             />
+
             <Container
               source={require('../../assets/icons/camera.png')}
-              title="10 Photo"
+              title={plandata[1]?.image + ' ' + 'Photo'}
             />
             <Container
               source={require('../../assets/icons/youtube.png')}
-              title="3 Video"
+              title={plandata[1]?.video + ' ' + 'Video'}
             />
           </View>
         </ImageBackground>
-        {/* </LinearGradient> */}
-        {/* <LinearGradient colors={['#8490AE', '#ADB9D7']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={{ flex: 1 }}> */}
         <ImageBackground
           source={
             ThemeMode.selectedTheme
@@ -224,7 +240,7 @@ const ViewPlan = ({navigation}) => {
               color: theme.colors.primary,
               textAlign: 'center',
             }}>
-            Elite
+            {plandata[2]?.name}
           </TextFormatted>
           <View
             style={{
@@ -235,26 +251,25 @@ const ViewPlan = ({navigation}) => {
             }}>
             <Container
               source={require('../../assets/icons/like.png')}
-              title="5000 Like"
+              title={plandata[2]?.like + ' ' + 'Like'}
               subtitle={'per month'}
             />
             <Container
               source={require('../../assets/icons/flower.png')}
-              title="150 Flowers"
+              title={plandata[2]?.flower + ' ' + 'Flowers'}
               subtitle={'per month'}
             />
-            {/* <Container source={require('../../assets/icons/Rocket.png')} title="15 Boost" subtitle={'per month'} /> */}
+
             <Container
               source={require('../../assets/icons/camera.png')}
-              title="15 Photo"
+              title={plandata[2]?.image + ' ' + 'Photo'}
             />
             <Container
               source={require('../../assets/icons/youtube.png')}
-              title="5 Video"
+              title={plandata[2]?.video + ' ' + 'Video'}
             />
           </View>
         </ImageBackground>
-        {/* </LinearGradient> */}
       </Swiper>
 
       <View
