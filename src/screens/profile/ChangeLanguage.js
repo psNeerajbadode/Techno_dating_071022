@@ -119,7 +119,9 @@ const ChangeLanguage = () => {
           disabled={select ? false : true}
           color={'#fff'}
           marginTop={1}
-          onPress={() => navigation.goBack()}
+          onPress={() =>
+            navigation.goBack(dispatch({type: STAP, payload: {Leng: select}}))
+          }
         />
       </ButtonView>
       <Netinforsheet />

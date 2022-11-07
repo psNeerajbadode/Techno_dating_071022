@@ -8,11 +8,12 @@ import {
   View,
   SafeAreaView,
   AppState,
+  Alert,
 } from 'react-native';
 import React, {useEffect, useRef, useState} from 'react';
 import Swiper from 'react-native-swiper';
 import TextFormatted from '../../components/TextFormatted';
-import {useNavigation} from '@react-navigation/native';
+import {useIsFocused, useNavigation} from '@react-navigation/native';
 import Notification from './notification';
 import MoreOptions from './moreOptions';
 import SelectCategory from './selectCategory';
@@ -38,6 +39,7 @@ const HomePage = () => {
   const refliky_amy = useRef();
   const userRef = useRef();
   const PluseRef = useRef();
+  const refRBSheetB = useRef();
   const dimension = useWindowDimensions();
   const [plu_button, setplu_button] = useState(false);
   const [Loading, setLoading] = useState(false);
@@ -48,6 +50,7 @@ const HomePage = () => {
   const [appStatus, setappStatus] = useState(AppState.currentState);
   const [plandata, setPlandata] = useState();
   const [profile, setProfile] = useState();
+  const focus = useIsFocused();
   const Userimage = [
     {
       img: require('../../assets/images/unsplash_1.png'),
@@ -303,13 +306,41 @@ const HomePage = () => {
       ShowToast('Upgrade Your Plan');
     }
   }
+  const block_user_Api = () => {
+    setLoading(true);
+    try {
+      axios({
+        url:
+          'https://technorizen.com/Dating/webservice/add_block_user?user_id=' +
+          /*   'https://technorizen.com/Dating/webservice/unblock_user?user_id=' + */
+          Staps.id +
+          '&&' +
+          'block_id=' +
+          Uindex,
+        method: 'POST',
+      })
+        .then(function (response) {
+          console.log('Block API=>', JSON.stringify(response.data.message));
+          if (response.data.status == 1) {
+            setLoading(false);
+            ShowToast(response.data.message);
+            refRBSheet2.current.close();
+            refRBSheet.current.close();
+          }
+        })
+        .catch(function (error) {
+          console.log('catch', error);
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
     Getnotification();
     getUserPost();
     getPlanData();
     getUserProfile();
-    navigation.addListener('focus', () => getUserPost());
     status('ONLINE');
     const appStateListener = AppState.addEventListener(
       'change',
@@ -365,173 +396,195 @@ const HomePage = () => {
             pagingEnabled={true}
             ref={userRef}
             renderItem={({item, i}) => (
-              <View
-                style={{
-                  flex: 1,
-                  height: dimension.height,
-                }}>
-                <Swiper
-                  loop={false}
-                  showsButtons={true}
-                  showsPagination={false}
-                  buttonWrapperStyle={{paddingHorizontal: 0}}
-                  nextButton={
-                    <Image
-                      source={
-                        ThemeMode.selectedTheme
-                          ? require('../../assets/icons/P_sidebar.png')
-                          : require('../../assets/icons/next_dark.png')
-                      }
-                      style={{height: 145, width: 25, resizeMode: 'contain'}}
-                    />
-                  }
-                  prevButton={
-                    <Image
-                      source={
-                        ThemeMode.selectedTheme
-                          ? require('../../assets/icons/N_sidebar.png')
-                          : require('../../assets/icons/prev_dark.png')
-                      }
-                      style={{height: 145, width: 25, resizeMode: 'contain'}}
-                    />
-                  }>
-                  {item.details?.map(
-                    (v, i) =>
-                      v.type == 'Image' && (
-                        <View
+              <View>
+                {item.block_user == 'unblock' && (
+                  <View
+                    style={{
+                      flex: 1,
+                      height: dimension.height,
+                    }}>
+                    <Swiper
+                      loop={false}
+                      showsButtons={true}
+                      showsPagination={false}
+                      buttonWrapperStyle={{paddingHorizontal: 0}}
+                      nextButton={
+                        <Image
+                          source={
+                            ThemeMode.selectedTheme
+                              ? require('../../assets/icons/P_sidebar.png')
+                              : require('../../assets/icons/next_dark.png')
+                          }
                           style={{
-                            height:
-                              dimension.height /*  + StatusBar.currentHeight */,
-                            width: dimension.width,
+                            height: 145,
+                            width: 25,
+                            resizeMode: 'contain',
+                          }}
+                        />
+                      }
+                      prevButton={
+                        <Image
+                          source={
+                            ThemeMode.selectedTheme
+                              ? require('../../assets/icons/N_sidebar.png')
+                              : require('../../assets/icons/prev_dark.png')
+                          }
+                          style={{
+                            height: 145,
+                            width: 25,
+                            resizeMode: 'contain',
+                          }}
+                        />
+                      }>
+                      {item.details?.map(
+                        (v, i) =>
+                          v.type == 'Image' && (
+                            <View
+                              style={{
+                                height:
+                                  dimension.height /*  + StatusBar.currentHeight */,
+                                width: dimension.width,
+                              }}>
+                              <FastImage
+                                onProgress={() => <ActivityLoader />}
+                                source={{
+                                  uri: v?.image,
+                                  priority: FastImage.priority.normal,
+                                }}
+                                resizeMode={FastImage.resizeMode.cover}
+                                style={{
+                                  height:
+                                    dimension.height /*  + StatusBar.currentHeight */,
+                                  width: dimension.width,
+                                }}
+                              />
+                            </View>
+                          ),
+                      )}
+                    </Swiper>
+                    <View
+                      style={{
+                        position: 'absolute',
+                        top: 44,
+                        marginHorizontal: 20,
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                      }}>
+                      <TouchableOpacity
+                        onPress={() =>
+                          navigation.navigate('userProfile', item.id)
+                        }>
+                        <Image
+                          source={{
+                            uri: item?.image,
+                          }}
+                          style={{
+                            height: 56,
+                            width: 56,
+                            resizeMode: 'cover',
+                            borderRadius: 50,
+                            borderWidth: 3,
+                            // backgroundColor: '#ff0',
+                            borderColor: theme.colors.darkGrey,
+                          }}
+                        />
+                      </TouchableOpacity>
+                      <View style={{marginLeft: 8, flex: 1}}>
+                        <TextFormatted
+                          style={{
+                            fontSize: 16,
+                            fontWeight: '700',
+                            color: '#fff',
                           }}>
-                          <FastImage
-                            onProgress={() => <ActivityLoader />}
-                            source={{
-                              uri: v?.image,
-                              priority: FastImage.priority.normal,
-                            }}
-                            resizeMode={FastImage.resizeMode.cover}
+                          {item?.user_name + ' ' + item?.surname}
+                        </TextFormatted>
+                        <TextFormatted
+                          style={{
+                            fontSize: 12,
+                            fontWeight: '400',
+                            color: '#fff',
+                          }}>
+                          {calculate_age(item.dob)} years old
+                        </TextFormatted>
+                      </View>
+                      <TouchableOpacity
+                        style={{
+                          height: 40,
+                          width: 40,
+                          backgroundColor: ThemeMode.selectedTheme
+                            ? '#FFFFFF33'
+                            : '#1A1D254D',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          borderRadius: 10,
+                          marginRight: 10,
+                        }}
+                        onPress={() => refRBSheet1.current.open()}>
+                        <LinearGradient
+                          colors={
+                            ThemeMode.themecolr == 'Red'
+                              ? theme.colors.primaryOn
+                              : ThemeMode.themecolr == 'Blue'
+                              ? theme.colors.primaryBlue
+                              : ThemeMode.themecolr == 'Green'
+                              ? theme.colors.primaryGreen
+                              : ThemeMode.themecolr == 'Purple'
+                              ? theme.colors.primaryPurple
+                              : ThemeMode.themecolr == 'Yellow'
+                              ? theme.colors.primaryYellow
+                              : theme.colors.primaryOn
+                          }
+                          start={{x: 0, y: 0}}
+                          end={{x: 1, y: 1}}
+                          style={{
+                            height: 10,
+                            width: 10,
+                            borderRadius: 50,
+                            position: 'absolute',
+                            top: 5,
+                            right: 10,
+                            zIndex: 1,
+                          }}
+                        />
+                        <Image
+                          source={require('../../assets/icons/Notifyy.png')}
+                          style={{height: 25, width: 25, resizeMode: 'contain'}}
+                        />
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        onPress={() => refRBSheet.current.open()}
+                        style={{
+                          height: 40,
+                          width: 40,
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          borderRadius: 10,
+                        }}>
+                        {ThemeMode.selectedTheme ? (
+                          <Image
+                            source={require('../../assets/icons/menus.png')}
                             style={{
-                              height:
-                                dimension.height /*  + StatusBar.currentHeight */,
-                              width: dimension.width,
+                              height: 40,
+                              width: 40,
+                              resizeMode: 'contain',
+                              marginRight: 10,
                             }}
                           />
-                        </View>
-                      ),
-                  )}
-                </Swiper>
-                <View
-                  style={{
-                    position: 'absolute',
-                    top: 44,
-                    marginHorizontal: 20,
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                  }}>
-                  <TouchableOpacity
-                    onPress={() => navigation.navigate('userProfile', item.id)}>
-                    <Image
-                      source={{
-                        uri: item?.image,
-                      }}
-                      style={{
-                        height: 56,
-                        width: 56,
-                        resizeMode: 'cover',
-                        borderRadius: 50,
-                        borderWidth: 3,
-                        // backgroundColor: '#ff0',
-                        borderColor: theme.colors.darkGrey,
-                      }}
-                    />
-                  </TouchableOpacity>
-                  <View style={{marginLeft: 8, flex: 1}}>
-                    <TextFormatted
-                      style={{fontSize: 16, fontWeight: '700', color: '#fff'}}>
-                      {item?.user_name + ' ' + item?.surname}
-                    </TextFormatted>
-                    <TextFormatted
-                      style={{fontSize: 12, fontWeight: '400', color: '#fff'}}>
-                      {calculate_age(item.dob)} years old
-                    </TextFormatted>
+                        ) : (
+                          <Image
+                            source={require('../../assets/icons/menù_dark.png')}
+                            style={{
+                              height: 40,
+                              width: 40,
+                              resizeMode: 'contain',
+                              marginRight: 10,
+                            }}
+                          />
+                        )}
+                      </TouchableOpacity>
+                    </View>
                   </View>
-                  <TouchableOpacity
-                    style={{
-                      height: 40,
-                      width: 40,
-                      backgroundColor: ThemeMode.selectedTheme
-                        ? '#FFFFFF33'
-                        : '#1A1D254D',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      borderRadius: 10,
-                      marginRight: 10,
-                    }}
-                    onPress={() => refRBSheet1.current.open()}>
-                    <LinearGradient
-                      colors={
-                        ThemeMode.themecolr == 'Red'
-                          ? theme.colors.primaryOn
-                          : ThemeMode.themecolr == 'Blue'
-                          ? theme.colors.primaryBlue
-                          : ThemeMode.themecolr == 'Green'
-                          ? theme.colors.primaryGreen
-                          : ThemeMode.themecolr == 'Purple'
-                          ? theme.colors.primaryPurple
-                          : ThemeMode.themecolr == 'Yellow'
-                          ? theme.colors.primaryYellow
-                          : theme.colors.primaryOn
-                      }
-                      start={{x: 0, y: 0}}
-                      end={{x: 1, y: 1}}
-                      style={{
-                        height: 10,
-                        width: 10,
-                        borderRadius: 50,
-                        position: 'absolute',
-                        top: 5,
-                        right: 10,
-                        zIndex: 1,
-                      }}
-                    />
-                    <Image
-                      source={require('../../assets/icons/Notifyy.png')}
-                      style={{height: 25, width: 25, resizeMode: 'contain'}}
-                    />
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    onPress={() => refRBSheet.current.open()}
-                    style={{
-                      height: 40,
-                      width: 40,
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      borderRadius: 10,
-                    }}>
-                    {ThemeMode.selectedTheme ? (
-                      <Image
-                        source={require('../../assets/icons/menus.png')}
-                        style={{
-                          height: 40,
-                          width: 40,
-                          resizeMode: 'contain',
-                          marginRight: 10,
-                        }}
-                      />
-                    ) : (
-                      <Image
-                        source={require('../../assets/icons/menù_dark.png')}
-                        style={{
-                          height: 40,
-                          width: 40,
-                          resizeMode: 'contain',
-                          marginRight: 10,
-                        }}
-                      />
-                    )}
-                  </TouchableOpacity>
-                </View>
+                )}
               </View>
             )}
           />
@@ -638,7 +691,13 @@ const HomePage = () => {
         }}></View>
 
       <Notification Notification={notification} refRBSheet={refRBSheet1} />
-      <MoreOptions BlockID={Uindex} UserID={Staps.id} refRBSheet={refRBSheet} />
+      <MoreOptions
+        Block_onPress={() => block_user_Api()}
+        refRBSheet2={refRBSheetB}
+        BlockID={Uindex}
+        UserID={Staps.id}
+        refRBSheet={refRBSheet}
+      />
       <SelectCategory refRBSheet={refRBSheet2} />
       <Netinforsheet />
     </View>

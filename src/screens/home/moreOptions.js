@@ -8,7 +8,6 @@ import {
 import React, {useRef, useState} from 'react';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import TextFormatted from '../../components/TextFormatted';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 import {theme} from '../../utils/Constants';
 import LinearGradient from 'react-native-linear-gradient';
 import Button from '../../components/Button';
@@ -16,8 +15,7 @@ import {useSelector} from 'react-redux';
 import axios from 'axios';
 import {ShowToast} from '../../utils/Baseurl';
 
-const MoreOptions = ({refRBSheet, UserID, BlockID}) => {
-  const refRBSheet2 = useRef();
+const MoreOptions = ({refRBSheet, refRBSheet2, Block_onPress}) => {
   const [isReport, setIsReport] = useState(0);
   const ThemeMode = useSelector(state => state.Theme);
   const [Loading, setLoading] = useState(false);
@@ -34,35 +32,6 @@ const MoreOptions = ({refRBSheet, UserID, BlockID}) => {
       ? theme.colors.Yellow
       : theme.colors.red;
 
-  const block_user_Api = () => {
-    setLoading(true);
-    try {
-      axios({
-        url:
-          'https://technorizen.com/Dating/webservice/add_block_user?user_id=' +
-          /*   'https://technorizen.com/Dating/webservice/unblock_user?user_id=' + */
-          UserID +
-          '&&' +
-          'block_id=' +
-          BlockID,
-        method: 'POST',
-      })
-        .then(function (response) {
-          console.log('response=>', JSON.stringify(response.data.message));
-          if (response.data.status == 1) {
-            setLoading(false);
-            ShowToast(response.data.message);
-            refRBSheet2.current.close();
-            refRBSheet.current.close();
-          }
-        })
-        .catch(function (error) {
-          console.log('catch', error);
-        });
-    } catch (error) {
-      console.log(error);
-    }
-  };
   return (
     <RBSheet
       ref={refRBSheet}
@@ -152,7 +121,7 @@ const MoreOptions = ({refRBSheet, UserID, BlockID}) => {
         refRBSheet2={refRBSheet2}
         isReport={isReport}
         setIsReport={setIsReport}
-        Block_onPress={() => block_user_Api()}
+        Block_onPress={Block_onPress}
         Loading={Loading}
       />
     </RBSheet>

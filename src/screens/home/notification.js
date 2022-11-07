@@ -130,6 +130,7 @@ const Notification = ({refRBSheet, Notification}) => {
           }}
         />
       </TouchableOpacity>
+
       <FlatList
         data={Notification}
         renderItem={({item, index}) => (

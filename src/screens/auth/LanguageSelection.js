@@ -20,6 +20,7 @@ import {
   YellowlightImage,
 } from '../../utils/CustomImages';
 import {STAP} from '../../redux/actions/ActionType';
+import Netinforsheet from '../../components/Netinforsheet';
 
 const LanguageSelection = ({navigation}) => {
   const dispatch = useDispatch();
@@ -32,7 +33,7 @@ const LanguageSelection = ({navigation}) => {
     {name: 'English', img: require('../../assets/icons/united_kingdom.png')},
     {name: '简体中文', img: require('../../assets/icons/china.png')},
   ];
-
+  console.log('select', select);
   return (
     <View
       style={{

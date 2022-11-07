@@ -14,6 +14,8 @@ import {useSelector} from 'react-redux';
 const Splash = ({navigation}) => {
   const dimension = useWindowDimensions();
   const Staps = useSelector(state => state.Stap);
+  console.log('Staps.Leng', Staps);
+
   return (
     <ImageBackground
       resizeMode="stretch"
@@ -49,7 +51,7 @@ const Splash = ({navigation}) => {
         padding={10}
         onAnimationComplete={() => {
           navigation.replace(
-            (Staps.Leng = !null ? 'Login' : 'LanguageSelection'),
+            Staps.Leng == null ? 'LanguageSelection' : 'Login',
           );
           //navigation.replace('step1');
           // navigation.replace('HomePage');
