@@ -32,6 +32,7 @@ const PassCode = () => {
   };
   function App_passcode() {
     if (Staps.app_dashboard_pass == passcode.join('')) {
+      dispatch({type: STAP, payload: {Plan_Name: 'Basic'}});
       navigation.replace('HomeNavigation');
     } else {
       if (passcode.length == 4) {

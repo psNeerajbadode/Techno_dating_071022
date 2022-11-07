@@ -46,7 +46,8 @@ const HomePage = () => {
   const [Uindex, setUindex] = useState();
   const [ChangeIndex, setChangeIndex] = useState();
   const [appStatus, setappStatus] = useState(AppState.currentState);
-
+  const [plandata, setPlandata] = useState();
+  const [profile, setProfile] = useState();
   const Userimage = [
     {
       img: require('../../assets/images/unsplash_1.png'),
@@ -161,7 +162,7 @@ const HomePage = () => {
     }
   }
   const onViewableItemsChanged = React.useRef(item => {
-    console.log('item.viewableItems', item.viewableItems[0].index);
+    //console.log('item.viewableItems', item.viewableItems[0]);
     setChangeIndex(item.viewableItems[0].index);
     setUindex(item?.viewableItems[0].key);
   }, []);
@@ -174,7 +175,7 @@ const HomePage = () => {
         Staps.id,
     }).then(response => {
       setUserpost(response.data.result);
-      console.log(response.data.result[0]);
+      //  console.log(response.data.result[0]);
     });
   };
 
@@ -231,7 +232,7 @@ const HomePage = () => {
       });
       const rslt = await res.json();
       if (rslt.status == 1) {
-        console.log('status', status);
+        // console.log('status', status);
         setappStatus(status);
       }
 
@@ -260,9 +261,55 @@ const HomePage = () => {
     // console.log(age_now);
     return age_now;
   };
+  const getPlanData = () => {
+    axios({
+      method: 'get',
+      url: `https://technorizen.com/Dating/webservice/get_plans`,
+    }).then(response => {
+      //console.log('setPlandata=>', response.data.result);
+      setPlandata(response.data.result);
+    });
+  };
+
+  const getUserProfile = () => {
+    axios({
+      method: 'post',
+      url:
+        `https://technorizen.com/Dating/webservice/get_profile?user_id=` +
+        Staps.id,
+    }).then(response => {
+      console.log('setProfile=>', response.data.result);
+      setProfile(response.data.result);
+    });
+  };
+
+  function UserCondition() {
+    if (Staps.Plan_Name == 'Basic' && profile.like_unlike_count <= '300') {
+      likeApi(Uindex);
+      UserScroll();
+    } else if (
+      Staps.Plan_Name == 'Pro' &&
+      profile.like_unlike_count <= '1000'
+    ) {
+      likeApi(Uindex);
+      UserScroll();
+    } else if (
+      Staps.Plan_Name == 'Elite' &&
+      profile.like_unlike_count <= '5000'
+    ) {
+      likeApi(Uindex);
+      UserScroll();
+    } else {
+      ShowToast('Upgrade Your Plan');
+    }
+  }
+
   useEffect(() => {
     Getnotification();
     getUserPost();
+    getPlanData();
+    getUserProfile();
+    navigation.addListener('focus', () => getUserPost());
     status('ONLINE');
     const appStateListener = AppState.addEventListener(
       'change',
@@ -273,6 +320,7 @@ const HomePage = () => {
       return status('OFFLINE');
     };
   }, []);
+
   return (
     <View
       style={{
@@ -356,11 +404,13 @@ const HomePage = () => {
                               dimension.height /*  + StatusBar.currentHeight */,
                             width: dimension.width,
                           }}>
-                          <Image
+                          <FastImage
+                            onProgress={() => <ActivityLoader />}
                             source={{
                               uri: v?.image,
+                              priority: FastImage.priority.normal,
                             }}
-                            resizeMode="cover"
+                            resizeMode={FastImage.resizeMode.cover}
                             style={{
                               height:
                                 dimension.height /*  + StatusBar.currentHeight */,
@@ -513,8 +563,7 @@ const HomePage = () => {
         <Tab source={require('../../assets/home_icons/focus.png')} />
         <Tab
           onPress={() => {
-            likeApi(Uindex);
-            UserScroll();
+            UserCondition();
           }}
           Animatable={
             <View>
@@ -589,7 +638,7 @@ const HomePage = () => {
         }}></View>
 
       <Notification Notification={notification} refRBSheet={refRBSheet1} />
-      <MoreOptions refRBSheet={refRBSheet} />
+      <MoreOptions BlockID={Uindex} UserID={Staps.id} refRBSheet={refRBSheet} />
       <SelectCategory refRBSheet={refRBSheet2} />
       <Netinforsheet />
     </View>

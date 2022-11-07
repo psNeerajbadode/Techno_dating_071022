@@ -99,10 +99,6 @@ const ChatList = () => {
       .then(response => response.json())
       .then(response => {
         if (response.status == 1) {
-          console.log(
-            'chat get_conversation ================================',
-            response.result,
-          );
           setChatuser(response.result);
           setLoading(false);
         } else {
@@ -117,7 +113,7 @@ const ChatList = () => {
   useEffect(() => {
     ChatUser();
   }, []);
-
+  console.log('Chatuser', Chatuser);
   return (
     <View
       style={{
@@ -203,6 +199,21 @@ const ChatList = () => {
         <View style={{flex: 1, justifyContent: 'center'}}>
           <ActivityLoader />
         </View>
+      ) : Chatuser == '' ? (
+        <View>
+          <TextFormatted
+            style={{
+              fontSize: 14,
+              fontWeight: '700',
+              color: ThemeMode.selectedTheme
+                ? theme.colors.primaryBlack
+                : theme.colors.primary,
+              marginHorizontal: 20,
+              marginTop: 20,
+            }}>
+            There are no Recent Data
+          </TextFormatted>
+        </View>
       ) : (
         <FlatList
           contentContainerStyle={{paddingBottom: 60}}
@@ -278,40 +289,40 @@ const ChatList = () => {
               }>
               <View>
                 {/* {index <= 1 && (
-                <LinearGradient
-                  colors={
-                    ThemeMode.themecolr == 'Red'
-                      ? theme.colors.primaryOn
-                      : ThemeMode.themecolr == 'Blue'
-                      ? theme.colors.primaryBlue
-                      : ThemeMode.themecolr == 'Green'
-                      ? theme.colors.primaryGreen
-                      : ThemeMode.themecolr == 'Purple'
-                      ? theme.colors.primaryPurple
-                      : ThemeMode.themecolr == 'Yellow'
-                      ? theme.colors.primaryYellow
-                      : theme.colors.primaryOn
-                  }
-                  style={{
-                    width: 21,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    height: 21,
-                    borderRadius: 5,
-                    position: 'absolute',
-                    zIndex: 1,
-                    right: 0,
-                  }}>
-                  <TextFormatted
+                  <LinearGradient
+                    colors={
+                      ThemeMode.themecolr == 'Red'
+                        ? theme.colors.primaryOn
+                        : ThemeMode.themecolr == 'Blue'
+                        ? theme.colors.primaryBlue
+                        : ThemeMode.themecolr == 'Green'
+                        ? theme.colors.primaryGreen
+                        : ThemeMode.themecolr == 'Purple'
+                        ? theme.colors.primaryPurple
+                        : ThemeMode.themecolr == 'Yellow'
+                        ? theme.colors.primaryYellow
+                        : theme.colors.primaryOn
+                    }
                     style={{
-                      color: theme.colors.primary,
-                      fontSize: 13,
-                      fontWeight: '400',
+                      width: 21,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      height: 21,
+                      borderRadius: 5,
+                      position: 'absolute',
+                      zIndex: 1,
+                      right: 0,
                     }}>
-                    {index + 1}
-                  </TextFormatted>
-                </LinearGradient>
-              )} */}
+                    <TextFormatted
+                      style={{
+                        color: theme.colors.primary,
+                        fontSize: 13,
+                        fontWeight: '400',
+                      }}>
+                      {index + 1}
+                    </TextFormatted>
+                  </LinearGradient>
+                )} */}
                 <Image
                   source={{uri: item?.image}}
                   style={{

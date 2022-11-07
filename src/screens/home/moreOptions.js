@@ -13,11 +13,14 @@ import {theme} from '../../utils/Constants';
 import LinearGradient from 'react-native-linear-gradient';
 import Button from '../../components/Button';
 import {useSelector} from 'react-redux';
+import axios from 'axios';
+import {ShowToast} from '../../utils/Baseurl';
 
-const MoreOptions = ({refRBSheet}) => {
+const MoreOptions = ({refRBSheet, UserID, BlockID}) => {
   const refRBSheet2 = useRef();
   const [isReport, setIsReport] = useState(0);
   const ThemeMode = useSelector(state => state.Theme);
+  const [Loading, setLoading] = useState(false);
   const colormode =
     ThemeMode.themecolr == 'Red'
       ? theme.colors.red
@@ -30,6 +33,36 @@ const MoreOptions = ({refRBSheet}) => {
       : ThemeMode.themecolr == 'Yellow'
       ? theme.colors.Yellow
       : theme.colors.red;
+
+  const block_user_Api = () => {
+    setLoading(true);
+    try {
+      axios({
+        url:
+          'https://technorizen.com/Dating/webservice/add_block_user?user_id=' +
+          /*   'https://technorizen.com/Dating/webservice/unblock_user?user_id=' + */
+          UserID +
+          '&&' +
+          'block_id=' +
+          BlockID,
+        method: 'POST',
+      })
+        .then(function (response) {
+          console.log('response=>', JSON.stringify(response.data.message));
+          if (response.data.status == 1) {
+            setLoading(false);
+            ShowToast(response.data.message);
+            refRBSheet2.current.close();
+            refRBSheet.current.close();
+          }
+        })
+        .catch(function (error) {
+          console.log('catch', error);
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <RBSheet
       ref={refRBSheet}
@@ -119,11 +152,21 @@ const MoreOptions = ({refRBSheet}) => {
         refRBSheet2={refRBSheet2}
         isReport={isReport}
         setIsReport={setIsReport}
+        Block_onPress={() => block_user_Api()}
+        Loading={Loading}
       />
     </RBSheet>
   );
 };
-const BlockReport = ({refRBSheet2, refRBSheet, isReport, setIsReport}) => {
+const BlockReport = ({
+  refRBSheet2,
+  refRBSheet,
+  isReport,
+  setIsReport,
+
+  Block_onPress,
+  Loading,
+}) => {
   const ThemeMode = useSelector(state => state.Theme);
   return (
     <RBSheet
@@ -316,10 +359,8 @@ const BlockReport = ({refRBSheet2, refRBSheet, isReport, setIsReport}) => {
           <Button
             buttonName={'Block account'}
             color={'#fff'}
-            onPress={() => {
-              // refRBSheet.current.open();
-              refRBSheet2.current.close();
-            }}
+            onPress={Block_onPress}
+            Loading={Loading}
           />
           <TextFormatted
             style={{

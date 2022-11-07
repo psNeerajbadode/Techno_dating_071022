@@ -36,7 +36,7 @@ const FingerPrint = ({navigation}) => {
     TouchID.authenticate('', optionalConfigObject)
       .then(success => {
         console.log('success', success);
-
+        dispatch({type: STAP, payload: {Plan_Name: 'Basic'}});
         navigation.replace('HomeNavigation');
         setTouch(true);
         setAuthentication(success);

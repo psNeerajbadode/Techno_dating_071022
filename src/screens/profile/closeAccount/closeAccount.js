@@ -178,6 +178,7 @@ const CloseAccount = ({refRBSheet}) => {
   );
 };
 const ButtonRow = ({title, onPress}) => {
+  const ThemeMode = useSelector(state => state.Theme);
   return (
     <TouchableOpacity
       onPress={onPress}

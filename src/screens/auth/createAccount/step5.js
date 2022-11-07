@@ -121,6 +121,7 @@ const Step5 = ({navigation}) => {
     }
   };
   useEffect(() => {
+    // requestLocationPermission();
     addGeo();
   }, []);
 
