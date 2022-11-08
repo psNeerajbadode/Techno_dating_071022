@@ -23,6 +23,7 @@ import ViewSelfMedia from '../screens/profile/viewSelfmedia';
 import Images from '../screens/profile/profileComponent/images';
 import PlayVideo from '../screens/profile/profileComponent/playVideo';
 import TermCondition from '../screens/auth/termCondition';
+import Login from '../screens/auth/Login';
 
 const Stack = createNativeStackNavigator();
 const HomeNavigation = () => {
@@ -52,6 +53,7 @@ const HomeNavigation = () => {
       <Stack.Screen name="playVideo" component={PlayVideo} />
       <Stack.Screen name="TermCondition" component={TermCondition} />
       <Stack.Screen name="images" component={Images} />
+      <Stack.Screen name="Login" component={Login} />
     </Stack.Navigator>
   );
 };

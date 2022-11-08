@@ -3,19 +3,50 @@ import {
   ScrollView,
   StatusBar,
   StyleSheet,
-  Text,
   TextInput,
   TouchableOpacity,
-  View,
 } from 'react-native';
 import React, {useState} from 'react';
 import RBSheet from 'react-native-raw-bottom-sheet';
-import AntDesign from 'react-native-vector-icons/AntDesign';
+
 import {theme} from '../../../utils/Constants';
 import TextFormatted from '../../../components/TextFormatted';
 import Button from '../../../components/Button';
+import {useDispatch, useSelector} from 'react-redux';
 
 const Other = ({refRBSheet}) => {
+  const dispatch = useDispatch();
+  const ThemeMode = useSelector(state => state.Theme);
+  const Staps = useSelector(state => state.Stap);
+  const [Loading, setLoading] = useState(false);
+  const [resion, setResion] = useState();
+  const delete_account_api = () => {
+    setLoading(true);
+    fetch(
+      'https://technorizen.com/Dating/webservice/delete_account?user_id=' +
+        Staps.id +
+        '&' +
+        'reason=' +
+        resion,
+      {method: 'post'},
+    )
+      .then(response => response.json())
+      .then(response => {
+        console.log(response);
+        if (response.status == 1) {
+          navigation.replace('authNavigation');
+          dispatch({type: LOGOUT, payload: null});
+          setLoading(false);
+        } else {
+          setLoading(false);
+        }
+      })
+      .catch(() => {
+        console.log('ERROR GETTING DATA FROM API');
+      });
+  };
+
+  console.log('select', resion);
   return (
     <RBSheet
       ref={refRBSheet}
@@ -102,6 +133,8 @@ const Other = ({refRBSheet}) => {
         </TextFormatted>
         <TextInput
           multiline={true}
+          value={resion}
+          onChangeText={setResion}
           placeholder="Insert text"
           placeholderTextColor={theme.colors.darkGrey}
           style={{
@@ -127,7 +160,14 @@ const Other = ({refRBSheet}) => {
           }}
         />
       </ScrollView>
-      <Button buttonName={'Delete account'} marginBottom={20} />
+      <Button
+        Loading={Loading}
+        disabled={!resion ? true : false}
+        opacity={!resion ? 0.5 : 1}
+        onPress={() => delete_account_api()}
+        buttonName={'Delete account'}
+        marginBottom={20}
+      />
     </RBSheet>
   );
 };

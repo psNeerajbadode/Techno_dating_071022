@@ -31,7 +31,9 @@ import ViewSelfMedia from '../screens/profile/viewSelfmedia';
 const Stack = createNativeStackNavigator();
 const AuthNavigation = () => {
   return (
-    <Stack.Navigator screenOptions={{headerShown: false}}>
+    <Stack.Navigator
+      initialRouteName="Splash"
+      screenOptions={{headerShown: false}}>
       <Stack.Screen component={Splash} name="Splash" />
       <Stack.Screen component={LanguageSelection} name="LanguageSelection" />
       <Stack.Screen component={Login} name="Login" />

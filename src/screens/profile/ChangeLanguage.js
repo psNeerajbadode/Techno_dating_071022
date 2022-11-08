@@ -13,7 +13,7 @@ import Button from '../../components/Button';
 import SearchBar from '../../components/SearchBar';
 import ButtonView from '../../components/buttonView';
 import Header from '../../components/Header';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {
   BluelightImage,
   GreenlightImage,
@@ -25,6 +25,7 @@ import {useNavigation} from '@react-navigation/native';
 import Netinforsheet from '../../components/Netinforsheet';
 import {STAP} from '../../redux/actions/ActionType';
 const ChangeLanguage = () => {
+  const dispatch = useDispatch();
   const ThemeMode = useSelector(state => state.Theme);
   const [select, setSelect] = useState();
   const [search, setSearch] = useState('');

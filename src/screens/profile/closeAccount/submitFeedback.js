@@ -19,11 +19,15 @@ import {
   RedlightImage,
   YellowlightImage,
 } from '../../../utils/CustomImages';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 
 const SubmitFeedback = ({refRBSheet}) => {
   const [select, setSelect] = useState();
+  const dispatch = useDispatch();
+  const Staps = useSelector(state => state.Stap);
   const ThemeMode = useSelector(state => state.Theme);
+  const [Loading, setLoading] = useState(false);
+  const [resion, setResion] = useState('');
   const data = [
     'Have not met anyone from ...',
     'I am not getting any matches',
@@ -32,6 +36,33 @@ const SubmitFeedback = ({refRBSheet}) => {
     'There is no one to swipe on',
     'I have had a poor experience on',
   ];
+  const delete_account_api = () => {
+    setLoading(true);
+    fetch(
+      'https://technorizen.com/Dating/webservice/delete_account?user_id=' +
+        Staps.id +
+        '&' +
+        'reason=' +
+        resion,
+      {method: 'post'},
+    )
+      .then(response => response.json())
+      .then(response => {
+        console.log(response);
+        if (response.status == 1) {
+          navigation.replace('authNavigation');
+          dispatch({type: LOGOUT, payload: null});
+          setLoading(false);
+        } else {
+          setLoading(false);
+        }
+      })
+      .catch(() => {
+        console.log('ERROR GETTING DATA FROM API');
+      });
+  };
+
+  console.log('select', resion);
   return (
     <RBSheet
       ref={refRBSheet}
@@ -107,10 +138,14 @@ const SubmitFeedback = ({refRBSheet}) => {
               }}>
               {v}
             </TextFormatted>
-            <TouchableOpacity onPress={() => setSelect(select == i ? null : i)}>
+            <TouchableOpacity
+              onPress={() => {
+                setSelect(select == i ? null : i);
+                setResion(v);
+              }}>
               <Image
                 source={
-                  select == i
+                  resion == v
                     ? ThemeMode.themecolr == 'Red'
                       ? RedlightImage.check_red
                       : ThemeMode.themecolr == 'Blue'
@@ -164,7 +199,14 @@ const SubmitFeedback = ({refRBSheet}) => {
           }}
         />
       </ScrollView>
-      <Button buttonName={'Delete account'} marginBottom={20} />
+      <Button
+        Loading={Loading}
+        disabled={!resion ? true : false}
+        opacity={!resion ? 0.5 : 1}
+        onPress={() => delete_account_api()}
+        buttonName={'Delete account'}
+        marginBottom={20}
+      />
     </RBSheet>
   );
 };

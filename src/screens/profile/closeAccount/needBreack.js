@@ -11,7 +11,7 @@ import {theme} from '../../../utils/Constants';
 import TextFormatted from '../../../components/TextFormatted';
 import Button from '../../../components/Button';
 
-const NeedBreack = ({refRBSheet}) => {
+const NeedBreack = ({refRBSheet, onPress, Loading}) => {
   return (
     <RBSheet
       ref={refRBSheet}
@@ -98,7 +98,12 @@ const NeedBreack = ({refRBSheet}) => {
           Are you sure you want to delete your account?
         </TextFormatted>
       </ScrollView>
-      <Button buttonName={'Delete account'} marginBottom={20} />
+      <Button
+        onPress={onPress}
+        Loading={Loading}
+        buttonName={'Delete account'}
+        marginBottom={20}
+      />
     </RBSheet>
   );
 };

@@ -91,7 +91,7 @@ const Login = ({navigation}) => {
       console.log(error);
     }
   };
-
+  /// console.log('staps==dcfszdvcv================>', Staps);
   return (
     <View
       style={{

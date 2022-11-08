@@ -5,14 +5,14 @@ import {
   View,
   Image,
 } from 'react-native';
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useRef, useState} from 'react';
 import {theme} from '../../utils/Constants';
 import HeaderImage_1 from '../../components/HeaderImage_1';
 import Header from '../../components/Header';
 import TextFormatted from '../../components/TextFormatted';
 import {useNavigation} from '@react-navigation/native';
 import CloseAccount from './closeAccount/closeAccount';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {
   BluelightImage,
   GreenlightImage,
@@ -21,8 +21,9 @@ import {
   YellowlightImage,
 } from '../../utils/CustomImages';
 import Netinforsheet from '../../components/Netinforsheet';
-import {STAP} from '../../redux/actions/ActionType';
+import {LOGOUT, STAP} from '../../redux/actions/ActionType';
 const ProfileSetting = () => {
+  const dispatch = useDispatch();
   const ThemeMode = useSelector(state => state.Theme);
   const Staps = useSelector(state => state.Stap);
   const navigation = useNavigation();
@@ -111,7 +112,13 @@ const ProfileSetting = () => {
           title={'Language'}
           onPress={() => navigation.navigate('ChangeLanguage')}
         />
-        <ButtonRow title={'Logout'} />
+        <ButtonRow
+          onPress={() => {
+            navigation.replace('authNavigation');
+            dispatch({type: LOGOUT, payload: null});
+          }}
+          title={'Logout'}
+        />
       </ScrollView>
       <ButtonRow
         title={'Close account'}

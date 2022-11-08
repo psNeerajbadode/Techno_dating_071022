@@ -6,12 +6,10 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useRef} from 'react';
+import React, {useRef, useState} from 'react';
 import RBSheet from 'react-native-raw-bottom-sheet';
-import Fontisto from 'react-native-vector-icons/Fontisto';
 import TextFormatted from '../../../components/TextFormatted';
 import {theme} from '../../../utils/Constants';
-import Icon from 'react-native-vector-icons/Entypo';
 import NeedBreack from './needBreack';
 import SubmitFeedback from './submitFeedback';
 import SomethingBroken from './somethingBroken';
@@ -19,16 +17,43 @@ import MetSomeone from './metSomeone';
 import FreshStart from './freshStart';
 import Other from './other';
 import LinearGradient from 'react-native-linear-gradient';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 
 const CloseAccount = ({refRBSheet}) => {
+  const dispatch = useDispatch();
   const ThemeMode = useSelector(state => state.Theme);
+  const Staps = useSelector(state => state.Stap);
   const refRBSheet1 = useRef();
   const refRBSheet2 = useRef();
   const refRBSheet3 = useRef();
   const refRBSheet4 = useRef();
   const refRBSheet5 = useRef();
   const refRBSheet6 = useRef();
+  const [Loading, setLoading] = useState(false);
+
+  const delete_account_api = () => {
+    setLoading(true);
+    fetch(
+      'https://technorizen.com/Dating/webservice/delete_account?user_id=' +
+        Staps.id +
+        '&' +
+        'reason=I need a break',
+
+      {method: 'post'},
+    )
+      .then(response => response.json())
+      .then(response => {
+        console.log(response.status);
+        if (response.status == 1) {
+          navigation.replace('authNavigation');
+          dispatch({type: LOGOUT, payload: null});
+          setLoading(false);
+        } else {
+          setLoading(false);
+        }
+      });
+  };
+
   return (
     <RBSheet
       ref={refRBSheet}
@@ -168,7 +193,11 @@ const CloseAccount = ({refRBSheet}) => {
           }}
         />
       </ScrollView>
-      <NeedBreack refRBSheet={refRBSheet1} />
+      <NeedBreack
+        Loading={Loading}
+        onPress={() => delete_account_api()}
+        refRBSheet={refRBSheet1}
+      />
       <SubmitFeedback refRBSheet={refRBSheet2} />
       <SomethingBroken refRBSheet={refRBSheet3} />
       <MetSomeone refRBSheet={refRBSheet4} />

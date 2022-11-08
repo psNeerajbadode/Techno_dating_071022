@@ -5,13 +5,43 @@ import {
   TouchableOpacity,
   Image,
 } from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import {theme} from '../../../utils/Constants';
 import TextFormatted from '../../../components/TextFormatted';
 import Button from '../../../components/Button';
+import {useDispatch, useSelector} from 'react-redux';
 
 const MetSomeone = ({refRBSheet}) => {
+  const dispatch = useDispatch();
+  const ThemeMode = useSelector(state => state.Theme);
+  const Staps = useSelector(state => state.Stap);
+  const [Loading, setLoading] = useState(false);
+
+  const delete_account_api = () => {
+    setLoading(true);
+    fetch(
+      'https://technorizen.com/Dating/webservice/delete_account?user_id=' +
+        Staps.id +
+        '&' +
+        'reason=' +
+        'I need a break',
+      {method: 'post'},
+    )
+      .then(response => response.json())
+      .then(response => {
+        if (response.status == 1) {
+          navigation.replace('authNavigation');
+          dispatch({type: LOGOUT, payload: null});
+          setLoading(false);
+        } else {
+          setLoading(false);
+        }
+      })
+      .catch(() => {
+        console.log('ERROR GETTING DATA FROM API');
+      });
+  };
   return (
     <RBSheet
       ref={refRBSheet}
@@ -98,7 +128,12 @@ const MetSomeone = ({refRBSheet}) => {
           Are you sure you want to delete your account?
         </TextFormatted>
       </ScrollView>
-      <Button buttonName={'Delete account'} marginBottom={20} />
+      <Button
+        Loading={Loading}
+        onPress={() => delete_account_api()}
+        buttonName={'Delete account'}
+        marginBottom={20}
+      />
     </RBSheet>
   );
 };
